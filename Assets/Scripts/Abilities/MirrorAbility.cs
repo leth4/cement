@@ -25,9 +25,9 @@ public class MirrorAbility : Ability
             for (int j = 0; j < Size; j++)
             {
                 if (_mirrorType is MirrorType.Horizontal)
-                    if (grid[i, j].IsTaken) grid[i, Size - j - 1].IsTaken = true;
+                    if (grid[i, j].IsTaken && j != Size - j - 1) grid[i, Size - j - 1].SetTaken(true);
                 if (_mirrorType is MirrorType.Vertical)
-                    if (grid[i, j].IsTaken) grid[Size - i - 1, j].IsTaken = true;
+                    if (grid[i, j].IsTaken && i != Size - i - 1) grid[Size - i - 1, j].SetTaken(true);
             }
         }
     }

@@ -31,8 +31,8 @@ public class Recorder : Singleton<Recorder>
         {
             for (int j = 0; j < GridManager.Instance.Size; j++)
             {
-                GridManager.Instance.PlayerGrid[i, j].IsTaken = lastRecord.TakenGrid[i, j];
-                GridManager.Instance.PlayerGrid[i, j].Number = lastRecord.NumberGrid[i, j];
+                GridManager.Instance.PlayerGrid[i, j].SetTaken(lastRecord.TakenGrid[i, j]);
+                GridManager.Instance.PlayerGrid[i, j].SetNumber(lastRecord.NumberGrid[i, j]);
             }
         }
     }

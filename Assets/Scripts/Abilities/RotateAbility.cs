@@ -31,8 +31,8 @@ public class RotateAbility : Ability
                     grid[i, j].CopyValuesFrom(grid[Size - 1 - j, i]);
                     grid[Size - 1 - j, i].CopyValuesFrom(grid[Size - 1 - i, Size - 1 - j]);
                     grid[Size - 1 - i, Size - 1 - j].CopyValuesFrom(grid[j, Size - 1 - i]);
-                    grid[j, Size - 1 - i].Number = numberTemp;
-                    grid[j, Size - 1 - i].IsTaken = isTakenTemp;
+                    grid[j, Size - 1 - i].SetNumber(numberTemp);
+                    grid[j, Size - 1 - i].SetTaken(isTakenTemp, addInteraction: isTakenTemp);
                 }
                 if (_rotateType is RotateType.Anticlockwise)
                 {
@@ -41,8 +41,8 @@ public class RotateAbility : Ability
                     grid[i, j].CopyValuesFrom(grid[j, Size - 1 - i]);
                     grid[j, Size - 1 - i].CopyValuesFrom(grid[Size - 1 - i, Size - 1 - j]);
                     grid[Size - 1 - i, Size - 1 - j].CopyValuesFrom(grid[Size - 1 - j, i]);
-                    grid[Size - 1 - j, i].Number = numberTemp;
-                    grid[Size - 1 - j, i].IsTaken = isTakenTemp;
+                    grid[Size - 1 - j, i].SetNumber(numberTemp);
+                    grid[Size - 1 - j, i].SetTaken(isTakenTemp, addInteraction: isTakenTemp);
                 }
             }
         }

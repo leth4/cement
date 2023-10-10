@@ -36,9 +36,9 @@ public class ApplyShapeAbility : Ability
                 {
                     if (_shape.Grid[i, j])
                     {
-                        if (_applyShapeType is ApplyShapeType.Add) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken = true;
-                        if (_applyShapeType is ApplyShapeType.Erase) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken = false;
-                        if (_applyShapeType is ApplyShapeType.Reverse) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken = !grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken;
+                        if (_applyShapeType is ApplyShapeType.Add) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(true);
+                        if (_applyShapeType is ApplyShapeType.Erase) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(false);
+                        if (_applyShapeType is ApplyShapeType.Reverse) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken);
                     }
                 }
             }

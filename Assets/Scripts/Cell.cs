@@ -9,37 +9,30 @@ public class Cell : MonoBehaviour
     [SerializeField] private TMP_Text _numberText;
 
     private bool _isPlayerCell;
-
-    private int _number;
-    public int Number
-    {
-        get => _number;
-        set
-        {
-            _number = value;
-            _numberText.SetText($"{Number}");
-        }
-    }
-
     private bool _previewIsTaken;
 
-    private bool _isTaken;
-    public bool IsTaken
+    public int Number { get; private set; }
+    public bool IsTaken { get; private set; }
+
+    public void SetNumber(int number)
     {
-        get => _isTaken;
-        set
+        if (AbilityController.Instance.IsPreviewing) return;
+        Number = number;
+        _numberText.SetText($"{Number}");
+    }
+
+    public void SetTaken(bool taken, bool addInteraction = true)
+    {
+        if (AbilityController.Instance.IsPreviewing)
         {
-            if (AbilityController.Instance.IsPreviewing)
-            {
-                _previewIsTaken = value;
-            }
-            else
-            {
-                _isTaken = value;
-                AddInteraction();
-            }
-            ApplyColor();
+            _previewIsTaken = taken;
         }
+        else
+        {
+            IsTaken = taken;
+            if (addInteraction) AddInteraction();
+        }
+        ApplyColor();
     }
 
     public void Initialize(bool isPlayerCell)
@@ -51,14 +44,28 @@ public class Cell : MonoBehaviour
 
     public void CopyValuesFrom(Cell cell)
     {
-        Number = cell.Number;
-        IsTaken = cell.IsTaken;
-        AddInteraction();
+        SetTaken(cell.IsTaken, false);
+        SetNumber(cell.Number);
+
+        if (IsTaken) AddInteraction();
+    }
+
+    public void SwapValuesWith(Cell cell)
+    {
+        var numberTemp = Number;
+        var isTakenTemp = IsTaken;
+
+        CopyValuesFrom(cell);
+
+        cell.Number = numberTemp;
+        cell.IsTaken = isTakenTemp;
+
+        if (cell.IsTaken) cell.AddInteraction();
     }
 
     public void AddInteraction()
     {
-        Number++;
+        SetNumber(Number + 1);
     }
 
     private void ApplyColor()
@@ -67,15 +74,15 @@ public class Cell : MonoBehaviour
 
         if (AbilityController.Instance.IsPreviewing)
         {
-            if (_previewIsTaken) Tween.Color(this, _renderer, _renderer.color, _isTaken ? Color.black : Color.blue, 0.15f);
-            if (!_previewIsTaken) Tween.Color(this, _renderer, _renderer.color, _isTaken ? Color.red : Color.white, 0.15f);
+            if (_previewIsTaken) Tween.Color(this, _renderer, _renderer.color, IsTaken ? Color.black : Color.blue, 0.15f);
+            if (!_previewIsTaken) Tween.Color(this, _renderer, _renderer.color, IsTaken ? Color.red : Color.white, 0.15f);
         }
         else
         {
-            Tween.Color(this, _renderer, _renderer.color, _isTaken ? Color.black : Color.white, 0.15f);
+            Tween.Color(this, _renderer, _renderer.color, IsTaken ? Color.black : Color.white, 0.15f);
         }
 
-        if (_isPlayerCell) _numberText.color = _isTaken ? Color.white : Color.gray;
+        if (_isPlayerCell) _numberText.color = IsTaken || Number == 0 ? Color.white : Color.gray;
     }
 
     private void OnMouseEnter()

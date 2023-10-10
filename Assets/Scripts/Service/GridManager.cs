@@ -44,8 +44,8 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
-        _answerGrid[_size / 2, _size / 2].IsTaken = true;
-        PlayerGrid[_size / 2, _size / 2].IsTaken = true;
+        _answerGrid[_size / 2, _size / 2].SetTaken(true, false);
+        PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
     }
 
     private void ActivateRandomAbilities()
