@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806d5d2ac7de1ff4b917a5c8a7e8a29f, type: 3}
+  m_Name: ReverseShapeSquare
+  m_EditorClassIdentifier: 
+  Name: ReverseShapeSquare
+  _applyShapeType: 2
+  _shape: {fileID: 11400000, guid: 31b35bb1c65647c419fc982c0e9d55f9, type: 2}

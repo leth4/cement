@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : Singleton<GridManager>
 {
-    public static int Size;
+    public int Size;
 
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private int _size;
     [SerializeField] private int _randomApplied;
-
-    [SerializeField] private List<AbilityWeight> _abilities;
-
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
 
-    private Cell[,] _grid;
-    private Cell[,] _playerGrid;
+    [SerializeField] private List<AbilityWeight> _abilities;
+
+    [HideInInspector] public Cell SelectedCell;
+    public Cell[,] PlayerGrid;
+
+    private Cell[,] _answerGrid;
 
     private void Start()
     {
@@ -27,38 +28,41 @@ public class GridManager : MonoBehaviour
     {
         Size = _size;
 
-        _grid = new Cell[_size, _size];
-        _playerGrid = new Cell[_size, _size];
+        _answerGrid = new Cell[_size, _size];
+        PlayerGrid = new Cell[_size, _size];
 
         for (int i = 0; i < _size; i++)
         {
             for (int j = 0; j < _size; j++)
             {
-                _grid[i, j] = Instantiate(_cellPrefab, _answerGridContainer);
-                _grid[i, j].transform.localPosition = new(i, j);
-                _grid[i, j].Initialize(false);
-                _playerGrid[i, j] = Instantiate(_cellPrefab, _playerGridContainer);
-                _playerGrid[i, j].transform.localPosition = new(i, j);
-                _grid[i, j].Initialize(true);
+                _answerGrid[i, j] = Instantiate(_cellPrefab, _answerGridContainer);
+                _answerGrid[i, j].transform.localPosition = new(i, j);
+                _answerGrid[i, j].Initialize(false);
+                PlayerGrid[i, j] = Instantiate(_cellPrefab, _playerGridContainer);
+                PlayerGrid[i, j].transform.localPosition = new(i, j);
+                _answerGrid[i, j].Initialize(true);
             }
         }
 
-        _grid[_size / 2, _size / 2].IsTaken = true;
-        _playerGrid[_size / 2, _size / 2].IsTaken = true;
+        _answerGrid[_size / 2, _size / 2].IsTaken = true;
+        PlayerGrid[_size / 2, _size / 2].IsTaken = true;
     }
 
     private void ActivateRandomAbilities()
     {
-        List<string> abilities = new();
+        Recorder.Instance.Reset();
+
+        var abilities = new List<string>();
+
         for (int i = 0; i < _randomApplied; i++)
         {
             var ability = GetRandomAbility(i == 0);
-            abilities.Add(ability.ToString());
-            Ability.Activate(ability, _grid);
+            abilities.Add(ability.Name);
+            AbilityController.Instance.AddAbility(ability);
+            ability.ApplyRandom(_answerGrid);
         }
 
-        abilities.Shuffle();
-        Debug.Log(abilities.ToString("|"));
+        Debug.Log(abilities.ToString(", "));
     }
 
     private void Update()
@@ -66,9 +70,9 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A)) ActivateRandomAbilities();
     }
 
-    public void Activate(AbilityType abilityType) => Ability.Activate(abilityType, _grid);
+    public void Activate(Ability ability) => ability.ApplyRandom(_answerGrid);
 
-    private AbilityType GetRandomAbility(bool isFirst)
+    private Ability GetRandomAbility(bool isFirst)
     {
         float weightSum = 0;
         foreach (var ability in _abilities) weightSum += isFirst ? ability.WeightFirst : ability.Weight;
@@ -90,7 +94,7 @@ public class GridManager : MonoBehaviour
     [System.Serializable]
     private struct AbilityWeight
     {
-        public AbilityType Ability;
+        public Ability Ability;
         public float Weight;
         public float WeightFirst;
     }

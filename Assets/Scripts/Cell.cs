@@ -26,11 +26,14 @@ public class Cell : MonoBehaviour
         Tween.Color(this, _renderer, _renderer.color, _isTaken ? Color.black : Color.white, 0.15f);
     }
 
-    private void OnMouseOver()
+    private void OnMouseEnter()
     {
-        if (_isPlayerCell) return;
+        GridManager.Instance.SelectedCell = this;
+    }
 
-        if (Input.GetMouseButtonDown(0)) IsTaken = true;
-        if (Input.GetMouseButtonDown(1)) IsTaken = false;
+    private void OnMouseExit()
+    {
+        if (GridManager.Instance.SelectedCell == this) GridManager.Instance.SelectedCell = null;
     }
 }
+
