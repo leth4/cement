@@ -31,7 +31,8 @@ public class Recorder : Singleton<Recorder>
         {
             for (int j = 0; j < GridManager.Instance.Size; j++)
             {
-                GridManager.Instance.PlayerGrid[i, j].IsTaken = lastRecord.Grid[i, j];
+                GridManager.Instance.PlayerGrid[i, j].IsTaken = lastRecord.TakenGrid[i, j];
+                GridManager.Instance.PlayerGrid[i, j].Number = lastRecord.NumberGrid[i, j];
             }
         }
     }
@@ -43,17 +44,20 @@ public class Recorder : Singleton<Recorder>
 
     private struct RecordStruct
     {
-        public bool[,] Grid;
+        public bool[,] TakenGrid;
+        public int[,] NumberGrid;
         public Ability Ability;
 
         public RecordStruct(Cell[,] grid, Ability ability)
         {
-            Grid = new bool[GridManager.Instance.Size, GridManager.Instance.Size];
+            TakenGrid = new bool[GridManager.Instance.Size, GridManager.Instance.Size];
+            NumberGrid = new int[GridManager.Instance.Size, GridManager.Instance.Size];
             for (int i = 0; i < GridManager.Instance.Size; i++)
             {
                 for (int j = 0; j < GridManager.Instance.Size; j++)
                 {
-                    Grid[i, j] = GridManager.Instance.PlayerGrid[i, j].IsTaken;
+                    TakenGrid[i, j] = GridManager.Instance.PlayerGrid[i, j].IsTaken;
+                    NumberGrid[i, j] = GridManager.Instance.PlayerGrid[i, j].Number;
                 }
             }
             Ability = ability;

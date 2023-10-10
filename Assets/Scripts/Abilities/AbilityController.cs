@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class AbilityController : Singleton<AbilityController>
 {
+    public static event Action StoppedPreview;
+
     [SerializeField] private Transform _abilityCardContainer;
     [SerializeField] private AbilityCard _abilityCardPrefab;
+
+    public bool IsPreviewing = false;
 
     private AbilityCard _selectedAbilityCard;
 
@@ -16,17 +20,30 @@ public class AbilityController : Singleton<AbilityController>
         abilityCard.Initialize(ability);
     }
 
-    private void Update()
+    public void UpdatePreview()
     {
+        IsPreviewing = true;
         if (GridManager.Instance.SelectedCell != null && _selectedAbilityCard != null)
         {
-            // Preview
+            var coords = (Vector2Int)GridHelper.GetCoordinates(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell);
+            _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, coords);
         }
+    }
 
+    public void StopPreview()
+    {
+        IsPreviewing = false;
+        StoppedPreview?.Invoke();
+    }
+
+    private void Update()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             if (GridManager.Instance.SelectedCell != null && _selectedAbilityCard != null)
             {
+                StopPreview();
+
                 var coords = (Vector2Int)GridHelper.GetCoordinates(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell);
                 Recorder.Instance.Record(_selectedAbilityCard.Ability);
                 var applied = _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, coords);
@@ -35,7 +52,8 @@ public class AbilityController : Singleton<AbilityController>
                     Destroy(_selectedAbilityCard.gameObject);
                     _selectedAbilityCard = null;
                 }
-                else {
+                else
+                {
                     Recorder.Instance.RemoveLastRecord();
                 }
             }

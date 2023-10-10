@@ -198,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Size: 0
   _cellPrefab: {fileID: -2665127865269297591, guid: 2549024aa3a41a94f8ab8c3c3d1adc99, type: 3}
-  _size: 9
+  _size: 7
   _randomApplied: 5
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}

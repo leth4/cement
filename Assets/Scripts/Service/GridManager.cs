@@ -40,7 +40,7 @@ public class GridManager : Singleton<GridManager>
                 _answerGrid[i, j].Initialize(false);
                 PlayerGrid[i, j] = Instantiate(_cellPrefab, _playerGridContainer);
                 PlayerGrid[i, j].transform.localPosition = new(i, j);
-                _answerGrid[i, j].Initialize(true);
+                PlayerGrid[i, j].Initialize(true);
             }
         }
 
