@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-
     [SerializeField] private CellRender _cellPrefab;
     [SerializeField] private int _size;
     [SerializeField] private int _abilitiesApplied;
@@ -46,12 +45,12 @@ public class GridManager : Singleton<GridManager>
                 PlayerPreviewGrid[i, j] = new Cell();
 
                 var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
-                answerCellRender.transform.localPosition = new(i, j);
+                answerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
                 answerCellRender.Initialize(false, new(i, j));
                 AnswerRenders.Add(answerCellRender);
 
                 var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
-                playerCellRender.transform.localPosition = new(i, j);
+                playerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
                 playerCellRender.Initialize(true, new(i, j));
                 PlayerRenders.Add(playerCellRender);
             }

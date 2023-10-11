@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ScreenFitter : MonoBehaviour
 {
-    private const float LANDSCAPE_MODE_RATIO = 0.8f;
+    private const float LANDSCAPE_MODE_RATIO = 0.6f;
 
     [SerializeField] private ScreenMode _orientation;
 
     [Header("Scale")]
-    [SerializeField] private float _widthToScaleRatio = 1000;
+    [SerializeField] private float _AspectToScaleRatio = 1;
     [SerializeField] private float _maxScale = 1;
 
     [Header("Anchor")]
@@ -19,7 +19,7 @@ public class ScreenFitter : MonoBehaviour
 
     private Camera _camera;
 
-    private bool IsPortraitMode => Screen.width / Screen.height < LANDSCAPE_MODE_RATIO;
+    private bool IsPortraitMode => Screen.width / (float)Screen.height < LANDSCAPE_MODE_RATIO;
 
     private void Awake()
     {
@@ -30,8 +30,8 @@ public class ScreenFitter : MonoBehaviour
     {
         if (_orientation != ScreenMode.Any && !(_orientation == ScreenMode.Portrait && IsPortraitMode) && !(_orientation == ScreenMode.Landscape && !IsPortraitMode)) return;
 
-        var newScale = new Vector3(Screen.width / _widthToScaleRatio, Screen.width / _widthToScaleRatio, Screen.width / _widthToScaleRatio);
-        transform.localScale = Vector3.Min(newScale, new Vector3(_maxScale, _maxScale, _maxScale));
+        var newScale = Vector3.one * Screen.width / Screen.height * _AspectToScaleRatio;
+        transform.localScale = Vector3.Min(newScale, Vector3.one * _maxScale);
 
         if (_anchor != AnchorType.None) transform.position = GetAnchoredPosition();
     }

@@ -291,7 +291,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 394294067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.93, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,11 +311,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 1
-  _widthToScaleRatio: 1000
+  _AspectToScaleRatio: 0.82
   _maxScale: 1
-  _anchor: 6
-  _anchorOffset: {x: -8, y: 0}
-  _scaleOffset: 0
+  _anchor: 5
+  _anchorOffset: {x: 4.5, y: 1.32}
+  _scaleOffset: 1
 --- !u!114 &394294070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,10 +329,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 2
-  _widthToScaleRatio: 630
+  _AspectToScaleRatio: 1.3
   _maxScale: 1
-  _anchor: 8
-  _anchorOffset: {x: -2.6, y: -26}
+  _anchor: 5
+  _anchorOffset: {x: 0.91, y: -2.2}
   _scaleOffset: 1
 --- !u!1 &519420028
 GameObject:
@@ -512,7 +512,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094931947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.91, y: -0.01, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -532,11 +532,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 1
-  _widthToScaleRatio: 1000
+  _AspectToScaleRatio: 0.82
   _maxScale: 1
-  _anchor: 4
-  _anchorOffset: {x: 1.2, y: 0}
-  _scaleOffset: 0
+  _anchor: 5
+  _anchorOffset: {x: -4.5, y: 2}
+  _scaleOffset: 1
 --- !u!114 &1094931950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,10 +550,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 2
-  _widthToScaleRatio: 630
+  _AspectToScaleRatio: 1.3
   _maxScale: 1
-  _anchor: 8
-  _anchorOffset: {x: -2.6, y: -8}
+  _anchor: 5
+  _anchorOffset: {x: -0.91, y: 5.23}
   _scaleOffset: 1
 --- !u!1 &1424200781
 GameObject:
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 0
-  _widthToScaleRatio: 670
+  _AspectToScaleRatio: 1
   _maxScale: 1
   _anchor: 2
   _anchorOffset: {x: 0, y: 1.7}
