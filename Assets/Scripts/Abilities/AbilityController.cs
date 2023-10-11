@@ -53,9 +53,6 @@ public class AbilityController : Singleton<AbilityController>
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            UndoLastMove();
-        }
+        if (Input.GetMouseButtonDown(1)) UndoLastMove();
     }
 }

@@ -30,6 +30,7 @@ public class GridManager : Singleton<GridManager>
     {
         InitializeGrids();
         ActivateRandomAbilities();
+        AbilityController.Instance.CallChange();
     }
 
     private void InitializeGrids()
@@ -62,8 +63,6 @@ public class GridManager : Singleton<GridManager>
 
         AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
         PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
-
-        AbilityController.Instance.CallChange();
     }
 
     private void CheckWin()
