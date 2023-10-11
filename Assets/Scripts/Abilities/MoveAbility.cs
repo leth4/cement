@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/Abilities/Move")]
 public class MoveAbiity : Ability
 {
-    [SerializeField] private RotateType _rotateType;
+    // [SerializeField] private RotateType _rotateType;
 
     public override bool Apply(Cell[,] grid, Vector2Int coordinates)
     {
@@ -35,11 +35,5 @@ public class MoveAbiity : Ability
         Down,
         Left,
         Right
-    }
-
-    private enum RotateType
-    {
-        Clockwise,
-        Anticlockwise
     }
 }

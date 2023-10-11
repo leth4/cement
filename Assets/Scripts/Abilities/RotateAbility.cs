@@ -46,6 +46,8 @@ public class RotateAbility : Ability
                 }
             }
         }
+
+        grid[Size / 2, Size / 2].AddInteraction();
     }
 
     private enum RotateType

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
@@ -7,7 +8,8 @@ public class GridManager : Singleton<GridManager>
 
     [SerializeField] private CellRender _cellPrefab;
     [SerializeField] private int _size;
-    [SerializeField] private int _randomApplied;
+    [SerializeField] private int _abilitiesApplied;
+    [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
     [SerializeField] private List<AbilityWeight> _abilities;
@@ -18,6 +20,9 @@ public class GridManager : Singleton<GridManager>
     public Cell[,] PlayerGrid;
     public Cell[,] PlayerPreviewGrid;
     public Cell[,] AnswerGrid;
+
+    private List<CellRender> AnswerRenders = new();
+    private List<CellRender> PlayerRenders = new();
 
     private void Start()
     {
@@ -40,13 +45,15 @@ public class GridManager : Singleton<GridManager>
                 PlayerGrid[i, j] = new Cell();
                 PlayerPreviewGrid[i, j] = new Cell();
 
-                var cellRender = Instantiate(_cellPrefab, _answerGridContainer);
-                cellRender.transform.localPosition = new(i, j);
-                cellRender.Initialize(false, new(i, j));
+                var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
+                answerCellRender.transform.localPosition = new(i, j);
+                answerCellRender.Initialize(false, new(i, j));
+                AnswerRenders.Add(answerCellRender);
 
                 var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
                 playerCellRender.transform.localPosition = new(i, j);
                 playerCellRender.Initialize(true, new(i, j));
+                PlayerRenders.Add(playerCellRender);
             }
         }
 
@@ -62,7 +69,7 @@ public class GridManager : Singleton<GridManager>
 
         var abilities = new List<string>();
 
-        for (int i = 0; i < _randomApplied; i++)
+        for (int i = 0; i < _abilitiesApplied; i++)
         {
             var ability = GetRandomAbility(i == 0);
             abilities.Add(ability.Name);
@@ -73,6 +80,19 @@ public class GridManager : Singleton<GridManager>
         AbilityController.Instance.CallChange();
 
         Debug.Log(abilities.ToString(", "));
+
+        var takenCells = new List<CellRender>();
+        foreach (var cell in AnswerRenders)
+        {
+            if (AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].IsTaken) takenCells.Add(cell);
+        }
+
+        takenCells.OrderByDescending(cell => AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].Number);
+
+        for (int i = 0; i < Mathf.Min(takenCells.Count, _numbersToPreview); i++)
+        {
+            takenCells[i].ShowNumber();
+        }
     }
 
     private void Update()

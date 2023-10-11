@@ -196,10 +196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f394f392183b34fac2baa04581dff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: 0
-  _cellPrefab: {fileID: -2665127865269297591, guid: 2549024aa3a41a94f8ab8c3c3d1adc99, type: 3}
+  _cellPrefab: {fileID: 7209274644862205119, guid: 2549024aa3a41a94f8ab8c3c3d1adc99, type: 3}
   _size: 7
-  _randomApplied: 5
+  _abilitiesApplied: 5
+  _numbersToPreview: 3
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}
   _abilities:
@@ -226,22 +226,29 @@ MonoBehaviour:
     WeightFirst: 1
   - Ability: {fileID: 11400000, guid: 0d27ea61178a08a408000ec1c111e0b3, type: 2}
     Weight: 3
-    WeightFirst: 1
+    WeightFirst: 0
   - Ability: {fileID: 11400000, guid: b27b819f55526b6498d3e798757a5a11, type: 2}
     Weight: 3
-    WeightFirst: 1
+    WeightFirst: 0
   - Ability: {fileID: 11400000, guid: 630840d9cbdf73a418b919d946c8d85e, type: 2}
     Weight: 3
-    WeightFirst: 1
+    WeightFirst: 0
   - Ability: {fileID: 11400000, guid: 81996a4724c93d64c92b1e06feea2ad5, type: 2}
     Weight: 2
     WeightFirst: 1
   - Ability: {fileID: 11400000, guid: 0d71d6e1095b0a64bb84cd19fd5f05ee, type: 2}
     Weight: 2
-    WeightFirst: 1
+    WeightFirst: 0
   - Ability: {fileID: 11400000, guid: 038dc9a9e19cab540b770b966e1ce9b2, type: 2}
     Weight: 2
     WeightFirst: 1
+  - Ability: {fileID: 11400000, guid: 027a3a2c46925b84f8a073efe5151873, type: 2}
+    Weight: 2
+    WeightFirst: 0
+  - Ability: {fileID: 11400000, guid: f207125684f853544b82d10439ff482e, type: 2}
+    Weight: 2
+    WeightFirst: 0
+  Size: 0
   SelectedCell: {fileID: 0}
 --- !u!4 &307820406
 Transform:
@@ -766,6 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _abilityCardContainer: {fileID: 392707633}
   _abilityCardPrefab: {fileID: 5590530621023045313, guid: b35c0e38b0c91214bb88a56b58065d01, type: 3}
+  IsPreviewing: 0
 --- !u!1 &1921605536
 GameObject:
   m_ObjectHideFlags: 0

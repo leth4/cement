@@ -20,15 +20,19 @@ public class FlipAbility : Ability
 
     private void FlipGrid(Cell[,] grid)
     {
-        for (int i = 0; i < Size; i++)
+        if (_flipType is FlipType.Horizontal)
         {
-            for (int j = 0; j < Size; j++)
-            {
-                var tempNumber = grid[i, j];
-            }
+            for (int i = 0; i < Size; i++)
+                for (int j = 0; j < Size / 2; j++)
+                    grid[i, j].SwapValuesWith(ref grid[i, Size - j - 1]);
+        }
+        if (_flipType is FlipType.Vertical)
+        {
+            for (int i = 0; i < Size / 2; i++)
+                for (int j = 0; j < Size; j++)
+                    grid[i, j].SwapValuesWith(ref grid[Size - i - 1, j]);
         }
     }
-
 
     private enum FlipType
     {

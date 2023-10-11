@@ -20,6 +20,11 @@ public class CellRender : MonoBehaviour
         Coordinates = coords;
     }
 
+    public void ShowNumber()
+    {
+        _numberText.SetText($"{Cell.Number}");
+    }
+
     public void Render()
     {
         StopAllCoroutines();
@@ -33,7 +38,7 @@ public class CellRender : MonoBehaviour
         else
         {
             Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.white, 0.15f);
-            _numberText.SetText($"{Cell.Number}");
+            if (_isPlayerCell) _numberText.SetText($"{Cell.Number}");
         }
 
         if (_isPlayerCell)

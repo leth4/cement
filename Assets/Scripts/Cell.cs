@@ -4,9 +4,6 @@ using UnityEngine;
 
 public struct Cell
 {
-    private bool _previewIsTaken;
-    private int _previewNumber;
-
     public int Number { get; private set; }
     public bool IsTaken { get; private set; }
 
@@ -29,17 +26,15 @@ public struct Cell
         if (IsTaken) AddInteraction();
     }
 
-    public void SwapValuesWith(Cell cell)
+    public void SwapValuesWith(ref Cell cell)
     {
         var numberTemp = Number;
         var isTakenTemp = IsTaken;
 
         CopyValuesFrom(cell);
 
-        cell.Number = numberTemp;
-        cell.IsTaken = isTakenTemp;
-
-        if (cell.IsTaken) cell.AddInteraction();
+        cell.SetNumber(numberTemp);
+        cell.SetTaken(isTakenTemp, addInteraction: isTakenTemp);
     }
 
     public void AddInteraction()
