@@ -8,15 +8,15 @@ public class CellRender : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private TMP_Text _numberText;
 
-    public Cell Cell => _isPlayerCell ? GridManager.Instance.PlayerGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
-    public Cell PreviewCell => _isPlayerCell ? GridManager.Instance.PlayerPreviewGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
+    public Cell Cell => IsPlayerCell ? GridManager.Instance.PlayerGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
+    public Cell PreviewCell => IsPlayerCell ? GridManager.Instance.PlayerPreviewGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
     public Vector2Int Coordinates;
 
-    private bool _isPlayerCell;
+    public bool IsPlayerCell { get; private set; }
 
     public void Initialize(bool isPlayerCell, Vector2Int coords)
     {
-        _isPlayerCell = isPlayerCell;
+        IsPlayerCell = isPlayerCell;
         Coordinates = coords;
     }
 
@@ -29,19 +29,19 @@ public class CellRender : MonoBehaviour
     {
         StopAllCoroutines();
 
-        if (AbilityController.Instance.IsPreviewing && _isPlayerCell)
+        if (AbilityController.Instance.IsPreviewing && IsPlayerCell)
         {
-            if (PreviewCell.IsTaken) Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.blue, 0.15f);
-            else Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.red : Color.white, 0.15f);
+            if (PreviewCell.IsTaken) Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.blue, 0.05f);
+            else Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.red : Color.white, 0.05f);
             _numberText.SetText($"{PreviewCell.Number}");
         }
         else
         {
-            Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.white, 0.15f);
-            if (_isPlayerCell) _numberText.SetText($"{Cell.Number}");
+            Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.white, 0.05f);
+            if (IsPlayerCell) _numberText.SetText($"{Cell.Number}");
         }
 
-        if (_isPlayerCell)
+        if (IsPlayerCell)
         {
             if (AbilityController.Instance.IsPreviewing)
             {
@@ -53,23 +53,6 @@ public class CellRender : MonoBehaviour
                 _numberText.color = Cell.IsTaken ? Color.white : Color.gray;
                 if (Cell.Number == 0) _numberText.color = Color.clear;
             }
-        }
-    }
-
-    private void OnMouseEnter()
-    {
-        if (!_isPlayerCell) return;
-        GridManager.Instance.SelectedCell = this;
-        AbilityController.Instance.UpdatePreview();
-    }
-
-    private void OnMouseExit()
-    {
-        if (!_isPlayerCell) return;
-        if (GridManager.Instance.SelectedCell == this)
-        {
-            GridManager.Instance.SelectedCell = null;
-            AbilityController.Instance.StopPreview();
         }
     }
 

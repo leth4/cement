@@ -9,6 +9,8 @@ public class GridManager : Singleton<GridManager>
     public static event Action Solved;
 
     [SerializeField] private CellRender _cellPrefab;
+    [SerializeField] private LayerMask _cellLayer;
+    [SerializeField] private Vector3 _touchSelectOffset;
     [SerializeField] private int _size;
     [SerializeField] private int _abilitiesApplied;
     [SerializeField] private int _numbersToPreview;
@@ -17,7 +19,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private List<AbilityWeight> _abilities;
 
     [HideInInspector] public int Size;
-    [HideInInspector] public CellRender SelectedCell;
+    [HideInInspector] public CellRender SelectedCell { get; private set; }
 
     public Cell[,] PlayerGrid;
     public Cell[,] PlayerPreviewGrid;
@@ -95,6 +97,8 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
+        HandController.Instance.ShuffleCards();
+
         AbilityController.Instance.CallChange();
 
         Debug.Log(abilities.ToString(", "));
@@ -111,6 +115,34 @@ public class GridManager : Singleton<GridManager>
         {
             takenCells[i].ShowNumber();
         }
+    }
+
+    public void Update()
+    {
+        var offset = Input.touchCount > 0 ? _touchSelectOffset : Vector3.zero;
+
+        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset, Vector2.zero, 1000, _cellLayer);
+
+        if (hit.collider == null)
+        {
+            if (SelectedCell != null) AbilityController.Instance.StopPreview();
+            SelectedCell = null;
+            return;
+        }
+
+        var cellRender = hit.transform.GetComponent<CellRender>();
+
+        if (!cellRender.IsPlayerCell)
+        {
+            if (SelectedCell != null) AbilityController.Instance.StopPreview();
+            SelectedCell = null;
+            return;
+        }
+
+        bool isNewCell = SelectedCell != cellRender;
+        SelectedCell = cellRender;
+
+        if (isNewCell) AbilityController.Instance.UpdatePreview();
     }
 
     public void Activate(Ability ability) => ability.ApplyRandom(AnswerGrid);

@@ -198,6 +198,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7209274644862205119, guid: 2549024aa3a41a94f8ab8c3c3d1adc99, type: 3}
+  _cellLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _touchSelectOffset: {x: 0, y: 0.5, z: 0}
   _size: 7
   _abilitiesApplied: 5
   _numbersToPreview: 3
@@ -259,7 +263,6 @@ MonoBehaviour:
     Weight: 3
     WeightFirst: 1
   Size: 0
-  SelectedCell: {fileID: 0}
 --- !u!4 &307820406
 Transform:
   m_ObjectHideFlags: 0

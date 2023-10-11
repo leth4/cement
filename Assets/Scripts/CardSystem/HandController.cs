@@ -36,6 +36,11 @@ public class HandController : Singleton<HandController>
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
 
+    public void ShuffleCards()
+    {
+        Hand.Shuffle();
+    }
+
     public void AddCard(Ability ability)
     {
         var newCard = Instantiate(_cardPrefab, transform);
