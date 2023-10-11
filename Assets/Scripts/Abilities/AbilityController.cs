@@ -12,21 +12,13 @@ public class AbilityController : Singleton<AbilityController>
 
     public bool IsPreviewing = false;
 
-    private AbilityCard _selectedAbilityCard;
-
-    public void AddAbility(Ability ability)
-    {
-        var abilityCard = Instantiate(_abilityCardPrefab, _abilityCardContainer);
-        abilityCard.Initialize(ability);
-    }
-
     public void UpdatePreview()
     {
         GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
         IsPreviewing = true;
-        if (GridManager.Instance.SelectedCell != null && _selectedAbilityCard != null)
+        if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
         {
-            _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.SelectedCell.Coordinates);
+            HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.SelectedCell.Coordinates);
         }
         MadeChanges?.Invoke();
     }
@@ -39,47 +31,31 @@ public class AbilityController : Singleton<AbilityController>
         MadeChanges?.Invoke();
     }
 
-    private void Update()
+    public void TryApplyingAbility()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
         {
-            if (GridManager.Instance.SelectedCell != null && _selectedAbilityCard != null)
-            {
-                StopPreview();
+            StopPreview();
 
-                Recorder.Instance.Record(_selectedAbilityCard.Ability);
-                var applied = _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell.Coordinates);
-                if (applied)
-                {
-                    Destroy(_selectedAbilityCard.gameObject);
-                    _selectedAbilityCard = null;
-                    MadeChanges?.Invoke();
-                }
-                else
-                {
-                    Recorder.Instance.RemoveLastRecord();
-                }
+            Recorder.Instance.Record(HandController.Instance.ActiveAbility);
+            var applied = HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell.Coordinates);
+            if (applied)
+            {
+                HandController.Instance.DestroyDraggedCard();
+                MadeChanges?.Invoke();
+            }
+            else
+            {
+                Recorder.Instance.RemoveLastRecord();
             }
         }
+    }
 
+    private void Update()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             Recorder.Instance.GoBack();
         }
-    }
-
-    private void OnAbilityCardClicked(AbilityCard card)
-    {
-        _selectedAbilityCard = card;
-    }
-
-    private void OnEnable()
-    {
-        AbilityCard.Clicked += OnAbilityCardClicked;
-    }
-
-    private void OnDisable()
-    {
-        AbilityCard.Clicked -= OnAbilityCardClicked;
     }
 }

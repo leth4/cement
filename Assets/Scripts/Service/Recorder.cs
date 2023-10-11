@@ -23,7 +23,7 @@ public class Recorder : Singleton<Recorder>
         var lastRecord = _records[^1];
         _records.RemoveAt(_records.Count - 1);
 
-        AbilityController.Instance.AddAbility(lastRecord.Ability);
+        HandController.Instance.AddCard(lastRecord.Ability);
         GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as Cell[,];
 
         AbilityController.Instance.StopPreview();

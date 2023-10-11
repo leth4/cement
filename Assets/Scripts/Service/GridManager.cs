@@ -73,7 +73,7 @@ public class GridManager : Singleton<GridManager>
         {
             var ability = GetRandomAbility(i == 0);
             abilities.Add(ability.Name);
-            AbilityController.Instance.AddAbility(ability);
+            HandController.Instance.AddCard(ability);
             ability.ApplyRandom(AnswerGrid);
         }
 
