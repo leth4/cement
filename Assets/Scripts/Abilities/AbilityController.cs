@@ -1,14 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AbilityController : Singleton<AbilityController>
 {
     public static event Action MadeChanges;
-
-    [SerializeField] private Transform _abilityCardContainer;
-    [SerializeField] private AbilityCard _abilityCardPrefab;
 
     public bool IsPreviewing = false;
 
@@ -51,11 +46,16 @@ public class AbilityController : Singleton<AbilityController>
         }
     }
 
+    public void UndoLastMove()
+    {
+        Recorder.Instance.GoBack();
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            Recorder.Instance.GoBack();
+            UndoLastMove();
         }
     }
 }

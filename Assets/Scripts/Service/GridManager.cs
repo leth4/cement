@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
+    public static event Action Solved;
+
     [SerializeField] private CellRender _cellPrefab;
     [SerializeField] private int _size;
     [SerializeField] private int _abilitiesApplied;
@@ -26,6 +29,7 @@ public class GridManager : Singleton<GridManager>
     private void Start()
     {
         InitializeGrids();
+        ActivateRandomAbilities();
     }
 
     private void InitializeGrids()
@@ -62,6 +66,15 @@ public class GridManager : Singleton<GridManager>
         AbilityController.Instance.CallChange();
     }
 
+    private void CheckWin()
+    {
+        for (int i = 0; i < _size; i++)
+            for (int j = 0; j < _size; j++)
+                if (AnswerGrid[i, j].IsTaken != PlayerGrid[i, j].IsTaken) return;
+
+        Solved?.Invoke();
+    }
+
     private void ActivateRandomAbilities()
     {
         Recorder.Instance.Reset();
@@ -94,11 +107,6 @@ public class GridManager : Singleton<GridManager>
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A)) ActivateRandomAbilities();
-    }
-
     public void Activate(Ability ability) => ability.ApplyRandom(AnswerGrid);
 
     private Ability GetRandomAbility(bool isFirst)
@@ -106,7 +114,7 @@ public class GridManager : Singleton<GridManager>
         float weightSum = 0;
         foreach (var ability in _abilities) weightSum += isFirst ? ability.WeightFirst : ability.Weight;
 
-        float randomWeight = Random.Range(0, weightSum);
+        float randomWeight = UnityEngine.Random.Range(0, weightSum);
 
         float currentWeight = 0;
 
@@ -118,6 +126,16 @@ public class GridManager : Singleton<GridManager>
         }
 
         return default;
+    }
+
+    private void OnEnable()
+    {
+        AbilityController.MadeChanges += CheckWin;
+    }
+
+    private void OnDisable()
+    {
+        AbilityController.MadeChanges -= CheckWin;
     }
 
     [System.Serializable]
