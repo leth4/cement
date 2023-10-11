@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -24,6 +22,7 @@ public static class Data
             using FileStream stream = File.Create(path);
             stream.Close();
             File.WriteAllText(path, DataToJson(data));
+
         }
         catch (Exception e)
         {
@@ -77,5 +76,11 @@ public static class Data
 
         return JsonUtility.FromJson<T>(decryptedJson);
     }
+}
 
+[System.Serializable]
+public struct FloatData
+{
+    public float Data;
+    public FloatData(float data) => Data = data;
 }

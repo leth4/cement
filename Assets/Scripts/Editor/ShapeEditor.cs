@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(Shape))]
-public class AudioObjectEditor : Editor
+public class ShapeEditor : Editor
 {
     private Shape _shape;
 
