@@ -9,16 +9,25 @@ public class Cell : MonoBehaviour
     [SerializeField] private TMP_Text _numberText;
 
     private bool _isPlayerCell;
+
     private bool _previewIsTaken;
+    private int _previewNumber;
 
     public int Number { get; private set; }
     public bool IsTaken { get; private set; }
 
     public void SetNumber(int number)
     {
-        if (AbilityController.Instance.IsPreviewing) return;
-        Number = number;
-        _numberText.SetText($"{Number}");
+        if (AbilityController.Instance.IsPreviewing)
+        {
+            _previewNumber = number;
+            _numberText.SetText($"{_previewNumber}");
+        }
+        else
+        {
+            Number = number;
+            _numberText.SetText($"{Number}");
+        }
     }
 
     public void SetTaken(bool taken, bool addInteraction = true)
@@ -30,8 +39,8 @@ public class Cell : MonoBehaviour
         else
         {
             IsTaken = taken;
-            if (addInteraction) AddInteraction();
         }
+        if (addInteraction) AddInteraction();
         ApplyColor();
     }
 
@@ -82,17 +91,23 @@ public class Cell : MonoBehaviour
             Tween.Color(this, _renderer, _renderer.color, IsTaken ? Color.black : Color.white, 0.15f);
         }
 
-        if (_isPlayerCell) _numberText.color = IsTaken || Number == 0 ? Color.white : Color.gray;
+        if (_isPlayerCell)
+        {
+            _numberText.color = IsTaken ? Color.white : Color.gray;
+            // if (Number == 0) _numberText.color = Color.clear;
+        }
     }
 
     private void OnMouseEnter()
     {
+        if (!_isPlayerCell) return;
         GridManager.Instance.SelectedCell = this;
         AbilityController.Instance.UpdatePreview();
     }
 
     private void OnMouseExit()
     {
+        if (!_isPlayerCell) return;
         if (GridManager.Instance.SelectedCell == this)
         {
             GridManager.Instance.SelectedCell = null;
@@ -100,14 +115,20 @@ public class Cell : MonoBehaviour
         }
     }
 
+    private void OnPreviewStopped()
+    {
+        ApplyColor();
+        _numberText.SetText($"{Number}");
+    }
+
     private void OnEnable()
     {
-        AbilityController.StoppedPreview += ApplyColor;
+        AbilityController.StoppedPreview += OnPreviewStopped;
     }
 
     private void OnDisable()
     {
-        AbilityController.StoppedPreview -= ApplyColor;
+        AbilityController.StoppedPreview -= OnPreviewStopped;
     }
 }
 

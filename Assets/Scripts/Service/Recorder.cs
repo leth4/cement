@@ -35,6 +35,8 @@ public class Recorder : Singleton<Recorder>
                 GridManager.Instance.PlayerGrid[i, j].SetNumber(lastRecord.NumberGrid[i, j]);
             }
         }
+
+        AbilityController.Instance.StopPreview();
     }
 
     internal void RemoveLastRecord()
