@@ -13,9 +13,10 @@ public class FlipAbility : Ability
         return true;
     }
 
-    public override void ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(Cell[,] grid)
     {
         FlipGrid(grid);
+        return true;
     }
 
     private void FlipGrid(Cell[,] grid)

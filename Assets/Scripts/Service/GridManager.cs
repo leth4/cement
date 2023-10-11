@@ -83,9 +83,16 @@ public class GridManager : Singleton<GridManager>
         for (int i = 0; i < _abilitiesApplied; i++)
         {
             var ability = GetRandomAbility(i == 0);
-            abilities.Add(ability.Name);
-            HandController.Instance.AddCard(ability);
-            ability.ApplyRandom(AnswerGrid);
+            var applied = ability.ApplyRandom(AnswerGrid);
+            if (applied)
+            {
+                abilities.Add(ability.Name);
+                HandController.Instance.AddCard(ability);
+            }
+            else
+            {
+                i--;
+            }
         }
 
         AbilityController.Instance.CallChange();

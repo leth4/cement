@@ -9,7 +9,7 @@ public abstract class Ability : ScriptableObject
     protected int Size => GridManager.Instance.Size;
 
     public abstract bool Apply(Cell[,] grid, Vector2Int coordinates);
-    public abstract void ApplyRandom(Cell[,] grid);
+    public abstract bool ApplyRandom(Cell[,] grid);
 
     protected List<Vector2Int> GetTakenCells(Cell[,] grid, bool shuffled = true)
     {

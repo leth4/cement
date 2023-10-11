@@ -14,13 +14,24 @@ public class ApplyShapeAbility : Ability
         return true;
     }
 
-    public override void ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(Cell[,] grid)
     {
         var takenCells = GetTakenCells(grid);
 
-        var offset = new Vector2Int(Random.Range(0, _shape.Grid.GetLength(0)), Random.Range(0, _shape.Grid.GetLength(1)));
+        for (int i = 0; i < 10; i++)
+        {
+            var cellIndex = Random.Range(0, takenCells.Count);
+            var offset = new Vector2Int(Random.Range(0, _shape.Grid.GetLength(0)), Random.Range(0, _shape.Grid.GetLength(1)));
+            var copy = grid.Clone() as Cell[,];
+            ApplyShape(copy, takenCells[cellIndex], offset);
+            if (GetTakenCells(copy, false).Count != 0)
+            {
+                ApplyShape(grid, takenCells[cellIndex], offset);
+                return true;
+            }
+        }
 
-        ApplyShape(grid, takenCells[0], offset);
+        return false;
     }
 
     private void ApplyShape(Cell[,] grid, Vector2Int cell, Vector2Int offset)

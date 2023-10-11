@@ -25,6 +25,6 @@ public class Menu : MonoBehaviour
 
     private void OnDisable()
     {
-
+        _button.onClick.RemoveListener(StartPlaying);
     }
 }

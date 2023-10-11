@@ -13,9 +13,10 @@ public class MoveAbiity : Ability
         return true;
     }
 
-    public override void ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(Cell[,] grid)
     {
         // RotateGrid(grid);
+        return true;
     }
 
     private void MoveGrid(Cell[,] grid, Vector2Int direction)

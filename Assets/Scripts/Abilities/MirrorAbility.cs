@@ -13,9 +13,10 @@ public class MirrorAbility : Ability
         return true;
     }
 
-    public override void ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(Cell[,] grid)
     {
         MirrorGrid(grid);
+        return true;
     }
 
     private void MirrorGrid(Cell[,] grid)

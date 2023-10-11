@@ -13,9 +13,10 @@ public class RotateAbility : Ability
         return true;
     }
 
-    public override void ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(Cell[,] grid)
     {
         RotateGrid(grid);
+        return true;
     }
 
     private void RotateGrid(Cell[,] grid)
