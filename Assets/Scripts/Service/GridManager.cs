@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    public int Size;
 
-    [SerializeField] private Cell _cellPrefab;
+    [SerializeField] private CellRender _cellPrefab;
     [SerializeField] private int _size;
     [SerializeField] private int _randomApplied;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
-
     [SerializeField] private List<AbilityWeight> _abilities;
 
-    [HideInInspector] public Cell SelectedCell;
-    public Cell[,] PlayerGrid;
+    [HideInInspector] public int Size;
+    [HideInInspector] public CellRender SelectedCell;
 
-    private Cell[,] _answerGrid;
+    public Cell[,] PlayerGrid;
+    public Cell[,] PlayerPreviewGrid;
+    public Cell[,] AnswerGrid;
 
     private void Start()
     {
@@ -28,24 +28,32 @@ public class GridManager : Singleton<GridManager>
     {
         Size = _size;
 
-        _answerGrid = new Cell[_size, _size];
+        AnswerGrid = new Cell[_size, _size];
         PlayerGrid = new Cell[_size, _size];
+        PlayerPreviewGrid = new Cell[_size, _size];
 
         for (int i = 0; i < _size; i++)
         {
             for (int j = 0; j < _size; j++)
             {
-                _answerGrid[i, j] = Instantiate(_cellPrefab, _answerGridContainer);
-                _answerGrid[i, j].transform.localPosition = new(i, j);
-                _answerGrid[i, j].Initialize(false);
-                PlayerGrid[i, j] = Instantiate(_cellPrefab, _playerGridContainer);
-                PlayerGrid[i, j].transform.localPosition = new(i, j);
-                PlayerGrid[i, j].Initialize(true);
+                AnswerGrid[i, j] = new Cell();
+                PlayerGrid[i, j] = new Cell();
+                PlayerPreviewGrid[i, j] = new Cell();
+
+                var cellRender = Instantiate(_cellPrefab, _answerGridContainer);
+                cellRender.transform.localPosition = new(i, j);
+                cellRender.Initialize(false, new(i, j));
+
+                var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
+                playerCellRender.transform.localPosition = new(i, j);
+                playerCellRender.Initialize(true, new(i, j));
             }
         }
 
-        _answerGrid[_size / 2, _size / 2].SetTaken(true, false);
+        AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
         PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
+
+        AbilityController.Instance.CallChange();
     }
 
     private void ActivateRandomAbilities()
@@ -59,8 +67,10 @@ public class GridManager : Singleton<GridManager>
             var ability = GetRandomAbility(i == 0);
             abilities.Add(ability.Name);
             AbilityController.Instance.AddAbility(ability);
-            ability.ApplyRandom(_answerGrid);
+            ability.ApplyRandom(AnswerGrid);
         }
+
+        AbilityController.Instance.CallChange();
 
         Debug.Log(abilities.ToString(", "));
     }
@@ -70,7 +80,7 @@ public class GridManager : Singleton<GridManager>
         if (Input.GetKeyDown(KeyCode.A)) ActivateRandomAbilities();
     }
 
-    public void Activate(Ability ability) => ability.ApplyRandom(_answerGrid);
+    public void Activate(Ability ability) => ability.ApplyRandom(AnswerGrid);
 
     private Ability GetRandomAbility(bool isFirst)
     {

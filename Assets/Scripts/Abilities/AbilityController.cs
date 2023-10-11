@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AbilityController : Singleton<AbilityController>
 {
-    public static event Action StoppedPreview;
+    public static event Action MadeChanges;
 
     [SerializeField] private Transform _abilityCardContainer;
     [SerializeField] private AbilityCard _abilityCardPrefab;
@@ -22,18 +22,21 @@ public class AbilityController : Singleton<AbilityController>
 
     public void UpdatePreview()
     {
+        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
         IsPreviewing = true;
         if (GridManager.Instance.SelectedCell != null && _selectedAbilityCard != null)
         {
-            var coords = (Vector2Int)GridHelper.GetCoordinates(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell);
-            _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, coords);
+            _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.SelectedCell.Coordinates);
         }
+        MadeChanges?.Invoke();
     }
+
+    public void CallChange() => MadeChanges?.Invoke();
 
     public void StopPreview()
     {
         IsPreviewing = false;
-        StoppedPreview?.Invoke();
+        MadeChanges?.Invoke();
     }
 
     private void Update()
@@ -44,13 +47,13 @@ public class AbilityController : Singleton<AbilityController>
             {
                 StopPreview();
 
-                var coords = (Vector2Int)GridHelper.GetCoordinates(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell);
                 Recorder.Instance.Record(_selectedAbilityCard.Ability);
-                var applied = _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, coords);
+                var applied = _selectedAbilityCard.Ability.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell.Coordinates);
                 if (applied)
                 {
                     Destroy(_selectedAbilityCard.gameObject);
                     _selectedAbilityCard = null;
+                    MadeChanges?.Invoke();
                 }
                 else
                 {
