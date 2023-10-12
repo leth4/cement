@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EraseShapeL
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: 6ae4b0b1d0d788b4a8c86cde549aca1a, type: 3}
-  CanBeFirst: 1
+  CanBeFirst: 0
   Weight: 3
-  SelectionOffset: {x: -0.5, y: -1}
+  IsFullCanvas: 0
   _applyShapeType: 1
   _shape: {fileID: 11400000, guid: bc97225aa25bf6240a0b4e8524564ef6, type: 2}

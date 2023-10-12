@@ -13,9 +13,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
 
+    public bool IsSolved { get; private set; } = false;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
+        if (Input.GetKeyDown(KeyCode.M)) OnSolved();
         if (Input.GetKeyDown(KeyCode.R)) RestartScene();
     }
 
@@ -26,6 +29,8 @@ public class GameManager : Singleton<GameManager>
 
     private void OnSolved()
     {
+        if (IsSolved) return;
+        IsSolved = true;
         DataManager.GameData.LevelsSolved++;
         Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
         Tween.Delay(this, 1, () =>

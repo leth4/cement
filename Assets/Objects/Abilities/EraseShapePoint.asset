@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: EraseShapePoint
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: db32ee41f6a2e4a4297fb44cede6307b, type: 3}
-  CanBeFirst: 1
+  CanBeFirst: 0
   Weight: 3
+  IsFullCanvas: 0
   _applyShapeType: 1
   _shape: {fileID: 11400000, guid: 1a1462e7854519541ae2215a1e32464e, type: 2}

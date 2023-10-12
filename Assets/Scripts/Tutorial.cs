@@ -13,6 +13,7 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private SceneTransition _transition;
 
     [SerializeField][TextArea] private List<string> _texts;
+    [SerializeField][TextArea] private List<string> _mobileTexts;
 
     private bool _startGameAfterEnd = false;
     private int _currentTutorialPage = -1;
@@ -49,7 +50,14 @@ public class Tutorial : MonoBehaviour
             return;
         }
 
-        _tutorialText.SetText(_tutorialText.text + "\n\n" + _texts[_currentTutorialPage]);
+        if (Application.isMobilePlatform)
+        {
+            _tutorialText.SetText(_tutorialText.text + _mobileTexts[_currentTutorialPage] + "\n\n");
+        }
+        else
+        {
+            _tutorialText.SetText(_tutorialText.text + _texts[_currentTutorialPage] + "\n\n");
+        }
 
         _currentTutorialPage++;
     }

@@ -18,13 +18,13 @@ public class ApplyShapeAbility : Ability
     {
         var takenCells = GetTakenCells(grid);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 15; i++)
         {
             var cellIndex = Random.Range(0, takenCells.Count);
             var offset = new Vector2Int(Random.Range(-1, _shape.Grid.GetLength(0) + 1), Random.Range(-1, _shape.Grid.GetLength(1) + 1));
             var copy = grid.Clone() as Cell[,];
-            ApplyShape(copy, takenCells[cellIndex], offset);
-            if (GetTakenCells(copy, false).Count != 0)
+            var hasChanged = ApplyShape(copy, takenCells[cellIndex], offset);
+            if (hasChanged && GetTakenCells(copy, false).Count != 0)
             {
                 ApplyShape(grid, takenCells[cellIndex], offset);
                 return true;
@@ -34,10 +34,12 @@ public class ApplyShapeAbility : Ability
         return false;
     }
 
-    private void ApplyShape(Cell[,] grid, Vector2Int cell, Vector2Int offset)
+    private bool ApplyShape(Cell[,] grid, Vector2Int cell, Vector2Int offset)
     {
         var shapeSizeX = _shape.Grid.GetLength(0);
         var shapeSizeY = _shape.Grid.GetLength(1);
+
+        var hasChanged = false;
 
         for (int i = 0; i < shapeSizeX; i++)
         {
@@ -47,13 +49,27 @@ public class ApplyShapeAbility : Ability
                 {
                     if (_shape.Grid[i, j])
                     {
-                        if (_applyShapeType is ApplyShapeType.Add) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(true);
-                        if (_applyShapeType is ApplyShapeType.Erase) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(false);
-                        if (_applyShapeType is ApplyShapeType.Reverse) grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken);
+                        if (_applyShapeType is ApplyShapeType.Add)
+                        {
+                            if (!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) hasChanged = true;
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(true);
+                        }
+                        if (_applyShapeType is ApplyShapeType.Erase)
+                        {
+                            if (grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) hasChanged = true;
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(false);
+                        }
+                        if (_applyShapeType is ApplyShapeType.Reverse)
+                        {
+                            hasChanged = true;
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken);
+                        }
                     }
                 }
             }
         }
+
+        return hasChanged;
     }
 
     private enum ApplyShapeType
