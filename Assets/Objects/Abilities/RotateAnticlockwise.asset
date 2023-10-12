@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: RotateAnticlockwise
   m_EditorClassIdentifier: 
   Name: RotateAnticlockwise
+  CanBeFirst: 0
+  Weight: 3
   _rotateType: 0

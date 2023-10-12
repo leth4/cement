@@ -37,7 +37,7 @@ internal static class HierarchyExtender
         if (HierarchySettings.instance.ShowToggles)
         {
             rect.width = 14;
-            gameObject.SetActive(EditorGUI.Toggle(rect, gameObject.activeInHierarchy));
+            gameObject.SetActive(EditorGUI.Toggle(rect, gameObject.activeSelf));
             rect.width = 20;
         }
 

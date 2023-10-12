@@ -208,60 +208,28 @@ MonoBehaviour:
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}
   _abilities:
-  - Ability: {fileID: 11400000, guid: afd902a81f540b74d8e8121b7d11bbd4, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 921362e0988ac8948a514d459924f25b, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 1a792a15498cdbf47b643f134cbb4102, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 17d96031b9e669c4b94f06e154e2d221, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 5f541e457e3007e4d8a6d0d3dbcbee4c, type: 2}
-    Weight: 3
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 0df514f40e1d1e3429876c65cd12d14f, type: 2}
-    Weight: 3
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 6ddce1ed71be50043857f95db74a41a6, type: 2}
-    Weight: 3
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 0d27ea61178a08a408000ec1c111e0b3, type: 2}
-    Weight: 3
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: b27b819f55526b6498d3e798757a5a11, type: 2}
-    Weight: 3
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 630840d9cbdf73a418b919d946c8d85e, type: 2}
-    Weight: 3
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 81996a4724c93d64c92b1e06feea2ad5, type: 2}
-    Weight: 2
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 0d71d6e1095b0a64bb84cd19fd5f05ee, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: 038dc9a9e19cab540b770b966e1ce9b2, type: 2}
-    Weight: 2
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 027a3a2c46925b84f8a073efe5151873, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: f207125684f853544b82d10439ff482e, type: 2}
-    Weight: 2
-    WeightFirst: 0
-  - Ability: {fileID: 11400000, guid: b62adfa86e17ac448b690ea4d64d2517, type: 2}
-    Weight: 3
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: 6abca31bfd4f19a4ea7095b014fbea8b, type: 2}
-    Weight: 3
-    WeightFirst: 1
-  - Ability: {fileID: 11400000, guid: df492eb7c15f19a43a5a6fa43f76ccda, type: 2}
-    Weight: 3
-    WeightFirst: 1
+  - {fileID: 11400000, guid: b62adfa86e17ac448b690ea4d64d2517, type: 2}
+  - {fileID: 11400000, guid: 5f541e457e3007e4d8a6d0d3dbcbee4c, type: 2}
+  - {fileID: 11400000, guid: 0df514f40e1d1e3429876c65cd12d14f, type: 2}
+  - {fileID: 11400000, guid: 6ddce1ed71be50043857f95db74a41a6, type: 2}
+  - {fileID: 11400000, guid: 6abca31bfd4f19a4ea7095b014fbea8b, type: 2}
+  - {fileID: 11400000, guid: 0d27ea61178a08a408000ec1c111e0b3, type: 2}
+  - {fileID: 11400000, guid: b27b819f55526b6498d3e798757a5a11, type: 2}
+  - {fileID: 11400000, guid: 630840d9cbdf73a418b919d946c8d85e, type: 2}
+  - {fileID: 11400000, guid: 027a3a2c46925b84f8a073efe5151873, type: 2}
+  - {fileID: 11400000, guid: f207125684f853544b82d10439ff482e, type: 2}
+  - {fileID: 11400000, guid: afd902a81f540b74d8e8121b7d11bbd4, type: 2}
+  - {fileID: 11400000, guid: 921362e0988ac8948a514d459924f25b, type: 2}
+  - {fileID: 11400000, guid: c8db67bbf7ca9134ab8bb90a673eb86e, type: 2}
+  - {fileID: 11400000, guid: 70952a921cfa84540af74b45affe6ca1, type: 2}
+  - {fileID: 11400000, guid: b15d845176b9e724ca02806f9a47b252, type: 2}
+  - {fileID: 11400000, guid: 4f197a86e9a745c4b836c4a9cc4d8d64, type: 2}
+  - {fileID: 11400000, guid: df492eb7c15f19a43a5a6fa43f76ccda, type: 2}
+  - {fileID: 11400000, guid: 81996a4724c93d64c92b1e06feea2ad5, type: 2}
+  - {fileID: 11400000, guid: 0d71d6e1095b0a64bb84cd19fd5f05ee, type: 2}
+  - {fileID: 11400000, guid: 038dc9a9e19cab540b770b966e1ce9b2, type: 2}
+  - {fileID: 11400000, guid: 1a792a15498cdbf47b643f134cbb4102, type: 2}
+  - {fileID: 11400000, guid: 17d96031b9e669c4b94f06e154e2d221, type: 2}
   Size: 0
 --- !u!4 &307820406
 Transform:
@@ -444,7 +412,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &394294069
 MonoBehaviour:
@@ -493,6 +461,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -564,8 +533,21 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953bb085ce85a624ea04f46dcc3a6fab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTransform: {fileID: 519420032}
 --- !u!1 &549428651
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +748,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1094931947
 GameObject:
@@ -799,7 +781,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1094931949
 MonoBehaviour:
@@ -924,7 +906,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1566013637
 GameObject:
@@ -1138,7 +1120,7 @@ Transform:
   - {fileID: 1684478422}
   - {fileID: 1424200782}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2032114571
 GameObject:
@@ -1306,7 +1288,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2078936230
 MonoBehaviour:
@@ -1445,7 +1427,7 @@ RectTransform:
   - {fileID: 1566013638}
   - {fileID: 549428652}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

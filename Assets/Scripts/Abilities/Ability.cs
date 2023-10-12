@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class Ability : ScriptableObject
 {
     public string Name;
+    public bool CanBeFirst = true;
+    public int Weight = 3;
 
     protected int Size => GridManager.Instance.Size;
 

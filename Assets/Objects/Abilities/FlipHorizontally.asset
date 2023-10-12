@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: FlipHorizontally
   m_EditorClassIdentifier: 
   Name: FlipHorizontally
+  CanBeFirst: 0
+  Weight: 3
   _flipType: 0

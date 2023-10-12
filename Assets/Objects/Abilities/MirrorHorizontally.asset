@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: MirrorHorizontally
   m_EditorClassIdentifier: 
   Name: MirrorHorizontally
+  CanBeFirst: 0
+  Weight: 3
   _mirrorType: 0

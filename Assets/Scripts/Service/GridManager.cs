@@ -16,7 +16,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
-    [SerializeField] private List<AbilityWeight> _abilities;
+    [SerializeField] private List<Ability> _abilities;
 
     [HideInInspector] public int Size;
     [HideInInspector] public CellRender SelectedCell { get; private set; }
@@ -150,7 +150,8 @@ public class GridManager : Singleton<GridManager>
     private Ability GetRandomAbility(bool isFirst)
     {
         float weightSum = 0;
-        foreach (var ability in _abilities) weightSum += isFirst ? ability.WeightFirst : ability.Weight;
+        foreach (var ability in _abilities)
+            if (!isFirst || ability.CanBeFirst) weightSum += ability.Weight;
 
         float randomWeight = UnityEngine.Random.Range(0, weightSum);
 
@@ -158,12 +159,15 @@ public class GridManager : Singleton<GridManager>
 
         foreach (var ability in _abilities)
         {
-            currentWeight += isFirst ? ability.WeightFirst : ability.Weight;
+            if (isFirst && !ability.CanBeFirst) continue;
+            currentWeight += ability.Weight;
             if (randomWeight <= currentWeight)
-                return ability.Ability;
+                return ability;
         }
 
-        return default;
+        Log.Message(randomWeight, currentWeight);
+
+        return null;
     }
 
     private void OnEnable()

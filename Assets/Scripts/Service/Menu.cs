@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+    [SerializeField] private Tutorial _tutorial;
     [SerializeField] private Button _button;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _soundSlider;
@@ -15,8 +16,8 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-        _musicVolume = Data.Load<FloatData>("MusicVolume").Data;
-        _soundVolume = Data.Load<FloatData>("SoundVolume").Data;
+        _musicVolume = DataManager.GameData.MusicVolume;
+        _soundVolume = DataManager.GameData.SoundVolume;
 
         _musicSlider.value = _musicVolume;
         _soundSlider.value = _soundVolume;
@@ -27,21 +28,31 @@ public class Menu : MonoBehaviour
 
     private void StartPlaying()
     {
-        SceneManager.LoadScene("Main");
+        if (!DataManager.GameData.ShownTutorial)
+        {
+            DataManager.GameData.ShownTutorial = true;
+            DataManager.Save();
+            _tutorial.ActivateThenPlay();
+        }
+        else
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     private void HandleMusicSliderValueChanged(float value)
     {
-        _musicVolume = value;
+        DataManager.GameData.MusicVolume = value;
+        DataManager.Save();
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Music, value);
-        Data.Save(new FloatData(_musicVolume), "MusicVolume");
     }
 
     private void HandleSoundSliderValueChanged(float value)
     {
         _soundVolume = value;
+        DataManager.GameData.SoundVolume = value;
+        DataManager.Save();
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, value);
-        Data.Save(new FloatData(_soundVolume), "SoundVolume");
     }
 
     private void OnEnable()

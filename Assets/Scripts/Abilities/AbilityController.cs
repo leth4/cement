@@ -38,6 +38,7 @@ public class AbilityController : Singleton<AbilityController>
             {
                 HandController.Instance.DestroyDraggedCard();
                 MadeChanges?.Invoke();
+                Screenshake.Instance.Shake(0.2f, 0.5f);
             }
             else
             {

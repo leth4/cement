@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: FlipVertically
   m_EditorClassIdentifier: 
   Name: FlipVertically
+  CanBeFirst: 0
+  Weight: 3
   _flipType: 1

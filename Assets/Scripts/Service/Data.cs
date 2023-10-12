@@ -77,10 +77,3 @@ public static class Data
         return JsonUtility.FromJson<T>(decryptedJson);
     }
 }
-
-[System.Serializable]
-public struct FloatData
-{
-    public float Data;
-    public FloatData(float data) => Data = data;
-}
