@@ -26,7 +26,17 @@ public class ScreenFitter : MonoBehaviour
         _camera = Camera.main;
     }
 
+    private void Start()
+    {
+        ApplyScaleAndPosition();
+    }
+
     private void Update()
+    {
+        if (!Application.isMobilePlatform) ApplyScaleAndPosition();
+    }
+
+    private void ApplyScaleAndPosition()
     {
         if (_orientation != ScreenMode.Any && !(_orientation == ScreenMode.Portrait && IsPortraitMode) && !(_orientation == ScreenMode.Landscape && !IsPortraitMode)) return;
 

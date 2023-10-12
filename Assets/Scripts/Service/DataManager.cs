@@ -10,7 +10,7 @@ public static class DataManager
     [RuntimeInitializeOnLoadMethod]
     private static void Load()
     {
-        GameData = Data.Load<GameData>("GameData");
+        GameData = Data.Load<GameData>("GameData", new GameData());
     }
 
     public static void Save()

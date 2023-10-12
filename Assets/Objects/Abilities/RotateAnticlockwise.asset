@@ -17,4 +17,4 @@ MonoBehaviour:
   Weight: 3
   SelectionOffset: {x: 0, y: 0}
   IsFullCanvas: 1
-  _rotateType: 0
+  _rotateType: 1

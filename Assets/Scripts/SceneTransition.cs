@@ -17,10 +17,17 @@ public class SceneTransition : MonoBehaviour
     {
         if (_isTransitioning) return;
         _isTransitioning = true;
-        StartCoroutine(TransitionRoutine());
+        StartCoroutine(TransitionRoutine("Main"));
     }
 
-    private IEnumerator TransitionRoutine()
+    public void GoToMenuScene()
+    {
+        if (_isTransitioning) return;
+        _isTransitioning = true;
+        StartCoroutine(TransitionRoutine("Menu"));
+    }
+
+    private IEnumerator TransitionRoutine(string scene)
     {
         _overlay.gameObject.SetActive(true);
         for (float t = 0; t < _timeInSeconds; t += Time.deltaTime)
@@ -28,6 +35,6 @@ public class SceneTransition : MonoBehaviour
             _overlay.color = Color.Lerp(_backgroundColor.SetA(0), _backgroundColor, t / _timeInSeconds);
             yield return null;
         }
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene(scene);
     }
 }

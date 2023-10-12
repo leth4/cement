@@ -42,8 +42,6 @@ public class CellRender : MonoBehaviour
 
     public void Render()
     {
-        StopAllCoroutines();
-
         if (AbilityController.Instance.IsPreviewing && IsPlayerCell)
         {
             if (PreviewCell.IsTaken) _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _addSprite;

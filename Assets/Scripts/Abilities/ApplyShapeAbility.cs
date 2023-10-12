@@ -21,7 +21,7 @@ public class ApplyShapeAbility : Ability
         for (int i = 0; i < 10; i++)
         {
             var cellIndex = Random.Range(0, takenCells.Count);
-            var offset = new Vector2Int(Random.Range(0, _shape.Grid.GetLength(0)), Random.Range(0, _shape.Grid.GetLength(1)));
+            var offset = new Vector2Int(Random.Range(-1, _shape.Grid.GetLength(0) + 1), Random.Range(-1, _shape.Grid.GetLength(1) + 1));
             var copy = grid.Clone() as Cell[,];
             ApplyShape(copy, takenCells[cellIndex], offset);
             if (GetTakenCells(copy, false).Count != 0)

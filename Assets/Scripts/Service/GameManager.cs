@@ -9,12 +9,12 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
     [SerializeField] private Deck _deck;
+    [SerializeField] private SceneTransition _transition;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) RestartScene();
+        if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
         if (Input.GetKeyDown(KeyCode.R)) OnSolved();
-        if (Input.touches.Length == 3) RestartScene();
     }
 
     private void RestartScene()
@@ -25,7 +25,7 @@ public class GameManager : Singleton<GameManager>
     private void OnSolved()
     {
         DataManager.GameData.LevelsSolved++;
-        if (DataManager.GameData.LevelsSolved % 5 == 0)
+        if (DataManager.GameData.LevelsSolved % 3 == 1)
         {
             UnlockNewCard();
         }
@@ -58,7 +58,7 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleMenuClick()
     {
-        SceneManager.LoadScene("Menu");
+        _transition.GoToMenuScene();
     }
 
     private void OnEnable()

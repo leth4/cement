@@ -100,8 +100,6 @@ public class GridManager : Singleton<GridManager>
 
         AbilityController.Instance.CallChange();
 
-        Debug.Log(abilities.ToString(", "));
-
         var takenCells = new List<CellRender>();
         foreach (var cell in AnswerRenders)
         {
