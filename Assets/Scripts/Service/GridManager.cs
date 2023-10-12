@@ -16,7 +16,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
-    [SerializeField] private List<Ability> _abilities;
+    [SerializeField] private Deck _deck;
 
     [HideInInspector] public int Size;
     [HideInInspector] public CellRender SelectedCell { get; private set; }
@@ -150,14 +150,14 @@ public class GridManager : Singleton<GridManager>
     private Ability GetRandomAbility(bool isFirst)
     {
         float weightSum = 0;
-        foreach (var ability in _abilities)
+        foreach (var ability in _deck.Abilities)
             if (!isFirst || ability.CanBeFirst) weightSum += ability.Weight;
 
         float randomWeight = UnityEngine.Random.Range(0, weightSum);
 
         float currentWeight = 0;
 
-        foreach (var ability in _abilities)
+        foreach (var ability in _deck.Abilities)
         {
             if (isFirst && !ability.CanBeFirst) continue;
             currentWeight += ability.Weight;

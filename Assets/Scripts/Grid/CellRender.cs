@@ -7,6 +7,10 @@ public class CellRender : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private TMP_Text _numberText;
+    [SerializeField] private Sprite _defaultSpriteBlack;
+    [SerializeField] private Sprite _defaultSpriteWhite;
+    [SerializeField] private Sprite _eraseSprite;
+    [SerializeField] private Sprite _addSprite;
 
     public Cell Cell => IsPlayerCell ? GridManager.Instance.PlayerGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
     public Cell PreviewCell => IsPlayerCell ? GridManager.Instance.PlayerPreviewGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
@@ -31,13 +35,13 @@ public class CellRender : MonoBehaviour
 
         if (AbilityController.Instance.IsPreviewing && IsPlayerCell)
         {
-            if (PreviewCell.IsTaken) Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.blue, 0.05f);
-            else Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.red : Color.white, 0.05f);
+            if (PreviewCell.IsTaken) _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _addSprite;
+            else _renderer.sprite = Cell.IsTaken ? _eraseSprite : _defaultSpriteWhite;
             _numberText.SetText($"{PreviewCell.Number}");
         }
         else
         {
-            Tween.Color(this, _renderer, _renderer.color, Cell.IsTaken ? Color.black : Color.white, 0.05f);
+            _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _defaultSpriteWhite;
             if (IsPlayerCell) _numberText.SetText($"{Cell.Number}");
         }
 
