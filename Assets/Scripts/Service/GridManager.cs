@@ -63,6 +63,19 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
+        var phantomCells = new Vector2Int[] {new(-1,-1), new(-1, 0), new(-1, 1), new(-1, 2), new(-1, 3), new(-1, 4), new(-1, 5),
+                                            new(0,-1), new(1, -1), new(2, -1), new(3, -1), new(4, -1), new(5, -1),
+                                            new(5,0), new(5, 1), new(5, 2), new(5, 3), new(5, 4), new(5, 5),
+                                            new(0,5), new(1, 5), new(2, 5), new(3, 5), new(4, 5)};
+
+        foreach (var phantomCell in phantomCells)
+        {
+            var phantomPlayerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
+            phantomPlayerCellRender.transform.localPosition = new(phantomCell.x - (float)Size / 2 + 0.5f, phantomCell.y - (float)Size / 2 + 0.5f);
+            phantomPlayerCellRender.Initialize(true, phantomCell, 0);
+            phantomPlayerCellRender.MakePhantom();
+        }
+
         AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
         PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
     }
