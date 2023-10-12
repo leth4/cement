@@ -40,6 +40,8 @@ public class CellRender : MonoBehaviour
         _numberText.SetText($"{Cell.Number}");
     }
 
+    public void Hide(float delay) => Tween.Delay(this, delay / 70, () => Tween.Scale(this, transform, Vector3.one, Vector3.zero, 0.4f, EaseType.SineOut));
+
     public void Render()
     {
         if (AbilityController.Instance.IsPreviewing && IsPlayerCell)

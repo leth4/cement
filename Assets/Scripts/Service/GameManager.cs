@@ -25,16 +25,21 @@ public class GameManager : Singleton<GameManager>
     private void OnSolved()
     {
         DataManager.GameData.LevelsSolved++;
-        if (DataManager.GameData.LevelsSolved % 3 == 1)
+        Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
+        Tween.Delay(this, 1, () =>
         {
-            UnlockNewCard();
-        }
-        else
-        {
-            DataManager.Save();
-            RestartScene();
-        }
+            if (DataManager.GameData.LevelsSolved % 3 == 1)
+            {
+                UnlockNewCard();
+            }
+            else
+            {
+                DataManager.Save();
+                RestartScene();
+            }
+        });
     }
+
 
     private void UnlockNewCard()
     {

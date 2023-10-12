@@ -67,6 +67,15 @@ public class GridManager : Singleton<GridManager>
         PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
     }
 
+    public void MakeDisappear()
+    {
+        for (int i = 0; i < AnswerRenders.Count; i++)
+        {
+            AnswerRenders[i].Hide(i);
+            PlayerRenders[i].Hide(i);
+        }
+    }
+
     private void CheckWin()
     {
         for (int i = 0; i < _size; i++)
@@ -110,6 +119,7 @@ public class GridManager : Singleton<GridManager>
 
         for (int i = 0; i < Mathf.Min(takenCells.Count, _numbersToPreview); i++)
         {
+            if (AnswerGrid[takenCells[i].Coordinates.x, takenCells[i].Coordinates.y].Number == 0) continue;
             takenCells[i].ShowNumber();
         }
     }
