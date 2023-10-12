@@ -5,6 +5,11 @@ using Random = UnityEngine.Random;
 
 public static class Tween
 {
+    public static void Delay(this MonoBehaviour behaviour, float time, Action ended = null)
+    {
+        behaviour.StartCoroutine(DelayRoutine(time, ended));
+    }
+
     public static void Translate(this MonoBehaviour behaviour, Transform transform, Vector3 from, Vector3 to, float time, EaseType easeType = EaseType.Linear, LoopType loopType = LoopType.Once, Action ended = null)
     {
         behaviour.StartCoroutine(TranslateRoutine(transform, from, to, time, easeType, loopType, ended));
@@ -63,6 +68,12 @@ public static class Tween
     public static void Shake(this MonoBehaviour behaviour, out Coroutine coroutine, Transform transform, float magnitude, float time, LoopType loopType = LoopType.Once, Action ended = null)
     {
         coroutine = behaviour.StartCoroutine(ShakeRoutine(transform, magnitude, time, loopType, ended));
+    }
+
+    private static IEnumerator DelayRoutine(float time, Action ended)
+    {
+        yield return new WaitForSeconds(time);
+        ended?.Invoke();
     }
 
     private static IEnumerator TranslateRoutine(Transform transform, Vector3 from, Vector3 to, float time, EaseType easeType, LoopType loopType, Action ended)

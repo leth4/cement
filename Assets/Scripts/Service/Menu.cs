@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
     [SerializeField] private Tutorial _tutorial;
+    [SerializeField] private TMP_Text _levelCounterText;
     [SerializeField] private Button _button;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _soundSlider;
@@ -24,6 +24,8 @@ public class Menu : MonoBehaviour
 
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Music, _musicVolume);
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, _soundVolume);
+
+        _levelCounterText.SetText(DataManager.GameData.LevelsSolved.ToString());
     }
 
     private void StartPlaying()

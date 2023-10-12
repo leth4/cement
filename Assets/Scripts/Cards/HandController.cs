@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Tilt
-// Handle when cursor at the edge so it jumps back and forth
-
 public class HandController : Singleton<HandController>
 {
     [SerializeField] private AbilityCard _cardPrefab;
+    [SerializeField] private float _appearDelaySeconds;
 
     [Header("Positioning")]
     [SerializeField] private float _maxCardsAngle = 30;
@@ -33,6 +31,7 @@ public class HandController : Singleton<HandController>
     private Vector3 _previousDraggedPosition;
 
     private float _cardAngleDelta;
+    private int _cardsCount;
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
 
@@ -41,16 +40,24 @@ public class HandController : Singleton<HandController>
         Hand.Shuffle();
     }
 
-    public void AddCard(Ability ability)
+    public void AddCard(Ability ability, bool delay = true)
     {
+        StartCoroutine(CardAppearRoutine(ability, delay));
+        _cardsCount++;
+    }
+
+    private IEnumerator CardAppearRoutine(Ability ability, bool delay)
+    {
+        if (delay) yield return new WaitForSeconds(_appearDelaySeconds * _cardsCount);
         var newCard = Instantiate(_cardPrefab, transform);
+        newCard.transform.position -= Vector3.up * 3;
         newCard.Initialize(ability);
         Hand.Add(newCard.transform);
     }
 
     private void Update()
     {
-        _cardAngleDelta = Mathf.Min(_minCardAngleDelta, _maxCardsAngle / Hand.Count);
+        _cardAngleDelta = Mathf.Max(_minCardAngleDelta, _maxCardsAngle / Hand.Count);
 
         var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 1000, _cardLayer);
 
@@ -75,7 +82,7 @@ public class HandController : Singleton<HandController>
         {
             Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
             Hand[_selectedCardIndex].localRotation = Quaternion.Lerp(Hand[_selectedCardIndex].localRotation, Quaternion.identity, Time.deltaTime * _rotationSpeed);
-            Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, new Vector3(_selectionScale, _selectionScale, _selectionScale), Time.deltaTime * _scaleSpeed);
+            Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, Vector3.one * _selectionScale, Time.deltaTime * _scaleSpeed);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -83,7 +90,7 @@ public class HandController : Singleton<HandController>
             }
         }
 
-        if (_draggedCard != null) HandleDrag();
+        //if (_draggedCard != null) HandleDrag();
 
         if (Input.GetMouseButtonUp(0))
         {
@@ -92,10 +99,10 @@ public class HandController : Singleton<HandController>
 
     }
 
-    private void HandleDrag()
-    {
-        //
-    }
+    // private void HandleDrag()
+    // {
+    //
+    // }
 
     private void HandleDragStart()
     {
@@ -108,6 +115,7 @@ public class HandController : Singleton<HandController>
     public void DestroyDraggedCard()
     {
         Hand.Remove(_draggedCard);
+        _cardsCount--;
         _draggedCard.GetComponent<AbilityCard>().MoveAway();
         _draggedCard = null;
     }
@@ -128,7 +136,7 @@ public class HandController : Singleton<HandController>
         float x = -_arcRadius * Mathf.Sin(Mathf.Deg2Rad * angle);
         float y = _arcRadius * Mathf.Cos(Mathf.Deg2Rad * angle) - _arcRadius;
 
-        return new(x, y, index * 0.01f);
+        return new(x, y, index * -0.01f);
     }
 
     private float IdealRotationByIndex(int index)

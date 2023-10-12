@@ -53,12 +53,12 @@ public class GridManager : Singleton<GridManager>
 
                 var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
                 answerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
-                answerCellRender.Initialize(false, new(i, j));
+                answerCellRender.Initialize(false, new(i, j), i - j);
                 AnswerRenders.Add(answerCellRender);
 
                 var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
                 playerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
-                playerCellRender.Initialize(true, new(i, j));
+                playerCellRender.Initialize(true, new(i, j), i - j);
                 PlayerRenders.Add(playerCellRender);
             }
         }

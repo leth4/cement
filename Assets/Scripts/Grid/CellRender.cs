@@ -20,10 +20,19 @@ public class CellRender : MonoBehaviour
 
     public bool IsPlayerCell { get; private set; }
 
-    public void Initialize(bool isPlayerCell, Vector2Int coords)
+    private float _appearDelay = 0;
+
+    public void Initialize(bool isPlayerCell, Vector2Int coords, float appearDelay)
     {
         IsPlayerCell = isPlayerCell;
         Coordinates = coords;
+        _appearDelay = appearDelay;
+    }
+
+    public void Start()
+    {
+        transform.localScale = Vector3.zero;
+        Tween.Delay(this, _appearDelay / 20, () => Tween.Scale(this, transform, Vector3.zero, Vector3.one, 0.4f, EaseType.SineOut));
     }
 
     public void ShowNumber()
