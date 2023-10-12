@@ -6,7 +6,6 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] private Tutorial _tutorial;
     [SerializeField] private TMP_Text _levelCounterText;
-    [SerializeField] private TMP_Text _cardsCounterText;
     [SerializeField] private Button _button;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _soundSlider;
@@ -28,7 +27,6 @@ public class Menu : MonoBehaviour
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, _soundVolume);
 
         _levelCounterText.SetText($"{DataManager.GameData.LevelsSolved} solved");
-        _cardsCounterText.SetText($"{DataManager.GameData.UnlockedCards.Count}/{_deck.Abilities.Count} cards");
     }
 
     private void StartPlaying()

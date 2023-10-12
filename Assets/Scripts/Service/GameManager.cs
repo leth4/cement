@@ -1,4 +1,5 @@
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Button _menuButton;
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
+    [SerializeField] private TMP_Text _newCardText;
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
 
@@ -53,6 +55,7 @@ public class GameManager : Singleton<GameManager>
 
         _newCardPanel.gameObject.SetActive(true);
         _newCardImage.sprite = _deck.Abilities[randomCard].Image;
+        _newCardText.SetText($"New Card Unlocked! ({DataManager.GameData.UnlockedCards.Count}/{_deck.Abilities.Count})");
     }
 
     private void HandleNewCardPanelClick()

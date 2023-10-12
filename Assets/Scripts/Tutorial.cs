@@ -47,8 +47,6 @@ public class Tutorial : MonoBehaviour
             return;
         }
 
-        Debug.Log(_currentTutorialPage);
-
         _tutorialText.SetText(_texts[_currentTutorialPage]);
 
         _currentTutorialPage++;
