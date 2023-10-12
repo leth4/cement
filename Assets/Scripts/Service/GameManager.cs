@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
-        if (Input.GetKeyDown(KeyCode.R)) OnSolved();
+        if (Input.GetKeyDown(KeyCode.R)) RestartScene();
     }
 
     private void RestartScene()
@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager>
 
         _newCardPanel.gameObject.SetActive(true);
         _newCardImage.sprite = _deck.Abilities[randomCard].Image;
-        _newCardText.SetText($"New Card Unlocked! ({DataManager.GameData.UnlockedCards.Count}/{_deck.Abilities.Count})");
+        _newCardText.SetText($"{DataManager.GameData.UnlockedCards.Count}/{_deck.Abilities.Count}");
     }
 
     private void HandleNewCardPanelClick()

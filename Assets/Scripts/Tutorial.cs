@@ -21,6 +21,7 @@ public class Tutorial : MonoBehaviour
     {
         DataManager.GameData.ShownTutorial = true;
         DataManager.Save();
+        _tutorialText.SetText("");
         _startGameAfterEnd = false;
         _tutorialPanel.SetActive(true);
         _currentTutorialPage = 0;
@@ -29,6 +30,7 @@ public class Tutorial : MonoBehaviour
 
     public void ActivateThenPlay()
     {
+        _tutorialText.SetText("");
         _startGameAfterEnd = true;
         _tutorialPanel.SetActive(true);
         _currentTutorialPage = 0;
@@ -47,7 +49,7 @@ public class Tutorial : MonoBehaviour
             return;
         }
 
-        _tutorialText.SetText(_texts[_currentTutorialPage]);
+        _tutorialText.SetText(_tutorialText.text + "\n\n" + _texts[_currentTutorialPage]);
 
         _currentTutorialPage++;
     }

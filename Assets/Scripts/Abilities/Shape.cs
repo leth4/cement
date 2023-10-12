@@ -7,6 +7,7 @@ public class Shape : ScriptableObject
     public int Columns;
     public int Rows;
     public List<bool> GridList;
+    public Vector2Int Offset = Vector2Int.zero;
 
     public bool[,] Grid
     {

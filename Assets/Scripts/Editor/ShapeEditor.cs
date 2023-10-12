@@ -28,6 +28,7 @@ public class ShapeEditor : Editor
 
         var newRows = Mathf.Max(1, EditorGUILayout.IntField("Rows", _shape.Rows));
         var newColumns = Mathf.Max(1, EditorGUILayout.IntField("Columns", _shape.Columns));
+        var offset = EditorGUILayout.Vector2IntField("Offset", _shape.Offset);
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -52,6 +53,7 @@ public class ShapeEditor : Editor
             }
 
             _shape.GridList = newGrid;
+            _shape.Offset = offset;
             _shape.Rows = newRows;
             _shape.Columns = newColumns;
 

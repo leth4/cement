@@ -10,7 +10,7 @@ public class ApplyShapeAbility : Ability
 
     public override bool Apply(Cell[,] grid, Vector2Int coordinates)
     {
-        ApplyShape(grid, coordinates, Vector2Int.zero);
+        ApplyShape(grid, coordinates, _shape.Offset);
         return true;
     }
 

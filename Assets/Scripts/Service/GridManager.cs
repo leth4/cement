@@ -89,21 +89,35 @@ public class GridManager : Singleton<GridManager>
     {
         Recorder.Instance.Reset();
 
-        var abilities = new List<string>();
+        var abilities = new List<Ability>();
 
-        for (int i = 0; i < _abilitiesApplied; i++)
+        while (true)
         {
-            var ability = GetRandomAbility(i == 0);
-            var applied = ability.ApplyRandom(AnswerGrid);
-            if (applied)
+            var gridCopy = AnswerGrid.Clone() as Cell[,];
+
+            abilities = new List<Ability>();
+            for (int i = 0; i < _abilitiesApplied; i++)
             {
-                HandController.Instance.AddCard(ability);
+                var ability = GetRandomAbility(i == 0);
+                var applied = ability.ApplyRandom(gridCopy);
+                if (applied) abilities.Add(ability);
+                else i--;
             }
-            else
+
+            var preTakenCells = new List<CellRender>();
+            foreach (var cell in AnswerRenders)
             {
-                i--;
+                if (gridCopy[cell.Coordinates.x, cell.Coordinates.y].IsTaken) preTakenCells.Add(cell);
+            }
+
+            if (preTakenCells.Count > 4)
+            {
+                AnswerGrid = gridCopy.Clone() as Cell[,];
+                break;
             }
         }
+
+        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
 
         HandController.Instance.ShuffleCards();
 
@@ -127,10 +141,8 @@ public class GridManager : Singleton<GridManager>
     public void Update()
     {
         var deviceOffset = Input.touchCount > 0 ? _touchSelectOffset : Vector3.zero;
-        var abilityOffset = Vector3.zero;
-        if (HandController.Instance.ActiveAbility != null) abilityOffset = HandController.Instance.ActiveAbility.SelectionOffset.ToVector3();
 
-        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + deviceOffset + abilityOffset, Vector2.zero, 1000, _cellLayer);
+        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + deviceOffset, Vector2.zero, 1000, _cellLayer);
 
         if (hit.collider == null)
         {

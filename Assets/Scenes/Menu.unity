@@ -402,6 +402,7 @@ MonoBehaviour:
   _transition: {fileID: 705679376}
   _texts:
   - You have to repeat the image on the left by dragging cards to right grid.
+  - Numbers show how many actions w
   - Tap with two fingers to undo your last action.
   - For every three levels you unlock a new card.
 --- !u!1 &390462973
@@ -1268,7 +1269,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -11
+  m_characterSpacing: -5.85
   m_wordSpacing: 0
   m_lineSpacing: -32
   m_lineSpacingMax: 0

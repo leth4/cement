@@ -25,25 +25,45 @@ public class MoveAbility : Ability
         {
             for (int i = Size - 1; i >= 1; i--)
                 for (int j = 0; j < Size; j++)
-                    grid[i, j] = grid[i - 1, j];
+                    grid[i, j].CopyValuesFrom(grid[i - 1, j]);
+            for (int j = 0; j < Size; j++)
+            {
+                grid[0, j].SetTaken(false);
+                grid[0, j].SetNumber(0);
+            }
         }
         if (_direction is Direction.Left)
         {
             for (int i = 0; i < Size - 1; i++)
                 for (int j = 0; j < Size; j++)
-                    grid[i, j] = grid[i + 1, j];
+                    grid[i, j].CopyValuesFrom(grid[i + 1, j]);
+            for (int j = 0; j < Size; j++)
+            {
+                grid[Size - 1, j].SetTaken(false);
+                grid[Size - 1, j].SetNumber(0);
+            }
         }
         if (_direction is Direction.Up)
         {
             for (int i = 0; i < Size; i++)
                 for (int j = Size - 1; j >= 1; j--)
-                    grid[i, j] = grid[i, j - 1];
+                    grid[i, j].CopyValuesFrom(grid[i, j - 1]);
+            for (int i = 0; i < Size; i++)
+            {
+                grid[i, 0].SetTaken(false);
+                grid[i, 0].SetNumber(0);
+            }
         }
         if (_direction is Direction.Down)
         {
             for (int i = 0; i < Size; i++)
                 for (int j = 0; j < Size - 1; j++)
-                    grid[i, j] = grid[i, j + 1];
+                    grid[i, j].CopyValuesFrom(grid[i, j + 1]);
+            for (int i = 0; i < Size; i++)
+            {
+                grid[i, Size - 1].SetTaken(false);
+                grid[i, Size - 1].SetNumber(0);
+            }
         }
     }
 
