@@ -9,14 +9,14 @@ public class AbilityCard : MonoBehaviour, IPointerClickHandler
 {
     public static event Action<AbilityCard> Clicked;
 
-    [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private SpriteRenderer _renderer;
 
     public Ability Ability { get; private set; }
 
     public void Initialize(Ability ability)
     {
         Ability = ability;
-        _nameText.SetText(ability.name);
+        _renderer.sprite = ability.Image;
     }
 
     public void MoveAway()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Ability : ScriptableObject
 {
-    public string Name;
+    public Sprite Image;
     public bool CanBeFirst = true;
     public int Weight = 3;
 

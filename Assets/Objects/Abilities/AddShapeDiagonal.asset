@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806d5d2ac7de1ff4b917a5c8a7e8a29f, type: 3}
   m_Name: AddShapeDiagonal
   m_EditorClassIdentifier: 
-  Name: AddShapeDiagonal
+  Image: {fileID: 21300000, guid: ceeeb91337431ec4d86d5d7124eed86b, type: 3}
+  CanBeFirst: 1
+  Weight: 3
   _applyShapeType: 0
   _shape: {fileID: 11400000, guid: 76f86e2a8f1f7974ba7d82f30ac0eee7, type: 2}

@@ -88,7 +88,6 @@ public class GridManager : Singleton<GridManager>
             var applied = ability.ApplyRandom(AnswerGrid);
             if (applied)
             {
-                abilities.Add(ability.Name);
                 HandController.Instance.AddCard(ability);
             }
             else

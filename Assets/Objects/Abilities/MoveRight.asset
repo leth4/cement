@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d807cd6a697a9da4394e3399d7449cf1, type: 3}
   m_Name: MoveRight
   m_EditorClassIdentifier: 
-  Name: MoveRight
+  Image: {fileID: 21300000, guid: 170e4f2e09374b04c8e91ee3f2b3c51c, type: 3}
   CanBeFirst: 0
   Weight: 3
   _direction: 3

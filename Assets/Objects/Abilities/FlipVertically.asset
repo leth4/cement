@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be9080925f38fb4e8c474f55bee3244, type: 3}
   m_Name: FlipVertically
   m_EditorClassIdentifier: 
-  Name: FlipVertically
+  Image: {fileID: 21300000, guid: 920511842e67bf841937af452d88052d, type: 3}
   CanBeFirst: 0
   Weight: 3
   _flipType: 1

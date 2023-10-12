@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0648116b550a0454587cb802945673cf, type: 3}
   m_Name: MirrorHorizontally
   m_EditorClassIdentifier: 
-  Name: MirrorHorizontally
+  Image: {fileID: 21300000, guid: 0495b09077054fc47a8a7bec99244a00, type: 3}
   CanBeFirst: 0
   Weight: 3
   _mirrorType: 0

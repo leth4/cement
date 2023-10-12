@@ -7,6 +7,8 @@ public class CellRender : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private TMP_Text _numberText;
+    [SerializeField] private Color _darkNumberColor;
+    [SerializeField] private Color _lightNumberColor;
     [SerializeField] private Sprite _defaultSpriteBlack;
     [SerializeField] private Sprite _defaultSpriteWhite;
     [SerializeField] private Sprite _eraseSprite;
@@ -49,12 +51,12 @@ public class CellRender : MonoBehaviour
         {
             if (AbilityController.Instance.IsPreviewing)
             {
-                _numberText.color = PreviewCell.IsTaken ? Color.white : Color.gray;
+                _numberText.color = PreviewCell.IsTaken ? _lightNumberColor : _darkNumberColor;
                 if (PreviewCell.Number == 0) _numberText.color = Color.clear;
             }
             else
             {
-                _numberText.color = Cell.IsTaken ? Color.white : Color.gray;
+                _numberText.color = Cell.IsTaken ? _lightNumberColor : _darkNumberColor;
                 if (Cell.Number == 0) _numberText.color = Color.clear;
             }
         }

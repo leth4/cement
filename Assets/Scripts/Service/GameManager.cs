@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) RestartScene();
+        if (Input.GetKeyDown(KeyCode.R)) OnSolved();
         if (Input.touches.Length == 3) RestartScene();
     }
 
@@ -46,7 +47,7 @@ public class GameManager : Singleton<GameManager>
         DataManager.Save();
 
         _newCardPanel.gameObject.SetActive(true);
-        // _newCardImage.sprite = _deck.Abilities[randomCard].Image;
+        _newCardImage.sprite = _deck.Abilities[randomCard].Image;
     }
 
     private void HandleNewCardPanelClick()

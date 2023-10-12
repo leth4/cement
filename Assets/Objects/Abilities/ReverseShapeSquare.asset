@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806d5d2ac7de1ff4b917a5c8a7e8a29f, type: 3}
   m_Name: ReverseShapeSquare
   m_EditorClassIdentifier: 
-  Name: ReverseShapeSquare
+  Image: {fileID: 21300000, guid: fac890a4120709d4886722cd4bf02cf9, type: 3}
+  CanBeFirst: 1
+  Weight: 3
   _applyShapeType: 2
   _shape: {fileID: 11400000, guid: 31b35bb1c65647c419fc982c0e9d55f9, type: 2}
