@@ -118,9 +118,11 @@ public class GridManager : Singleton<GridManager>
 
     public void Update()
     {
-        var offset = Input.touchCount > 0 ? _touchSelectOffset : Vector3.zero;
+        var deviceOffset = Input.touchCount > 0 ? _touchSelectOffset : Vector3.zero;
+        var abilityOffset = Vector3.zero;
+        if (HandController.Instance.ActiveAbility != null) abilityOffset = HandController.Instance.ActiveAbility.SelectionOffset.ToVector3();
 
-        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset, Vector2.zero, 1000, _cellLayer);
+        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + deviceOffset + abilityOffset, Vector2.zero, 1000, _cellLayer);
 
         if (hit.collider == null)
         {

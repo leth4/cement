@@ -7,6 +7,8 @@ public abstract class Ability : ScriptableObject
     public Sprite Image;
     public bool CanBeFirst = true;
     public int Weight = 3;
+    public Vector2 SelectionOffset = Vector2.zero;
+    public bool IsFullCanvas;
 
     protected int Size => GridManager.Instance.Size;
 

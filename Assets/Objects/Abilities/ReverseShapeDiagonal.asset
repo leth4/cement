@@ -15,5 +15,6 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: f6f3102953d6b1b46a104609338bb540, type: 3}
   CanBeFirst: 1
   Weight: 3
+  SelectionOffset: {x: -1, y: -1}
   _applyShapeType: 2
   _shape: {fileID: 11400000, guid: 76f86e2a8f1f7974ba7d82f30ac0eee7, type: 2}

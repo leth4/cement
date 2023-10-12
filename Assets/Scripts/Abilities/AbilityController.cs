@@ -5,6 +5,8 @@ public class AbilityController : Singleton<AbilityController>
 {
     public static event Action MadeChanges;
 
+    [SerializeField] private GameObject _border;
+
     public bool IsPreviewing = false;
 
     public void UpdatePreview()
@@ -13,6 +15,7 @@ public class AbilityController : Singleton<AbilityController>
         IsPreviewing = true;
         if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
         {
+            _border.SetActive(HandController.Instance.ActiveAbility.IsFullCanvas);
             HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.SelectedCell.Coordinates);
         }
         MadeChanges?.Invoke();
@@ -22,6 +25,7 @@ public class AbilityController : Singleton<AbilityController>
 
     public void StopPreview()
     {
+        _border.SetActive(false);
         IsPreviewing = false;
         MadeChanges?.Invoke();
     }

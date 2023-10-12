@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
@@ -11,6 +10,7 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject _tutorialPanel;
     [SerializeField] private ClickablePanel _clickablePanel;
     [SerializeField] private TMP_Text _tutorialText;
+    [SerializeField] private SceneTransition _transition;
 
     [SerializeField][TextArea] private List<string> _texts;
 
@@ -43,7 +43,7 @@ public class Tutorial : MonoBehaviour
         {
             _tutorialPanel.SetActive(false);
             _currentTutorialPage = -1;
-            if (_startGameAfterEnd) SceneManager.LoadScene("Main");
+            if (_startGameAfterEnd) _transition.GoToMainScene();
             return;
         }
 

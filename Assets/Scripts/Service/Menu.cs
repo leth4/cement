@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Menu : MonoBehaviour
@@ -10,6 +9,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _soundSlider;
+    [SerializeField] private SceneTransition _transition;
 
     private float _musicVolume;
     private float _soundVolume;
@@ -38,7 +38,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("Main");
+            _transition.GoToMainScene();
         }
     }
 
