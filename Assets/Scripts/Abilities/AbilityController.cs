@@ -36,6 +36,8 @@ public class AbilityController : Singleton<AbilityController>
         {
             StopPreview();
 
+            AudioReceiver.AbilityApplied();
+
             Recorder.Instance.Record(HandController.Instance.ActiveAbility);
             var applied = HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell.Coordinates);
             if (applied)

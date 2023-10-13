@@ -59,6 +59,8 @@ public class Tutorial : MonoBehaviour
             _tutorialText.SetText(_tutorialText.text + _texts[_currentTutorialPage] + "\n\n");
         }
 
+        AudioReceiver.TutorialLineAppear();
+
         _currentTutorialPage++;
     }
 

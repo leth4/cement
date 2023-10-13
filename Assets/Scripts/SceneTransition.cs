@@ -18,6 +18,7 @@ public class SceneTransition : MonoBehaviour
         if (_isTransitioning) return;
         _isTransitioning = true;
         StartCoroutine(TransitionRoutine("Main"));
+        AudioReceiver.SceneTransition();
     }
 
     public void GoToMenuScene()
@@ -25,6 +26,7 @@ public class SceneTransition : MonoBehaviour
         if (_isTransitioning) return;
         _isTransitioning = true;
         StartCoroutine(TransitionRoutine("Menu"));
+        AudioReceiver.SceneTransition();
     }
 
     private IEnumerator TransitionRoutine(string scene)

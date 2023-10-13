@@ -39,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsSolved) return;
         IsSolved = true;
+        AudioReceiver.LevelSolved();
         if (!_usedTips) DataManager.GameData.LevelsSolved++;
         Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
         Tween.Delay(this, 1, () =>
@@ -58,6 +59,8 @@ public class GameManager : Singleton<GameManager>
 
     private void UnlockNewCard()
     {
+        AudioReceiver.NewCardUnlocked();
+
         var totalCards = _deck.Abilities.Count;
         if (DataManager.GameData.UnlockedCards.Count == totalCards) return;
 
@@ -79,11 +82,13 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleMenuClick()
     {
+        AudioReceiver.ButtonPressed();
         _transition.GoToMenuScene();
     }
 
     private void HandleFirstTipClick()
     {
+        AudioReceiver.ButtonPressed();
         ShowNumbers?.Invoke();
         _usedTips = true;
         _tipButton1.interactable = false;
@@ -91,6 +96,7 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleSecondTipClick()
     {
+        AudioReceiver.ButtonPressed();
         SortCards?.Invoke();
         _usedTips = true;
         _tipButton2.interactable = false;

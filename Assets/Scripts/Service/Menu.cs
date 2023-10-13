@@ -17,6 +17,8 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
+        AudioReceiver.StartMusic();
+
         _musicVolume = DataManager.GameData.MusicVolume;
         _soundVolume = DataManager.GameData.SoundVolume;
 
@@ -31,6 +33,7 @@ public class Menu : MonoBehaviour
 
     private void StartPlaying()
     {
+        AudioReceiver.ButtonPressed();
         if (!DataManager.GameData.ShownTutorial)
         {
             DataManager.GameData.ShownTutorial = true;

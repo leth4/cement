@@ -27,6 +27,8 @@ public class Recorder : Singleton<Recorder>
         HandController.Instance.SortCards();
         GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as Cell[,];
 
+        AudioReceiver.AbilityUndone();
+
         AbilityController.Instance.StopPreview();
     }
 
