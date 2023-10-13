@@ -29,6 +29,14 @@ public class SceneTransition : MonoBehaviour
         AudioReceiver.SceneTransition();
     }
 
+    public void GoToTutorialScene()
+    {
+        if (_isTransitioning) return;
+        _isTransitioning = true;
+        StartCoroutine(TransitionRoutine("Tutorial"));
+        AudioReceiver.SceneTransition();
+    }
+
     private IEnumerator TransitionRoutine(string scene)
     {
         _overlay.gameObject.SetActive(true);

@@ -6,6 +6,7 @@ public struct Cell
 {
     public int Number { get; private set; }
     public bool IsTaken { get; private set; }
+    public bool IsErasing;
 
     public void SetNumber(int number)
     {

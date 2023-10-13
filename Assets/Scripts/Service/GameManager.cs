@@ -8,18 +8,19 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Button _menuButton;
-    [SerializeField] private Button _tipButton1;
-    [SerializeField] private Button _tipButton2;
+    [SerializeField] private Button hintButton;
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
     [SerializeField] private TMP_Text _newCardText;
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
+    [SerializeField] private bool _isTutorial = false;
 
-    public static event Action ShowNumbers;
+    public static int LevelCardsCount;
+
     public static event Action SortCards;
 
-    private bool _usedTips;
+    private bool _usedHint;
 
     public bool IsSolved { get; private set; } = false;
 
@@ -40,29 +41,46 @@ public class GameManager : Singleton<GameManager>
         if (IsSolved) return;
         IsSolved = true;
         AudioReceiver.LevelSolved();
-        if (!_usedTips) DataManager.GameData.LevelsSolved++;
+        if (!_usedHint && !_isTutorial)
+        {
+            if (LevelCardsCount == 3) DataManager.GameData.Levels3Solved++;
+            if (LevelCardsCount == 4) DataManager.GameData.Levels4Solved++;
+            if (LevelCardsCount == 5) DataManager.GameData.Levels5Solved++;
+        }
         Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
         Tween.Delay(this, 1, () =>
         {
-            if (!_usedTips && DataManager.GameData.LevelsSolved % 3 == 1)
+            if (!_usedHint && !_isTutorial && DataManager.GameData.LevelsSolved % 2 == 1 && DataManager.GameData.UnlockedCards.Count != _deck.Abilities.Count)
             {
                 UnlockNewCard();
             }
             else
             {
                 DataManager.Save();
-                RestartScene();
+
+                if (_isTutorial && Tutorial.IsLastStage)
+                {
+                    if (!DataManager.GameData.ShownTutorial)
+                    {
+                        DataManager.GameData.ShownTutorial = true;
+                        DataManager.Save();
+                    }
+                    Tutorial.Reset();
+                    _transition.GoToMenuScene();
+                }
+                else
+                {
+                    RestartScene();
+                }
             }
         });
     }
-
 
     private void UnlockNewCard()
     {
         AudioReceiver.NewCardUnlocked();
 
         var totalCards = _deck.Abilities.Count;
-        if (DataManager.GameData.UnlockedCards.Count == totalCards) return;
 
         var cardRange = Enumerable.Range(0, totalCards).Where(i => !DataManager.GameData.UnlockedCards.Contains(i));
         var randomCard = cardRange.ElementAt(UnityEngine.Random.Range(0, cardRange.Count()));
@@ -86,28 +104,19 @@ public class GameManager : Singleton<GameManager>
         _transition.GoToMenuScene();
     }
 
-    private void HandleFirstTipClick()
-    {
-        AudioReceiver.ButtonPressed();
-        ShowNumbers?.Invoke();
-        _usedTips = true;
-        _tipButton1.interactable = false;
-    }
-
-    private void HandleSecondTipClick()
+    private void HandleHintClick()
     {
         AudioReceiver.ButtonPressed();
         SortCards?.Invoke();
-        _usedTips = true;
-        _tipButton2.interactable = false;
+        _usedHint = true;
+        hintButton.interactable = false;
     }
 
     private void OnEnable()
     {
         GridManager.Solved += OnSolved;
         _menuButton.onClick.AddListener(HandleMenuClick);
-        _tipButton1.onClick.AddListener(HandleFirstTipClick);
-        _tipButton2.onClick.AddListener(HandleSecondTipClick);
+        hintButton.onClick.AddListener(HandleHintClick);
         _newCardPanel.OnClick += HandleNewCardPanelClick;
     }
 
@@ -115,8 +124,7 @@ public class GameManager : Singleton<GameManager>
     {
         GridManager.Solved -= OnSolved;
         _menuButton.onClick.RemoveListener(HandleMenuClick);
-        _tipButton1.onClick.RemoveListener(HandleFirstTipClick);
-        _tipButton2.onClick.RemoveListener(HandleSecondTipClick);
+        hintButton.onClick.RemoveListener(HandleHintClick);
         _newCardPanel.OnClick -= HandleNewCardPanelClick;
     }
 }

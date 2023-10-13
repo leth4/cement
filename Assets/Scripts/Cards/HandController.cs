@@ -113,7 +113,7 @@ public class HandController : Singleton<HandController>
 
         if (_selectedCardIndex != -1)
         {
-            Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex) + Vector3.up * _selectionHeight + Vector3.back * 0.1f, Time.deltaTime * _translationSpeed);
+            Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex).SetZ(0.03f) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
             Hand[_selectedCardIndex].localRotation = Quaternion.Lerp(Hand[_selectedCardIndex].localRotation, Quaternion.identity, Time.deltaTime * _rotationSpeed);
             Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, Vector3.one * _selectionScale, Time.deltaTime * _scaleSpeed);
 
@@ -127,7 +127,6 @@ public class HandController : Singleton<HandController>
         {
             HandleDragEnd();
         }
-
     }
 
     private void HandleDragStart()

@@ -7,9 +7,6 @@ using UnityEngine;
 public class CellRender : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _renderer;
-    [SerializeField] private TMP_Text _numberText;
-    [SerializeField] private Color _darkNumberColor;
-    [SerializeField] private Color _lightNumberColor;
     [SerializeField] private Sprite _defaultSpriteBlack;
     [SerializeField] private Sprite _defaultSpriteWhite;
     [SerializeField] private Sprite _eraseSprite;
@@ -44,16 +41,6 @@ public class CellRender : MonoBehaviour
         Tween.Delay(this, _appearDelay / 20, () => Tween.Scale(this, transform, Vector3.zero, Vector3.one, 0.4f, EaseType.SineOut));
     }
 
-    public void ShowNumber()
-    {
-        _numberText.SetText($"{Cell.Number}");
-    }
-
-    private void OnShowNumbers()
-    {
-        if (!IsPlayerCell && Cell.IsTaken && Cell.Number != 0) ShowNumber();
-    }
-
     public void Hide(float delay) => Tween.Delay(this, delay / 70, () => Tween.Scale(this, transform, Vector3.one, Vector3.zero, 0.4f, EaseType.SineOut));
 
     public void Render()
@@ -64,38 +51,22 @@ public class CellRender : MonoBehaviour
         {
             if (PreviewCell.IsTaken) _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _addSprite;
             else _renderer.sprite = Cell.IsTaken ? _eraseSprite : _defaultSpriteWhite;
-            _numberText.SetText($"{PreviewCell.Number}");
+
+            if (PreviewCell.IsErasing) _renderer.sprite = _eraseSprite;
         }
         else
         {
             _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _defaultSpriteWhite;
-            if (IsPlayerCell) _numberText.SetText($"{Cell.Number}");
-        }
-
-        if (IsPlayerCell)
-        {
-            if (AbilityController.Instance.IsPreviewing)
-            {
-                _numberText.color = PreviewCell.IsTaken ? _lightNumberColor : _darkNumberColor;
-                if (PreviewCell.Number == 0) _numberText.color = Color.clear;
-            }
-            else
-            {
-                _numberText.color = Cell.IsTaken ? _lightNumberColor : _darkNumberColor;
-                if (Cell.Number == 0) _numberText.color = Color.clear;
-            }
         }
     }
 
     private void OnEnable()
     {
         AbilityController.MadeChanges += Render;
-        GameManager.ShowNumbers += OnShowNumbers;
     }
 
     private void OnDisable()
     {
         AbilityController.MadeChanges -= Render;
-        GameManager.ShowNumbers -= OnShowNumbers;
     }
 }

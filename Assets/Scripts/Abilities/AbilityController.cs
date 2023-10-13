@@ -27,6 +27,7 @@ public class AbilityController : Singleton<AbilityController>
     {
         _border.SetActive(false);
         IsPreviewing = false;
+        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
         MadeChanges?.Invoke();
     }
 

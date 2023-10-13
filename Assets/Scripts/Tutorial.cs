@@ -6,74 +6,43 @@ using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
-    [SerializeField] private Button _tutorialButton;
-    [SerializeField] private GameObject _tutorialPanel;
-    [SerializeField] private ClickablePanel _clickablePanel;
+    [SerializeField] private List<TutorialLevel> _levels;
     [SerializeField] private TMP_Text _tutorialText;
     [SerializeField] private SceneTransition _transition;
+    [SerializeField] private GameObject _hintButton;
 
-    [SerializeField][TextArea] private List<string> _texts;
-    [SerializeField][TextArea] private List<string> _mobileTexts;
+    private static int _stage = 0;
+    public static bool IsLastStage = false;
 
-    private bool _startGameAfterEnd = false;
-    private int _currentTutorialPage = -1;
-
-    private void Activate()
+    public static void Reset()
     {
-        DataManager.GameData.ShownTutorial = true;
-        DataManager.Save();
-        _tutorialText.SetText("");
-        _startGameAfterEnd = false;
-        _tutorialPanel.SetActive(true);
-        _currentTutorialPage = 0;
-        HandlePanelClick();
+        _stage = 0;
+        IsLastStage = false;
     }
 
-    public void ActivateThenPlay()
+    public void Start()
     {
-        _tutorialText.SetText("");
-        _startGameAfterEnd = true;
-        _tutorialPanel.SetActive(true);
-        _currentTutorialPage = 0;
-        HandlePanelClick();
-    }
+        var level = _levels[_stage];
+        _stage++;
 
-    private void HandlePanelClick()
-    {
-        if (_currentTutorialPage == -1) return;
+        if (_stage >= _levels.Count) IsLastStage = true;
 
-        if (_currentTutorialPage > _texts.Count - 1)
+        _tutorialText.SetText(Application.isMobilePlatform ? level.TextMobile : level.TextComputer);
+
+        if (!level.ShowHint)
         {
-            _tutorialPanel.SetActive(false);
-            _currentTutorialPage = -1;
-            if (_startGameAfterEnd) _transition.GoToMainScene();
-            return;
+            _hintButton.SetActive(false);
         }
-
-        if (Application.isMobilePlatform)
-        {
-            _tutorialText.SetText(_tutorialText.text + _mobileTexts[_currentTutorialPage] + "\n\n");
-        }
-        else
-        {
-            _tutorialText.SetText(_tutorialText.text + _texts[_currentTutorialPage] + "\n\n");
-        }
-
-        AudioReceiver.TutorialLineAppear();
-
-        _currentTutorialPage++;
+        GridManager.Instance.ShowTutorial(level.Shape, level.Abilities);
     }
 
-    private void OnEnable()
+    [System.Serializable]
+    private struct TutorialLevel
     {
-        _tutorialButton.onClick.AddListener(Activate);
-        _clickablePanel.OnClick += HandlePanelClick;
+        public Shape Shape;
+        public List<Ability> Abilities;
+        [Multiline] public string TextComputer;
+        [Multiline] public string TextMobile;
+        public bool ShowHint;
     }
-
-    private void OnDestroy()
-    {
-        _tutorialButton.onClick.RemoveListener(Activate);
-        _clickablePanel.OnClick -= HandlePanelClick;
-    }
-
 }

@@ -56,11 +56,14 @@ public class ApplyShapeAbility : Ability
                         }
                         if (_applyShapeType is ApplyShapeType.Erase)
                         {
+                            if (AbilityController.Instance.IsPreviewing) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsErasing = true;
+
                             if (grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) hasChanged = true;
                             grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(false);
                         }
                         if (_applyShapeType is ApplyShapeType.Reverse)
                         {
+                            if (AbilityController.Instance.IsPreviewing && grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsErasing = true;
                             hasChanged = true;
                             grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken);
                         }

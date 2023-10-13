@@ -12,7 +12,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private LayerMask _cellLayer;
     [SerializeField] private Vector3 _touchSelectOffset;
     [SerializeField] private int _size;
-    [SerializeField] private int _abilitiesApplied;
+    private int _abilitiesApplied => GameManager.LevelCardsCount;
     [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
@@ -28,14 +28,41 @@ public class GridManager : Singleton<GridManager>
     private List<CellRender> AnswerRenders = new();
     private List<CellRender> PlayerRenders = new();
 
+    [SerializeField] public bool _isTutorialScene = false;
+
     private void Start()
     {
+        if (_isTutorialScene) return;
+
         InitializeGrids();
         ActivateRandomAbilities();
         AbilityController.Instance.CallChange();
     }
 
-    private void InitializeGrids()
+    public void ShowTutorial(Shape shape, List<Ability> abilities)
+    {
+        InitializeGrids();
+
+        for (int i = 0; i < Size; i++)
+        {
+            for (int j = 0; j < Size; j++)
+            {
+                if (shape.Grid[i, j]) AnswerGrid[i, j].SetTaken(true, true);
+            }
+        }
+
+        Recorder.Instance.Reset();
+
+        HandController.Instance.SaveSortedOrder(abilities);
+
+        if (abilities.Count > 2) abilities.Reverse();
+
+        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
+
+        AbilityController.Instance.CallChange();
+    }
+
+    private void InitializeGrids(bool showNumbers = true)
     {
         Size = _size;
 
@@ -76,7 +103,7 @@ public class GridManager : Singleton<GridManager>
             phantomPlayerCellRender.MakePhantom();
         }
 
-        AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
+        if (!_isTutorialScene) AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
         PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
     }
 
@@ -165,21 +192,6 @@ public class GridManager : Singleton<GridManager>
         foreach (var ability in abilities) HandController.Instance.AddCard(ability);
 
         AbilityController.Instance.CallChange();
-
-        var takenCells = new List<CellRender>();
-        foreach (var cell in AnswerRenders)
-        {
-            if (AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].IsTaken) takenCells.Add(cell);
-        }
-
-        takenCells.Shuffle();
-        takenCells.OrderByDescending(cell => AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].Number);
-
-        for (int i = 0; i < Mathf.Min(takenCells.Count, _numbersToPreview); i++)
-        {
-            if (AnswerGrid[takenCells[i].Coordinates.x, takenCells[i].Coordinates.y].Number == 0) continue;
-            takenCells[i].ShowNumber();
-        }
     }
 
     public void Update()
@@ -229,8 +241,6 @@ public class GridManager : Singleton<GridManager>
             if (randomWeight <= currentWeight)
                 return ability;
         }
-
-        Log.Message(randomWeight, currentWeight);
 
         return null;
     }
