@@ -64,9 +64,9 @@ public class GridManager : Singleton<GridManager>
         }
 
         var phantomCells = new Vector2Int[] {new(-1,-1), new(-1, 0), new(-1, 1), new(-1, 2), new(-1, 3), new(-1, 4), new(-1, 5),
-                                            new(0,-1), new(1, -1), new(2, -1), new(3, -1), new(4, -1), new(5, -1),
-                                            new(5,0), new(5, 1), new(5, 2), new(5, 3), new(5, 4), new(5, 5),
-                                            new(0,5), new(1, 5), new(2, 5), new(3, 5), new(4, 5)};
+                                             new(0,-1), new(1, -1), new(2, -1), new(3, -1), new(4, -1), new(5, -1), new(5,0),
+                                             new(5, 1), new(5, 2), new(5, 3), new(5, 4), new(5, 5), new(0,5), new(1, 5),
+                                             new(2, 5), new(3, 5), new(4, 5)};
 
         foreach (var phantomCell in phantomCells)
         {
@@ -109,12 +109,40 @@ public class GridManager : Singleton<GridManager>
             var gridCopy = AnswerGrid.Clone() as Cell[,];
 
             abilities = new List<Ability>();
+            var types = new List<Ability.AbilityType>();
+            var shapes = new List<Shape>();
             for (int i = 0; i < _abilitiesApplied; i++)
             {
                 var ability = GetRandomAbility(i == 0);
+
+                if (abilities.Contains(ability))
+                {
+                    i--;
+                    continue;
+                }
+
+                if (types.Contains(ability.Type) && UnityEngine.Random.Range(0, 4) != 0)
+                {
+                    i--;
+                    continue;
+                }
+
+                if (ability is ApplyShapeAbility && shapes.Contains(((ApplyShapeAbility)ability).Shape) && UnityEngine.Random.Range(0, 3) != 0)
+                {
+                    i--;
+                    continue;
+                }
+
                 var applied = ability.ApplyRandom(gridCopy);
-                if (applied) abilities.Add(ability);
-                else i--;
+                if (!applied)
+                {
+                    i--;
+                    continue;
+                }
+
+                if (ability is ApplyShapeAbility) shapes.Add(((ApplyShapeAbility)ability).Shape);
+                types.Add(ability.Type);
+                abilities.Add(ability);
             }
 
             var preTakenCells = new List<CellRender>();
@@ -130,9 +158,11 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
-        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
+        HandController.Instance.SaveSortedOrder(abilities);
 
-        HandController.Instance.ShuffleCards();
+        abilities.Shuffle();
+
+        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
 
         AbilityController.Instance.CallChange();
 
@@ -142,6 +172,7 @@ public class GridManager : Singleton<GridManager>
             if (AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].IsTaken) takenCells.Add(cell);
         }
 
+        takenCells.Shuffle();
         takenCells.OrderByDescending(cell => AnswerGrid[cell.Coordinates.x, cell.Coordinates.y].Number);
 
         for (int i = 0; i < Mathf.Min(takenCells.Count, _numbersToPreview); i++)

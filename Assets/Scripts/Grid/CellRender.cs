@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -48,6 +49,11 @@ public class CellRender : MonoBehaviour
         _numberText.SetText($"{Cell.Number}");
     }
 
+    private void OnShowNumbers()
+    {
+        if (!IsPlayerCell && Cell.IsTaken && Cell.Number != 0) ShowNumber();
+    }
+
     public void Hide(float delay) => Tween.Delay(this, delay / 70, () => Tween.Scale(this, transform, Vector3.one, Vector3.zero, 0.4f, EaseType.SineOut));
 
     public void Render()
@@ -84,10 +90,12 @@ public class CellRender : MonoBehaviour
     private void OnEnable()
     {
         AbilityController.MadeChanges += Render;
+        GameManager.ShowNumbers += OnShowNumbers;
     }
 
     private void OnDisable()
     {
         AbilityController.MadeChanges -= Render;
+        GameManager.ShowNumbers -= OnShowNumbers;
     }
 }

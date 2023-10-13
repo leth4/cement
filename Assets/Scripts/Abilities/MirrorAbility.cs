@@ -21,14 +21,25 @@ public class MirrorAbility : Ability
 
     private void MirrorGrid(Cell[,] grid)
     {
-        for (int i = 0; i < Size; i++)
+        if (_mirrorType is MirrorType.Horizontal)
         {
-            for (int j = 0; j < Size; j++)
+            for (int i = 0; i < Size; i++)
             {
-                if (_mirrorType is MirrorType.Horizontal)
+                for (int j = 0; j < Size / 2; j++)
+                {
                     if (grid[i, j].IsTaken && j != Size - j - 1) grid[i, Size - j - 1].SetTaken(true, addInteraction: grid[i, j].IsTaken);
-                if (_mirrorType is MirrorType.Vertical)
+                }
+            }
+        }
+
+        if (_mirrorType is MirrorType.Vertical)
+        {
+            for (int i = 0; i < Size / 2; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
                     if (grid[i, j].IsTaken && i != Size - i - 1) grid[Size - i - 1, j].SetTaken(true, addInteraction: grid[i, j].IsTaken);
+                }
             }
         }
     }

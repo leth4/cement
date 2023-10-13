@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: 0181340ab30878048b02cad11e4de21b, type: 3}
   CanBeFirst: 0
-  Weight: 3
+  Weight: 4
   IsFullCanvas: 0
+  Type: 1
   _applyShapeType: 1
-  _shape: {fileID: 11400000, guid: 31b35bb1c65647c419fc982c0e9d55f9, type: 2}
+  Shape: {fileID: 11400000, guid: 31b35bb1c65647c419fc982c0e9d55f9, type: 2}

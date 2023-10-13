@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,11 +8,18 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Button _menuButton;
+    [SerializeField] private Button _tipButton1;
+    [SerializeField] private Button _tipButton2;
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
     [SerializeField] private TMP_Text _newCardText;
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
+
+    public static event Action ShowNumbers;
+    public static event Action SortCards;
+
+    private bool _usedTips;
 
     public bool IsSolved { get; private set; } = false;
 
@@ -31,11 +39,11 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsSolved) return;
         IsSolved = true;
-        DataManager.GameData.LevelsSolved++;
+        if (!_usedTips) DataManager.GameData.LevelsSolved++;
         Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
         Tween.Delay(this, 1, () =>
         {
-            if (DataManager.GameData.LevelsSolved % 3 == 1)
+            if (!_usedTips && DataManager.GameData.LevelsSolved % 3 == 1)
             {
                 UnlockNewCard();
             }
@@ -54,7 +62,7 @@ public class GameManager : Singleton<GameManager>
         if (DataManager.GameData.UnlockedCards.Count == totalCards) return;
 
         var cardRange = Enumerable.Range(0, totalCards).Where(i => !DataManager.GameData.UnlockedCards.Contains(i));
-        var randomCard = cardRange.ElementAt(Random.Range(0, cardRange.Count()));
+        var randomCard = cardRange.ElementAt(UnityEngine.Random.Range(0, cardRange.Count()));
         DataManager.GameData.UnlockedCards.Add(randomCard);
         DataManager.Save();
 
@@ -74,10 +82,26 @@ public class GameManager : Singleton<GameManager>
         _transition.GoToMenuScene();
     }
 
+    private void HandleFirstTipClick()
+    {
+        ShowNumbers?.Invoke();
+        _usedTips = true;
+        _tipButton1.interactable = false;
+    }
+
+    private void HandleSecondTipClick()
+    {
+        SortCards?.Invoke();
+        _usedTips = true;
+        _tipButton2.interactable = false;
+    }
+
     private void OnEnable()
     {
         GridManager.Solved += OnSolved;
         _menuButton.onClick.AddListener(HandleMenuClick);
+        _tipButton1.onClick.AddListener(HandleFirstTipClick);
+        _tipButton2.onClick.AddListener(HandleSecondTipClick);
         _newCardPanel.OnClick += HandleNewCardPanelClick;
     }
 
@@ -85,6 +109,8 @@ public class GameManager : Singleton<GameManager>
     {
         GridManager.Solved -= OnSolved;
         _menuButton.onClick.RemoveListener(HandleMenuClick);
+        _tipButton1.onClick.RemoveListener(HandleFirstTipClick);
+        _tipButton2.onClick.RemoveListener(HandleSecondTipClick);
         _newCardPanel.OnClick -= HandleNewCardPanelClick;
     }
 }

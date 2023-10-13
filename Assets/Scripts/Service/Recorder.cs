@@ -24,6 +24,7 @@ public class Recorder : Singleton<Recorder>
         _records.RemoveAt(_records.Count - 1);
 
         HandController.Instance.AddCard(lastRecord.Ability, false);
+        HandController.Instance.SortCards();
         GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as Cell[,];
 
         AbilityController.Instance.StopPreview();

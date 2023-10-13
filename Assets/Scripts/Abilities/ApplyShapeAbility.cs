@@ -6,11 +6,11 @@ using UnityEngine;
 public class ApplyShapeAbility : Ability
 {
     [SerializeField] private ApplyShapeType _applyShapeType;
-    [SerializeField] private Shape _shape;
+    [SerializeField] public Shape Shape;
 
     public override bool Apply(Cell[,] grid, Vector2Int coordinates)
     {
-        ApplyShape(grid, coordinates, _shape.Offset);
+        ApplyShape(grid, coordinates, Shape.Offset);
         return true;
     }
 
@@ -21,7 +21,7 @@ public class ApplyShapeAbility : Ability
         for (int i = 0; i < 15; i++)
         {
             var cellIndex = Random.Range(0, takenCells.Count);
-            var offset = new Vector2Int(Random.Range(-1, _shape.Grid.GetLength(0) + 1), Random.Range(-1, _shape.Grid.GetLength(1) + 1));
+            var offset = new Vector2Int(Random.Range(-1, Shape.Grid.GetLength(0) + 1), Random.Range(-1, Shape.Grid.GetLength(1) + 1));
             var copy = grid.Clone() as Cell[,];
             var hasChanged = ApplyShape(copy, takenCells[cellIndex], offset);
             if (hasChanged && GetTakenCells(copy, false).Count != 0)
@@ -36,8 +36,8 @@ public class ApplyShapeAbility : Ability
 
     private bool ApplyShape(Cell[,] grid, Vector2Int cell, Vector2Int offset)
     {
-        var shapeSizeX = _shape.Grid.GetLength(0);
-        var shapeSizeY = _shape.Grid.GetLength(1);
+        var shapeSizeX = Shape.Grid.GetLength(0);
+        var shapeSizeY = Shape.Grid.GetLength(1);
 
         var hasChanged = false;
 
@@ -47,7 +47,7 @@ public class ApplyShapeAbility : Ability
             {
                 if (GridHelper.AreValidCoordinates(grid, cell.x + i - offset.x, cell.y + j - offset.y))
                 {
-                    if (_shape.Grid[i, j])
+                    if (Shape.Grid[i, j])
                     {
                         if (_applyShapeType is ApplyShapeType.Add)
                         {

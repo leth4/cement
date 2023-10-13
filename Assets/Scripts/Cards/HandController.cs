@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,9 +36,41 @@ public class HandController : Singleton<HandController>
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
 
-    public void ShuffleCards()
+    private bool _isSorted = false;
+    private List<Ability> _abilityOrder;
+
+    public void SaveSortedOrder(List<Ability> order)
     {
-        Hand.Shuffle();
+        _abilityOrder = new(order);
+    }
+
+    public void SortCards()
+    {
+        if (!_isSorted) return;
+
+        var newHand = new List<Transform>();
+        foreach (var ability in _abilityOrder)
+        {
+            Transform foundCard = null;
+            foreach (var card in Hand)
+            {
+                if (newHand.Contains(card)) continue;
+                if (card.GetComponent<AbilityCard>().Ability == ability)
+                {
+                    foundCard = card;
+                    break;
+                }
+            }
+            if (foundCard != null) newHand.Add(foundCard);
+        }
+
+        Hand = newHand;
+    }
+
+    private void SortCardsFirst()
+    {
+        _isSorted = true;
+        SortCards();
     }
 
     public void AddCard(Ability ability, bool delay = true)
@@ -135,5 +168,15 @@ public class HandController : Singleton<HandController>
     private float IdealRotationByIndex(int index)
     {
         return (index - (float)Hand.Count / 2 + 0.5f) * _cardAngleDelta;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.SortCards += SortCardsFirst;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.SortCards -= SortCardsFirst;
     }
 }

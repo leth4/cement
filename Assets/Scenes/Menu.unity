@@ -403,11 +403,15 @@ MonoBehaviour:
   _texts:
   - You have to repeat the image on the left by dragging cards to right grid.
   - Numbers show how many actions were applied to a given square.
+  - Click one the circles at the top to receive a hint; a level solved with a hint
+    won't count;
   - Right-click to undo your last action.
   - For every three levels you unlock a new card.
   _mobileTexts:
   - You have to repeat the image on the left by dragging cards to right grid.
   - Numbers show how many actions were applied to a given square.
+  - Click one the circles at the top to receive a hint; a level solved with a hint
+    won't count;
   - Tap with two fingers to undo your last action.
   - For every three levels you unlock a new card.
 --- !u!1 &390462973

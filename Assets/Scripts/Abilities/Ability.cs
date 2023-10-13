@@ -8,6 +8,7 @@ public abstract class Ability : ScriptableObject
     public bool CanBeFirst = true;
     public int Weight = 3;
     public bool IsFullCanvas;
+    public AbilityType Type;
 
     protected int Size => GridManager.Instance.Size;
 
@@ -25,5 +26,16 @@ public abstract class Ability : ScriptableObject
         if (shuffled) takenCells.Shuffle();
 
         return takenCells;
+    }
+
+    public enum AbilityType
+    {
+        Add,
+        Erase,
+        Reverse,
+        Flip,
+        Mirror,
+        Move,
+        Rotate
     }
 }

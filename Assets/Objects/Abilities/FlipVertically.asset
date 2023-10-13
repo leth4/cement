@@ -15,6 +15,6 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 920511842e67bf841937af452d88052d, type: 3}
   CanBeFirst: 0
   Weight: 3
-  SelectionOffset: {x: 0, y: 0}
   IsFullCanvas: 1
+  Type: 3
   _flipType: 1
