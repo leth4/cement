@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScreenFitter : MonoBehaviour
 {
-    private const float LANDSCAPE_MODE_RATIO = 0.6f;
+    private const float LANDSCAPE_MODE_RATIO = 0.55f;
 
     [SerializeField] private ScreenMode _orientation;
 

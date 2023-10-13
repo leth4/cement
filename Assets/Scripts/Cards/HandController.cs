@@ -101,6 +101,7 @@ public class HandController : Singleton<HandController>
         else
         {
             _selectedCardIndex = -1;
+            if (Input.touchCount > 0) Recorder.Instance.GoBack();
         }
 
         for (int i = 0; i < Hand.Count; i++)

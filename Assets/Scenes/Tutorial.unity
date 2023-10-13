@@ -175,6 +175,7 @@ MonoBehaviour:
   _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
   _transition: {fileID: 1944295206}
   _isTutorial: 1
+  _doubleTapThreshold: 0.3
 --- !u!1 &307820404
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +433,7 @@ MonoBehaviour:
   _AspectToScaleRatio: 1.5
   _maxScale: 1
   _anchor: 5
-  _anchorOffset: {x: 0.91, y: -2.19}
+  _anchorOffset: {x: 0.91, y: -2.99}
   _scaleOffset: 1
 --- !u!1 &485049655
 GameObject:
@@ -871,28 +872,30 @@ MonoBehaviour:
   - Shape: {fileID: 11400000, guid: 57b0676d1de5edf428093815bebc771f, type: 2}
     Abilities:
     - {fileID: 11400000, guid: 5f541e457e3007e4d8a6d0d3dbcbee4c, type: 2}
-    TextComputer: Drag the card from your hand to the right grid to repeat the image
-      on the left. Right-click to undo your action.
-    TextMobile: Drag the card from your hand to the right grid to repeat the image
-      on the left. Tap with two fingers to undo your action.
+    TextComputer: Drag the card from your hand to the grid on the right to repeat
+      the image on the left. Right-click to undo your last action.
+    TextMobile: Drag the card from your hand to the grid on the right to repeat the
+      image on the left. Tap anywhere to undo your last action.
     ShowHint: 0
   - Shape: {fileID: 11400000, guid: a544223a794836340a8ccebc35124e26, type: 2}
     Abilities:
     - {fileID: 11400000, guid: 038dc9a9e19cab540b770b966e1ce9b2, type: 2}
     - {fileID: 11400000, guid: afd902a81f540b74d8e8121b7d11bbd4, type: 2}
     TextComputer: Different cards have different effects, and the order is important.
+      You can press R to reset the level.
     TextMobile: Different cards have different effects, and the order is important.
+      You can press double tap to reset the level.
     ShowHint: 0
   - Shape: {fileID: 11400000, guid: 5acf3a0e4def0344eb07e9086ae8e15b, type: 2}
     Abilities:
     - {fileID: 11400000, guid: 6ddce1ed71be50043857f95db74a41a6, type: 2}
     - {fileID: 11400000, guid: 6abca31bfd4f19a4ea7095b014fbea8b, type: 2}
     - {fileID: 11400000, guid: 17d96031b9e669c4b94f06e154e2d221, type: 2}
-    TextComputer: 'You can press the circle in the top-right to put cards in the
+    TextComputer: 'You can press the circle in the top right to put cards in the
       correct order. A level solved this way won''t count in the stats.
 
 '
-    TextMobile: 'You can press the circle in the top-right to put cards in the correct
+    TextMobile: 'You can press the circle in the top right to put cards in the correct
       order. A level solved this way won''t count in the stats.
 
 '
@@ -902,9 +905,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4f197a86e9a745c4b836c4a9cc4d8d64, type: 2}
     - {fileID: 11400000, guid: 5f541e457e3007e4d8a6d0d3dbcbee4c, type: 2}
     - {fileID: 11400000, guid: 027a3a2c46925b84f8a073efe5151873, type: 2}
-    - {fileID: 11400000, guid: 0d71d6e1095b0a64bb84cd19fd5f05ee, type: 2}
-    TextComputer: You unlock a new card for every two levels.
-    TextMobile: You unlock a new card for every two levels.
+    TextComputer: You unlock a new card for every two levels solved.
+    TextMobile: You unlock a new card for every two levels solved.
     ShowHint: 1
   _tutorialText: {fileID: 1766624307}
   _transition: {fileID: 1944295206}
@@ -1405,7 +1407,7 @@ MonoBehaviour:
   _AspectToScaleRatio: 1.5
   _maxScale: 1
   _anchor: 5
-  _anchorOffset: {x: -0.91, y: 3.38}
+  _anchorOffset: {x: -0.91, y: 2.58}
   _scaleOffset: 1
 --- !u!1 &1424200781
 GameObject:
@@ -1734,7 +1736,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 22
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1

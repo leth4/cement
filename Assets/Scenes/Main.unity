@@ -174,6 +174,8 @@ MonoBehaviour:
   _newCardText: {fileID: 186872726}
   _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
   _transition: {fileID: 1944295206}
+  _isTutorial: 0
+  _doubleTapThreshold: 0.3
 --- !u!1 &186872724
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +419,6 @@ MonoBehaviour:
     m_Bits: 128
   _touchSelectOffset: {x: 0, y: 1.2, z: 0}
   _size: 5
-  _abilitiesApplied: 5
   _numbersToPreview: 3
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}
@@ -639,10 +640,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 2
-  _AspectToScaleRatio: 1.5
+  _AspectToScaleRatio: 1.6
   _maxScale: 1
   _anchor: 5
-  _anchorOffset: {x: 0.91, y: -2.19}
+  _anchorOffset: {x: 0.91, y: -1.99}
   _scaleOffset: 1
 --- !u!1 &485049655
 GameObject:
@@ -1183,10 +1184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: 2
-  _AspectToScaleRatio: 1.5
+  _AspectToScaleRatio: 1.6
   _maxScale: 1
   _anchor: 5
-  _anchorOffset: {x: -0.91, y: 3.38}
+  _anchorOffset: {x: -0.91, y: 3.58}
   _scaleOffset: 1
 --- !u!1 &1343240215
 GameObject:

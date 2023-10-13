@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
     [SerializeField] private bool _isTutorial = false;
+    [SerializeField] private float _doubleTapThreshold = 0.3f;
 
     public static int LevelCardsCount;
 
@@ -24,16 +25,34 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsSolved { get; private set; } = false;
 
+    private float _timeSinceLastTap = 10;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
-        if (Input.GetKeyDown(KeyCode.M)) OnSolved();
-        if (Input.GetKeyDown(KeyCode.R)) RestartScene();
+        if (Input.GetKeyDown(KeyCode.R)) ResetState();
+
+
+        _timeSinceLastTap += Time.unscaledDeltaTime;
+        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
+        {
+            if (_timeSinceLastTap < _doubleTapThreshold) ResetState();
+            _timeSinceLastTap = 0;
+        }
     }
 
     private void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void ResetState()
+    {
+        Recorder.Instance.GoBack();
+        Recorder.Instance.GoBack();
+        Recorder.Instance.GoBack();
+        Recorder.Instance.GoBack();
+        Recorder.Instance.GoBack();
     }
 
     private void OnSolved()
@@ -110,6 +129,7 @@ public class GameManager : Singleton<GameManager>
         SortCards?.Invoke();
         _usedHint = true;
         hintButton.interactable = false;
+        ResetState();
     }
 
     private void OnEnable()
