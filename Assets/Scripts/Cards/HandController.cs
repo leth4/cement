@@ -101,7 +101,6 @@ public class HandController : Singleton<HandController>
         else
         {
             _selectedCardIndex = -1;
-            if (Input.touchCount > 0) Recorder.Instance.GoBack();
         }
 
         for (int i = 0; i < Hand.Count; i++)
@@ -124,10 +123,16 @@ public class HandController : Singleton<HandController>
             }
         }
 
+        if (!_draggedCard && hit.collider == null)
+        {
+            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack();
+        }
+
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(1))
         {
             HandleDragEnd();
         }
+
     }
 
     private void HandleDragStart()

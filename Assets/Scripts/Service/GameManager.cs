@@ -17,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private bool _isTutorial = false;
     [SerializeField] private float _doubleTapThreshold = 0.3f;
 
-    public static int LevelCardsCount;
+    public static int LevelCardsCount = 4;
 
     public static event Action SortCards;
 
@@ -31,7 +31,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
         if (Input.GetKeyDown(KeyCode.R)) ResetState();
-
 
         _timeSinceLastTap += Time.unscaledDeltaTime;
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
