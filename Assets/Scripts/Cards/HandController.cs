@@ -123,7 +123,7 @@ public class HandController : Singleton<HandController>
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(1))
         {
             HandleDragEnd();
         }
@@ -148,7 +148,7 @@ public class HandController : Singleton<HandController>
 
     private void HandleDragEnd()
     {
-        AbilityController.Instance.TryApplyingAbility();
+        if (Input.GetMouseButtonUp(0)) AbilityController.Instance.TryApplyingAbility();
         if (_draggedCard != null)
         {
             Hand.Insert(_draggedCardInitialIndex, _draggedCard);

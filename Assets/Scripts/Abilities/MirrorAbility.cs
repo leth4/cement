@@ -21,24 +21,26 @@ public class MirrorAbility : Ability
 
     private void MirrorGrid(Cell[,] grid)
     {
-        if (_mirrorType is MirrorType.Horizontal)
+        var newlyTaken = new List<Vector2Int>();
+        for (int i = 0; i < Size; i++)
         {
-            for (int i = 0; i < Size; i++)
+            for (int j = 0; j < Size; j++)
             {
-                for (int j = 0; j < Size / 2; j++)
+                if (_mirrorType is MirrorType.Horizontal)
                 {
-                    if (grid[i, j].IsTaken && j != Size - j - 1) grid[i, Size - j - 1].SetTaken(true, addInteraction: grid[i, j].IsTaken);
+                    if (grid[i, j].IsTaken && j != Size - j - 1)
+                    {
+                        grid[i, Size - j - 1].SetTaken(true, addInteraction: grid[i, j].IsTaken && !newlyTaken.Contains(new(i, j)));
+                        newlyTaken.Add(new(i, Size - j - 1));
+                    }
                 }
-            }
-        }
-
-        if (_mirrorType is MirrorType.Vertical)
-        {
-            for (int i = 0; i < Size / 2; i++)
-            {
-                for (int j = 0; j < Size; j++)
+                if (_mirrorType is MirrorType.Vertical)
                 {
-                    if (grid[i, j].IsTaken && i != Size - i - 1) grid[Size - i - 1, j].SetTaken(true, addInteraction: grid[i, j].IsTaken);
+                    if (grid[i, j].IsTaken && i != Size - i - 1)
+                    {
+                        grid[Size - i - 1, j].SetTaken(true, addInteraction: grid[i, j].IsTaken && !newlyTaken.Contains(new(i, j)));
+                        newlyTaken.Add(new(Size - i - 1, j));
+                    }
                 }
             }
         }
