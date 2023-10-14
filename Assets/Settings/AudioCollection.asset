@@ -87,20 +87,20 @@ MonoBehaviour:
         Volume: 1
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 0
+      Enum: 9
     - Name: start_2
       Clips:
       - AudioClip: {fileID: 8300000, guid: 39fd7cbecee466542a13d63cc7a5c800, type: 3}
         Volume: 1
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 0
+      Enum: 10
     - Name: start_3
       Clips:
       - AudioClip: {fileID: 8300000, guid: 9c89c7ea107847d44a3ebc99c8c1c5c0, type: 3}
         Volume: 1
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 0
+      Enum: 11
     Enum: 1
   EnumsAssigned: 1
