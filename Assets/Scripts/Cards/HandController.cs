@@ -97,7 +97,11 @@ public class HandController : Singleton<HandController>
 
         if (!_draggedCard && hit.collider != null)
         {
-            _selectedCardIndex = Hand.IndexOf(hit.transform.parent.parent);
+            var newSelectedCardIndex = Hand.IndexOf(hit.transform.parent.parent);
+
+            if (newSelectedCardIndex != _selectedCardIndex) AudioReceiver.CardHover();
+
+            _selectedCardIndex = newSelectedCardIndex;
         }
         else
         {

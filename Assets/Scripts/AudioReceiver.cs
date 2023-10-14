@@ -34,6 +34,11 @@ public static class AudioReceiver
 
     }
 
+    public static void CardHover()
+    {
+
+    }
+
     public static void AbilityApplied()
     {
         AudioManager.Instance.Play(SoundEnum.apply);
