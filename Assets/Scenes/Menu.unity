@@ -1908,8 +1908,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Cement
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 47af95a1652c605459ce5c25d87b4477, type: 2}
-  m_sharedMaterial: {fileID: 7785918872787154852, guid: 47af95a1652c605459ce5c25d87b4477, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: da82a65d11554f24e97471bbbc7c6edd, type: 2}
+  m_sharedMaterial: {fileID: -3368339446147388700, guid: da82a65d11554f24e97471bbbc7c6edd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
