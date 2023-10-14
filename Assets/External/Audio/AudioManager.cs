@@ -215,7 +215,7 @@ public class AudioManager : MonoBehaviour
         return sources;
     }
 
-    private float GetExponentialVolume(float volume) => Mathf.Pow(volume, 3);
+    private float GetExponentialVolume(float volume) => Mathf.Pow(volume, 2);
 
 #if UNITY_EDITOR
 

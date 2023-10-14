@@ -36,7 +36,7 @@ public class GameManager : Singleton<GameManager>
         _timeSinceLastTap += Time.unscaledDeltaTime;
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            if (_timeSinceLastTap < _doubleTapThreshold) ResetState(true);
+            if (_timeSinceLastTap < _doubleTapThreshold) ResetState(LevelCardsCount != HandController.Instance.CardsLeft);
             _timeSinceLastTap = 0;
         }
     }

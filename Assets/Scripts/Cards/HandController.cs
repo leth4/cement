@@ -36,6 +36,7 @@ public class HandController : Singleton<HandController>
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
     public bool HasCardsLeft => Hand.Count > 0;
+    public int CardsLeft => Hand.Count;
 
     private bool _isSorted = false;
     private List<Ability> _abilityOrder;
@@ -97,9 +98,9 @@ public class HandController : Singleton<HandController>
 
         if (!_draggedCard && hit.collider != null)
         {
-            var newSelectedCardIndex = Hand.IndexOf(hit.transform.parent.parent);
+            var newSelectedCardIndex = Hand.IndexOf(hit.transform);
 
-            if (newSelectedCardIndex != _selectedCardIndex) AudioReceiver.CardHover();
+            // if (newSelectedCardIndex != _selectedCardIndex) AudioReceiver.CardHover();
 
             _selectedCardIndex = newSelectedCardIndex;
         }
@@ -128,7 +129,7 @@ public class HandController : Singleton<HandController>
             }
         }
 
-        if (!_draggedCard && hit.collider == null)
+        if (!_draggedCard && hit.collider == null && !GameManager.Instance.IsSolved)
         {
             if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack(true);
         }

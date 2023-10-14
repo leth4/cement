@@ -28,7 +28,7 @@ MonoBehaviour:
     - Name: ui
       Clips:
       - AudioClip: {fileID: 8300000, guid: f8af4bdebaa5f234eb944520b760f6b4, type: 3}
-        Volume: 0.461
+        Volume: 0.3
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 1
@@ -53,61 +53,40 @@ MonoBehaviour:
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 4
-    - Name: new_card_3
-      Clips:
-      - AudioClip: {fileID: 8300000, guid: 4c9245166f5feb44994f63db303266c7, type: 3}
-        Volume: 0.554
-      HasPitchVariation: 0
-      PitchVariation: 0
-      Enum: 5
-    - Name: new_card_2
-      Clips:
-      - AudioClip: {fileID: 8300000, guid: a9632cc42fcc8f2489b789c1790232fb, type: 3}
-        Volume: 0.554
-      HasPitchVariation: 0
-      PitchVariation: 0
-      Enum: 6
-    - Name: new_card_1
-      Clips:
-      - AudioClip: {fileID: 8300000, guid: cddb2a54094d8e445bfd37dea875559e, type: 3}
-        Volume: 0.567
-      HasPitchVariation: 0
-      PitchVariation: 0
-      Enum: 7
     - Name: apply
       Clips:
       - AudioClip: {fileID: 8300000, guid: 5fb46292e609ceb4781358b502a84351, type: 3}
-        Volume: 0.77
+        Volume: 0.5
       HasPitchVariation: 1
       PitchVariation: 0.03
-      Enum: 8
+      Enum: 5
     - Name: start_1
       Clips:
       - AudioClip: {fileID: 8300000, guid: 78f13ee235b915c4fa6cde01697d70d1, type: 3}
-        Volume: 1
+        Volume: 0.5
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 9
+      Enum: 6
     - Name: start_2
       Clips:
       - AudioClip: {fileID: 8300000, guid: 39fd7cbecee466542a13d63cc7a5c800, type: 3}
-        Volume: 1
+        Volume: 0.5
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 10
+      Enum: 7
     - Name: start_3
       Clips:
       - AudioClip: {fileID: 8300000, guid: 9c89c7ea107847d44a3ebc99c8c1c5c0, type: 3}
-        Volume: 1
+        Volume: 0.5
       HasPitchVariation: 0
       PitchVariation: 0
-      Enum: 11
+      Enum: 8
     - Name: hover
       Clips:
       - AudioClip: {fileID: 8300000, guid: 3a8adbf3c5826574881fafeb97fb71a0, type: 3}
         Volume: 0.22
       HasPitchVariation: 1
       PitchVariation: 0.02
-      Enum: 12
+      Enum: 9
     Enum: 1
   EnumsAssigned: 1

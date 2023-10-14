@@ -53,9 +53,12 @@ public class GridManager : Singleton<GridManager>
 
         Recorder.Instance.Reset();
 
+
         HandController.Instance.SaveSortedOrder(abilities);
 
         if (abilities.Count > 2) abilities.Reverse();
+
+        AudioReceiver.CardAdded();
 
         foreach (var ability in abilities) HandController.Instance.AddCard(ability);
 
@@ -198,7 +201,7 @@ public class GridManager : Singleton<GridManager>
 
     public void Update()
     {
-        var deviceOffset = Input.touchCount > 0 ? _touchSelectOffset : Vector3.zero;
+        var deviceOffset = Application.isMobilePlatform ? _touchSelectOffset : Vector3.zero;
 
         var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition) + deviceOffset, Vector2.zero, 1000, _cellLayer);
 

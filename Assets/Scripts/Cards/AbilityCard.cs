@@ -23,4 +23,9 @@ public class AbilityCard : MonoBehaviour
         Tween.Translate(this, transform, transform.position, transform.position - transform.up * 10, 0.3f, EaseType.Linear, ended: () =>
         Destroy(gameObject)));
     }
+
+    private void OnMouseEnter()
+    {
+        AudioReceiver.CardHover();
+    }
 }

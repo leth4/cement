@@ -16,12 +16,12 @@ public static class AudioReceiver
 
     public static void LevelSolved()
     {
-        AudioManager.Instance.Play(SoundEnum.win);
+        AudioManager.Instance.Play(SoundEnum.next);
     }
 
     public static void NewCardUnlocked()
     {
-        AudioManager.Instance.Play(SoundEnum.new_card_2);
+        AudioManager.Instance.Play(SoundEnum.win);
     }
 
     public static void ButtonPressed()

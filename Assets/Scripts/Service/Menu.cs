@@ -18,6 +18,12 @@ public class Menu : MonoBehaviour
     private float _musicVolume;
     private float _soundVolume;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    }
+
     private void Start()
     {
         Tutorial.Reset();

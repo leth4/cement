@@ -33,6 +33,7 @@ public class Tutorial : MonoBehaviour
         {
             _hintButton.SetActive(false);
         }
+        GameManager.LevelCardsCount = level.Abilities.Count;
         GridManager.Instance.ShowTutorial(level.Shape, level.Abilities);
     }
 

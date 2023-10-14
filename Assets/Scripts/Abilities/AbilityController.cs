@@ -61,6 +61,6 @@ public class AbilityController : Singleton<AbilityController>
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1) && HandController.Instance.ActiveAbility == null) UndoLastMove();
+        if (Input.GetMouseButtonDown(1) && HandController.Instance.ActiveAbility == null && !GameManager.Instance.IsSolved) UndoLastMove();
     }
 }

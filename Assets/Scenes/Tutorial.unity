@@ -873,7 +873,7 @@ MonoBehaviour:
     TextComputer: Different cards have different effects, and the order is important.
       You can press R to reset the level.
     TextMobile: Different cards have different effects, and the order is important.
-      You can press double tap to reset the level.
+      You can double tap to reset the level.
     ShowHint: 0
   - Shape: {fileID: 11400000, guid: 5acf3a0e4def0344eb07e9086ae8e15b, type: 2}
     Abilities:
@@ -894,8 +894,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4f197a86e9a745c4b836c4a9cc4d8d64, type: 2}
     - {fileID: 11400000, guid: 5f541e457e3007e4d8a6d0d3dbcbee4c, type: 2}
     - {fileID: 11400000, guid: 027a3a2c46925b84f8a073efe5151873, type: 2}
-    TextComputer: You unlock a new card for every two levels solved.
-    TextMobile: You unlock a new card for every two levels solved.
+    TextComputer: You unlock a new card for every two levels solved without a hint.
+    TextMobile: You unlock a new card for every two levels solved without a hint.
     ShowHint: 1
   _tutorialText: {fileID: 1766624307}
   _transition: {fileID: 1944295206}
