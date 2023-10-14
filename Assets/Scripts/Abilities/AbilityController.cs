@@ -54,9 +54,9 @@ public class AbilityController : Singleton<AbilityController>
         }
     }
 
-    public void UndoLastMove()
+    private void UndoLastMove()
     {
-        Recorder.Instance.GoBack();
+        Recorder.Instance.GoBack(true);
     }
 
     private void Update()

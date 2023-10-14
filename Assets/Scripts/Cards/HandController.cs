@@ -130,7 +130,7 @@ public class HandController : Singleton<HandController>
 
         if (!_draggedCard && hit.collider == null)
         {
-            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack();
+            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack(true);
         }
 
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(1))

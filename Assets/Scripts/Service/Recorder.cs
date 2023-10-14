@@ -16,7 +16,7 @@ public class Recorder : Singleton<Recorder>
         _records.Add(new(GridManager.Instance.PlayerGrid, ability));
     }
 
-    public void GoBack()
+    public void GoBack(bool playSound = false)
     {
         if (_records.Count == 0) return;
 
@@ -27,7 +27,7 @@ public class Recorder : Singleton<Recorder>
         HandController.Instance.SortCards();
         GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as Cell[,];
 
-        AudioReceiver.AbilityUndone();
+        if (playSound) AudioReceiver.AbilityUndone();
 
         AbilityController.Instance.StopPreview();
     }

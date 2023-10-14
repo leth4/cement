@@ -31,12 +31,12 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
-        if (Input.GetKeyDown(KeyCode.R)) ResetState();
+        if (Input.GetKeyDown(KeyCode.R)) ResetState(true);
 
         _timeSinceLastTap += Time.unscaledDeltaTime;
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            if (_timeSinceLastTap < _doubleTapThreshold) ResetState();
+            if (_timeSinceLastTap < _doubleTapThreshold) ResetState(true);
             _timeSinceLastTap = 0;
         }
     }
@@ -46,8 +46,10 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void ResetState()
+    private void ResetState(bool playSound)
     {
+        if (playSound) AudioReceiver.AbilityUndone();
+
         Recorder.Instance.GoBack();
         Recorder.Instance.GoBack();
         Recorder.Instance.GoBack();
@@ -136,7 +138,7 @@ public class GameManager : Singleton<GameManager>
         SortCards?.Invoke();
         _usedHint = true;
         hintButton.interactable = false;
-        ResetState();
+        ResetState(false);
     }
 
     private void OnEnable()

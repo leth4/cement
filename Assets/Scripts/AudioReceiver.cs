@@ -32,7 +32,7 @@ public static class AudioReceiver
     public static void CardAdded()
     {
         var sounds = new List<SoundEnum> { SoundEnum.start_1, SoundEnum.start_2, SoundEnum.start_3 };
-        AudioManager.Instance.Play(sounds[Random.Range(0, sounds.Count)], 0, true);
+        AudioManager.Instance.Play(sounds[Random.Range(0, sounds.Count)], 0);
     }
 
     public static void CardHover()
