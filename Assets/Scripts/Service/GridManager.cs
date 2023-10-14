@@ -189,6 +189,8 @@ public class GridManager : Singleton<GridManager>
 
         abilities.Shuffle();
 
+        AudioReceiver.CardAdded();
+
         foreach (var ability in abilities) HandController.Instance.AddCard(ability);
 
         AbilityController.Instance.CallChange();
