@@ -17,4 +17,7 @@ public enum SoundEnum
 	new_card_2 = 6,
 	new_card_1 = 7,
 	apply = 8,
+	start_1 = 9,
+	start_2 = 10,
+	start_3 = 11,
 }
