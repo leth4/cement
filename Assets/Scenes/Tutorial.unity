@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _menuButton: {fileID: 504765003}
   hintButton: {fileID: 314902147}
+  _extraCardsText: {fileID: 0}
   _newCardPanel: {fileID: 2006435298}
   _newCardImage: {fileID: 911359500}
   _newCardText: {fileID: 997327352}
@@ -1265,7 +1266,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 14/28
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 47af95a1652c605459ce5c25d87b4477, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: da82a65d11554f24e97471bbbc7c6edd, type: 2}
   m_sharedMaterial: {fileID: 7785918872787154852, guid: 47af95a1652c605459ce5c25d87b4477, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1329,7 +1330,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &997327353
@@ -1736,7 +1737,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 25
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
