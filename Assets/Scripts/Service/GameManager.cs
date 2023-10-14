@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Button _menuButton;
     [SerializeField] private Button hintButton;
+    [SerializeField] private GameObject _extraCardsText;
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
     [SerializeField] private TMP_Text _newCardText;
@@ -58,6 +59,13 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsSolved) return;
         IsSolved = true;
+
+        if (HandController.Instance.HasCardsLeft && !_isTutorial)
+        {
+            HandController.Instance.RemoveAllCards();
+            _extraCardsText.SetActive(true);
+        }
+
         AudioReceiver.LevelSolved();
         if (!_usedHint && !_isTutorial)
         {

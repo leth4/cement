@@ -216,6 +216,13 @@ public class GridManager : Singleton<GridManager>
             return;
         }
 
+        if (cellRender.IsPhantom && HandController.Instance.ActiveAbility && HandController.Instance.ActiveAbility.IsFullCanvas)
+        {
+            if (SelectedCell != null) AbilityController.Instance.StopPreview();
+            SelectedCell = null;
+            return;
+        }
+
         bool isNewCell = SelectedCell != cellRender;
         SelectedCell = cellRender;
 

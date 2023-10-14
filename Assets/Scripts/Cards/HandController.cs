@@ -35,6 +35,7 @@ public class HandController : Singleton<HandController>
     private int _cardsCount;
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
+    public bool HasCardsLeft => Hand.Count > 0;
 
     private bool _isSorted = false;
     private List<Ability> _abilityOrder;
@@ -113,7 +114,7 @@ public class HandController : Singleton<HandController>
 
         if (_selectedCardIndex != -1)
         {
-            Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex).SetZ(0.03f) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
+            Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex).SetZ(0.6f) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
             Hand[_selectedCardIndex].localRotation = Quaternion.Lerp(Hand[_selectedCardIndex].localRotation, Quaternion.identity, Time.deltaTime * _rotationSpeed);
             Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, Vector3.one * _selectionScale, Time.deltaTime * _scaleSpeed);
 
@@ -133,6 +134,14 @@ public class HandController : Singleton<HandController>
             HandleDragEnd();
         }
 
+    }
+
+    public void RemoveAllCards()
+    {
+        foreach (var card in Hand) card.GetComponent<AbilityCard>().MoveAway();
+        Hand = new();
+        _cardsCount = 0;
+        _draggedCard = null;
     }
 
     private void HandleDragStart()
@@ -159,6 +168,7 @@ public class HandController : Singleton<HandController>
             Hand.Insert(_draggedCardInitialIndex, _draggedCard);
             _draggedCard = null;
         }
+        AbilityController.Instance.StopPreview();
     }
 
     private Vector3 IdealPositionByIndex(int index)

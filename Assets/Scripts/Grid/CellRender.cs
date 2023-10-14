@@ -17,8 +17,7 @@ public class CellRender : MonoBehaviour
     public Vector2Int Coordinates;
 
     public bool IsPlayerCell { get; private set; }
-
-    private bool _isPhantom = false;
+    public bool IsPhantom = false;
 
     private float _appearDelay = 0;
 
@@ -31,7 +30,7 @@ public class CellRender : MonoBehaviour
 
     public void MakePhantom()
     {
-        _isPhantom = true;
+        IsPhantom = true;
         _renderer.color = Color.clear;
     }
 
@@ -45,7 +44,7 @@ public class CellRender : MonoBehaviour
 
     public void Render()
     {
-        if (_isPhantom) return;
+        if (IsPhantom) return;
 
         if (AbilityController.Instance.IsPreviewing && IsPlayerCell)
         {
