@@ -8,12 +8,7 @@ public static class AudioReceiver
     {
         // if (!AudioManager.Instance.IsPlaying(SoundEnum.None)) AudioManager.Instance.Play(SoundEnum.None);
     }
-
-    public static void TutorialLineAppear()
-    {
-        // AudioManager.Instance.Play(SoundEnum.None);
-    }
-
+    
     public static void SceneTransition()
     {
 
