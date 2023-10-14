@@ -20,4 +20,5 @@ public enum SoundEnum
 	start_1 = 9,
 	start_2 = 10,
 	start_3 = 11,
+	hover = 12,
 }

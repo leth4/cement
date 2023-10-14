@@ -28,28 +28,28 @@ MonoBehaviour:
     - Name: ui
       Clips:
       - AudioClip: {fileID: 8300000, guid: f8af4bdebaa5f234eb944520b760f6b4, type: 3}
-        Volume: 1
+        Volume: 0.691
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 1
     - Name: undone
       Clips:
       - AudioClip: {fileID: 8300000, guid: f89b2d9cc5e451543a41dc01bfb9c282, type: 3}
-        Volume: 1
+        Volume: 0.764
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 2
     - Name: win
       Clips:
       - AudioClip: {fileID: 8300000, guid: 1461cd838219673428032f222c16245f, type: 3}
-        Volume: 1
+        Volume: 0.882
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 3
     - Name: next
       Clips:
       - AudioClip: {fileID: 8300000, guid: ceb5285570da9cc4482a666cdb3ddab4, type: 3}
-        Volume: 0.656
+        Volume: 0.544
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 4
@@ -77,7 +77,7 @@ MonoBehaviour:
     - Name: apply
       Clips:
       - AudioClip: {fileID: 8300000, guid: 5fb46292e609ceb4781358b502a84351, type: 3}
-        Volume: 1
+        Volume: 0.77
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 8
@@ -102,5 +102,12 @@ MonoBehaviour:
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 11
+    - Name: hover
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: 3a8adbf3c5826574881fafeb97fb71a0, type: 3}
+        Volume: 0.39
+      HasPitchVariation: 1
+      PitchVariation: 0.02
+      Enum: 12
     Enum: 1
   EnumsAssigned: 1
