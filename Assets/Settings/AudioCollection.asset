@@ -18,12 +18,68 @@ MonoBehaviour:
     - Name: CementCement
       Clips:
       - AudioClip: {fileID: 8300000, guid: 96f10984cd075c74f82216bd2fd5dc67, type: 3}
-        Volume: 1
+        Volume: 0.505
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 0
     Enum: 0
   - Name: Sounds
-    Sounds: []
+    Sounds:
+    - Name: ui
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: f8af4bdebaa5f234eb944520b760f6b4, type: 3}
+        Volume: 1
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 1
+    - Name: undone
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: f89b2d9cc5e451543a41dc01bfb9c282, type: 3}
+        Volume: 1
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 2
+    - Name: win
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: 1461cd838219673428032f222c16245f, type: 3}
+        Volume: 1
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 3
+    - Name: next
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: ceb5285570da9cc4482a666cdb3ddab4, type: 3}
+        Volume: 0.656
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 4
+    - Name: new_card_3
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: 4c9245166f5feb44994f63db303266c7, type: 3}
+        Volume: 0.814
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 5
+    - Name: new_card_2
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: a9632cc42fcc8f2489b789c1790232fb, type: 3}
+        Volume: 0.792
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 6
+    - Name: new_card_1
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: cddb2a54094d8e445bfd37dea875559e, type: 3}
+        Volume: 0.79
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 7
+    - Name: apply
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: 5fb46292e609ceb4781358b502a84351, type: 3}
+        Volume: 1
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 8
     Enum: 1
   EnumsAssigned: 1
