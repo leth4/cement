@@ -6,7 +6,7 @@ public static class AudioReceiver
 {
     public static void StartMusic()
     {
-        // if (!AudioManager.Instance.IsPlaying(SoundEnum.None)) AudioManager.Instance.Play(SoundEnum.None);
+        if (!AudioManager.Instance.IsPlaying(SoundEnum.CementCement)) AudioManager.Instance.Play(SoundEnum.CementCement);
     }
 
     public static void TutorialLineAppear()

@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Channels:
   - Name: Music
-    Sounds: []
+    Sounds:
+    - Name: CementCement
+      Clips:
+      - AudioClip: {fileID: 8300000, guid: 96f10984cd075c74f82216bd2fd5dc67, type: 3}
+        Volume: 1
+      HasPitchVariation: 0
+      PitchVariation: 0
+      Enum: 0
     Enum: 0
   - Name: Sounds
     Sounds: []
