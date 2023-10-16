@@ -18,7 +18,7 @@ MonoBehaviour:
     - Name: CementCement
       Clips:
       - AudioClip: {fileID: 8300000, guid: 96f10984cd075c74f82216bd2fd5dc67, type: 3}
-        Volume: 0.505
+        Volume: 0.4
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     - Name: ui
       Clips:
       - AudioClip: {fileID: 8300000, guid: f8af4bdebaa5f234eb944520b760f6b4, type: 3}
-        Volume: 0.3
+        Volume: 0.27
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 1
@@ -49,14 +49,14 @@ MonoBehaviour:
     - Name: next
       Clips:
       - AudioClip: {fileID: 8300000, guid: ceb5285570da9cc4482a666cdb3ddab4, type: 3}
-        Volume: 0.262
+        Volume: 0.23
       HasPitchVariation: 0
       PitchVariation: 0
       Enum: 4
     - Name: apply
       Clips:
       - AudioClip: {fileID: 8300000, guid: 5fb46292e609ceb4781358b502a84351, type: 3}
-        Volume: 0.5
+        Volume: 0.3
       HasPitchVariation: 1
       PitchVariation: 0.03
       Enum: 5
@@ -84,7 +84,7 @@ MonoBehaviour:
     - Name: hover
       Clips:
       - AudioClip: {fileID: 8300000, guid: 3a8adbf3c5826574881fafeb97fb71a0, type: 3}
-        Volume: 0.22
+        Volume: 0.18
       HasPitchVariation: 1
       PitchVariation: 0.02
       Enum: 9
