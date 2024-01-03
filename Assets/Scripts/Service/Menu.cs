@@ -1,22 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] private Button _tutorialButton;
     [SerializeField] private TMP_Text _levelCounterText;
+    [SerializeField] private Button _tutorialButton;
     [SerializeField] private Button _play3Button;
     [SerializeField] private Button _play4Button;
     [SerializeField] private Button _play5Button;
     [SerializeField] private Slider _musicSlider;
     [SerializeField] private Slider _soundSlider;
     [SerializeField] private SceneTransition _transition;
-    [SerializeField] private Deck _deck;
-
-    private float _musicVolume;
-    private float _soundVolume;
 
     private void Awake()
     {
@@ -29,14 +24,11 @@ public class Menu : MonoBehaviour
         Tutorial.Reset();
         AudioReceiver.StartMusic();
 
-        _musicVolume = DataManager.GameData.MusicVolume;
-        _soundVolume = DataManager.GameData.SoundVolume;
+        _musicSlider.value = DataManager.GameData.MusicVolume;
+        _soundSlider.value = DataManager.GameData.SoundVolume;
 
-        _musicSlider.value = _musicVolume;
-        _soundSlider.value = _soundVolume;
-
-        AudioManager.Instance.SetChannelVolume(ChannelEnum.Music, _musicVolume);
-        AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, _soundVolume);
+        AudioManager.Instance.SetChannelVolume(ChannelEnum.Music, DataManager.GameData.MusicVolume);
+        AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, DataManager.GameData.SoundVolume);
 
         _levelCounterText.SetText($"Cement {DataManager.GameData.Levels3Solved}×{DataManager.GameData.Levels4Solved}×{DataManager.GameData.Levels5Solved}");
     }
@@ -73,7 +65,6 @@ public class Menu : MonoBehaviour
 
     private void HandleSoundSliderValueChanged(float value)
     {
-        _soundVolume = value;
         DataManager.GameData.SoundVolume = value;
         DataManager.Save();
         AudioManager.Instance.SetChannelVolume(ChannelEnum.Sounds, value);

@@ -15,7 +15,7 @@ MonoBehaviour:
   Channels:
   - Name: Music
     Sounds:
-    - Name: CementCement
+    - Name: music
       Clips:
       - AudioClip: {fileID: 8300000, guid: 96f10984cd075c74f82216bd2fd5dc67, type: 3}
         Volume: 0.4

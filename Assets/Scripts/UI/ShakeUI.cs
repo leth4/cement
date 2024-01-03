@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Shake : MonoBehaviour
+public class ShakeUI : MonoBehaviour
 {
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private float _magnitude;
+    
     private Vector3 _initialPosition;
 
     private void Start()

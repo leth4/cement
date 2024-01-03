@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,27 +11,17 @@ public class SceneTransition : MonoBehaviour
 
     private bool _isTransitioning;
 
-    public void GoToMainScene()
-    {
-        if (_isTransitioning) return;
-        _isTransitioning = true;
-        StartCoroutine(TransitionRoutine("Main"));
-        AudioReceiver.SceneTransition();
-    }
+    public void GoToMainScene() => GoToScene("Main");
 
-    public void GoToMenuScene()
-    {
-        if (_isTransitioning) return;
-        _isTransitioning = true;
-        StartCoroutine(TransitionRoutine("Menu"));
-        AudioReceiver.SceneTransition();
-    }
+    public void GoToMenuScene() => GoToScene("Menu");
 
-    public void GoToTutorialScene()
+    public void GoToTutorialScene() => GoToScene("Tutorial");
+
+    private void GoToScene(string sceneName)
     {
         if (_isTransitioning) return;
         _isTransitioning = true;
-        StartCoroutine(TransitionRoutine("Tutorial"));
+        StartCoroutine(TransitionRoutine(sceneName));
         AudioReceiver.SceneTransition();
     }
 

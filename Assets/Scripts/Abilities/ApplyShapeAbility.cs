@@ -8,13 +8,13 @@ public class ApplyShapeAbility : Ability
     [SerializeField] private ApplyShapeType _applyShapeType;
     [SerializeField] public Shape Shape;
 
-    public override bool Apply(Cell[,] grid, Vector2Int coordinates)
+    public override bool Apply(bool[,] grid, Vector2Int coordinates)
     {
         ApplyShape(grid, coordinates, Shape.Offset);
         return true;
     }
 
-    public override bool ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(bool[,] grid)
     {
         var takenCells = GetTakenCells(grid);
 
@@ -22,7 +22,7 @@ public class ApplyShapeAbility : Ability
         {
             var cellIndex = Random.Range(0, takenCells.Count);
             var offset = new Vector2Int(Random.Range(-1, Shape.Grid.GetLength(0) + 1), Random.Range(-1, Shape.Grid.GetLength(1) + 1));
-            var copy = grid.Clone() as Cell[,];
+            var copy = grid.Clone() as bool[,];
             var hasChanged = ApplyShape(copy, takenCells[cellIndex], offset);
             if (hasChanged && GetTakenCells(copy, false).Count != 0)
             {
@@ -34,7 +34,7 @@ public class ApplyShapeAbility : Ability
         return false;
     }
 
-    private bool ApplyShape(Cell[,] grid, Vector2Int cell, Vector2Int offset)
+    private bool ApplyShape(bool[,] grid, Vector2Int cell, Vector2Int offset)
     {
         var shapeSizeX = Shape.Grid.GetLength(0);
         var shapeSizeY = Shape.Grid.GetLength(1);
@@ -45,27 +45,24 @@ public class ApplyShapeAbility : Ability
         {
             for (int j = 0; j < shapeSizeY; j++)
             {
-                if (GridHelper.AreValidCoordinates(grid, cell.x + i - offset.x, cell.y + j - offset.y))
+                if (AreValidCoordinates(grid, cell.x + i - offset.x, cell.y + j - offset.y))
                 {
                     if (Shape.Grid[i, j])
                     {
                         if (_applyShapeType is ApplyShapeType.Add)
                         {
-                            if (!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) hasChanged = true;
-                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(true);
+                            if (!grid[cell.x + i - offset.x, cell.y + j - offset.y]) hasChanged = true;
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y] = true;
                         }
                         if (_applyShapeType is ApplyShapeType.Erase)
                         {
-                            if (AbilityController.Instance.IsPreviewing) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsErasing = true;
-
-                            if (grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) hasChanged = true;
-                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(false);
+                            if (grid[cell.x + i - offset.x, cell.y + j - offset.y]) hasChanged = true;
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y] = false;
                         }
                         if (_applyShapeType is ApplyShapeType.Reverse)
                         {
-                            if (AbilityController.Instance.IsPreviewing && grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken) grid[cell.x + i - offset.x, cell.y + j - offset.y].IsErasing = true;
                             hasChanged = true;
-                            grid[cell.x + i - offset.x, cell.y + j - offset.y].SetTaken(!grid[cell.x + i - offset.x, cell.y + j - offset.y].IsTaken);
+                            grid[cell.x + i - offset.x, cell.y + j - offset.y] = !grid[cell.x + i - offset.x, cell.y + j - offset.y];
                         }
                     }
                 }

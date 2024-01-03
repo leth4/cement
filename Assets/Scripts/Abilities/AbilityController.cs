@@ -11,7 +11,7 @@ public class AbilityController : Singleton<AbilityController>
 
     public void UpdatePreview()
     {
-        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
+        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
         IsPreviewing = true;
         if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
         {
@@ -27,7 +27,7 @@ public class AbilityController : Singleton<AbilityController>
     {
         _border.SetActive(false);
         IsPreviewing = false;
-        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
+        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
         MadeChanges?.Invoke();
     }
 

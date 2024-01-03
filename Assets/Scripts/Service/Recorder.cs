@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Recorder : Singleton<Recorder>
@@ -25,7 +23,7 @@ public class Recorder : Singleton<Recorder>
 
         HandController.Instance.AddCard(lastRecord.Ability, false);
         HandController.Instance.SortCards();
-        GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as Cell[,];
+        GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as bool[,];
 
         if (playSound) AudioReceiver.AbilityUndone();
 
@@ -39,12 +37,12 @@ public class Recorder : Singleton<Recorder>
 
     private struct RecordStruct
     {
-        public Cell[,] Grid;
+        public bool[,] Grid;
         public Ability Ability;
 
-        public RecordStruct(Cell[,] grid, Ability ability)
+        public RecordStruct(bool[,] grid, Ability ability)
         {
-            Grid = GridManager.Instance.PlayerGrid.Clone() as Cell[,];
+            Grid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
             Ability = ability;
         }
     }

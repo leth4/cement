@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class CellRender : MonoBehaviour
@@ -12,12 +8,12 @@ public class CellRender : MonoBehaviour
     [SerializeField] private Sprite _eraseSprite;
     [SerializeField] private Sprite _addSprite;
 
-    public Cell Cell => IsPlayerCell ? GridManager.Instance.PlayerGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
-    public Cell PreviewCell => IsPlayerCell ? GridManager.Instance.PlayerPreviewGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
-    public Vector2Int Coordinates;
+    public bool IsCellTaken => IsPlayerCell ? GridManager.Instance.PlayerGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
+    public bool IsPreviewCellTaken => IsPlayerCell ? GridManager.Instance.PlayerPreviewGrid[Coordinates.x, Coordinates.y] : GridManager.Instance.AnswerGrid[Coordinates.x, Coordinates.y];
 
+    public Vector2Int Coordinates { get; private set; }
     public bool IsPlayerCell { get; private set; }
-    public bool IsPhantom = false;
+    public bool IsPhantom { get; private set; } = false;
 
     private float _appearDelay = 0;
 
@@ -48,14 +44,14 @@ public class CellRender : MonoBehaviour
 
         if (AbilityController.Instance.IsPreviewing && IsPlayerCell)
         {
-            if (PreviewCell.IsTaken) _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _addSprite;
-            else _renderer.sprite = Cell.IsTaken ? _eraseSprite : _defaultSpriteWhite;
+            if (IsPreviewCellTaken) _renderer.sprite = IsCellTaken ? _defaultSpriteBlack : _addSprite;
+            else _renderer.sprite = IsCellTaken ? _eraseSprite : _defaultSpriteWhite;
 
-            if (PreviewCell.IsErasing) _renderer.sprite = _eraseSprite;
+            if (!IsPreviewCellTaken && IsCellTaken) _renderer.sprite = _eraseSprite;
         }
         else
         {
-            _renderer.sprite = Cell.IsTaken ? _defaultSpriteBlack : _defaultSpriteWhite;
+            _renderer.sprite = IsCellTaken ? _defaultSpriteBlack : _defaultSpriteWhite;
         }
     }
 

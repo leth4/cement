@@ -7,19 +7,19 @@ public class MirrorAbility : Ability
 {
     [SerializeField] private MirrorType _mirrorType;
 
-    public override bool Apply(Cell[,] grid, Vector2Int coordinates)
+    public override bool Apply(bool[,] grid, Vector2Int coordinates)
     {
         MirrorGrid(grid);
         return true;
     }
 
-    public override bool ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(bool[,] grid)
     {
         MirrorGrid(grid);
         return true;
     }
 
-    private void MirrorGrid(Cell[,] grid)
+    private void MirrorGrid(bool[,] grid)
     {
         var newlyTaken = new List<Vector2Int>();
         for (int i = 0; i < Size; i++)
@@ -28,17 +28,17 @@ public class MirrorAbility : Ability
             {
                 if (_mirrorType is MirrorType.Horizontal)
                 {
-                    if (grid[i, j].IsTaken && j != Size - j - 1)
+                    if (grid[i, j] && j != Size - j - 1)
                     {
-                        grid[i, Size - j - 1].SetTaken(true, addInteraction: grid[i, j].IsTaken && !newlyTaken.Contains(new(i, j)));
+                        grid[i, Size - j - 1] = true;
                         newlyTaken.Add(new(i, Size - j - 1));
                     }
                 }
                 if (_mirrorType is MirrorType.Vertical)
                 {
-                    if (grid[i, j].IsTaken && i != Size - i - 1)
+                    if (grid[i, j] && i != Size - i - 1)
                     {
-                        grid[Size - i - 1, j].SetTaken(true, addInteraction: grid[i, j].IsTaken && !newlyTaken.Contains(new(i, j)));
+                        grid[Size - i - 1, j] = true;
                         newlyTaken.Add(new(Size - i - 1, j));
                     }
                 }

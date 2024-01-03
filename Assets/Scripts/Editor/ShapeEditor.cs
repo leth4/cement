@@ -11,7 +11,7 @@ public class ShapeEditor : Editor
     private int _currentBrush;
 
     private Color trueColor = new Color(.1f, .1f, .1f);
-    private Color falseColor = new Color(.9f, .9f, .9f);
+    private Color falseColor = new Color(.8f, .8f, .8f);
 
     private void OnEnable()
     {

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,34 +7,27 @@ public abstract class Ability : ScriptableObject
     public bool CanBeFirst = true;
     public int Weight = 3;
     public bool IsFullCanvas;
-    public AbilityType Type;
 
     protected int Size => GridManager.Instance.Size;
 
-    public abstract bool Apply(Cell[,] grid, Vector2Int coordinates);
-    public abstract bool ApplyRandom(Cell[,] grid);
+    public abstract bool Apply(bool[,] grid, Vector2Int coordinates);
+    public abstract bool ApplyRandom(bool[,] grid);
 
-    protected List<Vector2Int> GetTakenCells(Cell[,] grid, bool shuffled = true)
+    protected List<Vector2Int> GetTakenCells(bool[,] grid, bool shuffled = true)
     {
         var takenCells = new List<Vector2Int>();
 
         for (int i = 0; i < Size; i++)
             for (int j = 0; j < Size; j++)
-                if (grid[i, j].IsTaken) takenCells.Add(new(i, j));
+                if (grid[i, j]) takenCells.Add(new(i, j));
 
         if (shuffled) takenCells.Shuffle();
 
         return takenCells;
     }
 
-    public enum AbilityType
+    protected bool AreValidCoordinates(bool[,] grid, int x, int y)
     {
-        Add,
-        Erase,
-        Reverse,
-        Flip,
-        Mirror,
-        Move,
-        Rotate
+        return x >= 0 && x < grid.GetLength(0) && y >= 0 && y < grid.GetLength(1);
     }
 }

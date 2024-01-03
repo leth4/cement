@@ -6,7 +6,7 @@ public static class AudioReceiver
 {
     public static void StartMusic()
     {
-        if (!AudioManager.Instance.IsPlaying(SoundEnum.CementCement)) AudioManager.Instance.Play(SoundEnum.CementCement, 0, true);
+        if (!AudioManager.Instance.IsPlaying(SoundEnum.music)) AudioManager.Instance.Play(SoundEnum.music, 0, true);
     }
 
     public static void SceneTransition()

@@ -7,19 +7,19 @@ public class RotateAbility : Ability
 {
     [SerializeField] private RotateType _rotateType;
 
-    public override bool Apply(Cell[,] grid, Vector2Int coordinates)
+    public override bool Apply(bool[,] grid, Vector2Int coordinates)
     {
         RotateGrid(grid);
         return true;
     }
 
-    public override bool ApplyRandom(Cell[,] grid)
+    public override bool ApplyRandom(bool[,] grid)
     {
         RotateGrid(grid);
         return true;
     }
 
-    private void RotateGrid(Cell[,] grid)
+    private void RotateGrid(bool[,] grid)
     {
         for (int i = 0; i < Size / 2; i++)
         {
@@ -27,28 +27,22 @@ public class RotateAbility : Ability
             {
                 if (_rotateType is RotateType.Clockwise)
                 {
-                    bool isTakenTemp = grid[i, j].IsTaken;
-                    int numberTemp = grid[i, j].Number;
-                    grid[i, j].CopyValuesFrom(grid[Size - 1 - j, i]);
-                    grid[Size - 1 - j, i].CopyValuesFrom(grid[Size - 1 - i, Size - 1 - j]);
-                    grid[Size - 1 - i, Size - 1 - j].CopyValuesFrom(grid[j, Size - 1 - i]);
-                    grid[j, Size - 1 - i].SetNumber(numberTemp);
-                    grid[j, Size - 1 - i].SetTaken(isTakenTemp, addInteraction: isTakenTemp);
+                    bool isTakenTemp = grid[i, j];
+                    grid[i, j] = grid[Size - 1 - j, i];
+                    grid[Size - 1 - j, i] = grid[Size - 1 - i, Size - 1 - j];
+                    grid[Size - 1 - i, Size - 1 - j] = grid[j, Size - 1 - i];
+                    grid[j, Size - 1 - i] = isTakenTemp;
                 }
                 if (_rotateType is RotateType.Anticlockwise)
                 {
-                    bool isTakenTemp = grid[i, j].IsTaken;
-                    int numberTemp = grid[i, j].Number;
-                    grid[i, j].CopyValuesFrom(grid[j, Size - 1 - i]);
-                    grid[j, Size - 1 - i].CopyValuesFrom(grid[Size - 1 - i, Size - 1 - j]);
-                    grid[Size - 1 - i, Size - 1 - j].CopyValuesFrom(grid[Size - 1 - j, i]);
-                    grid[Size - 1 - j, i].SetNumber(numberTemp);
-                    grid[Size - 1 - j, i].SetTaken(isTakenTemp, addInteraction: isTakenTemp);
+                    bool isTakenTemp = grid[i, j];
+                    grid[i, j] = grid[j, Size - 1 - i];
+                    grid[j, Size - 1 - i] = grid[Size - 1 - i, Size - 1 - j];
+                    grid[Size - 1 - i, Size - 1 - j] = grid[Size - 1 - j, i];
+                    grid[Size - 1 - j, i] = isTakenTemp;
                 }
             }
         }
-
-        grid[Size / 2, Size / 2].AddInteraction();
     }
 
     private enum RotateType

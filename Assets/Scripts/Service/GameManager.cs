@@ -30,6 +30,11 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+        HandleInput();
+    }
+
+    private void HandleInput()
+    {
         if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
         if (Input.GetKeyDown(KeyCode.R)) ResetState(true);
 
@@ -50,11 +55,10 @@ public class GameManager : Singleton<GameManager>
     {
         if (playSound) AudioReceiver.AbilityUndone();
 
-        Recorder.Instance.GoBack();
-        Recorder.Instance.GoBack();
-        Recorder.Instance.GoBack();
-        Recorder.Instance.GoBack();
-        Recorder.Instance.GoBack();
+        for (int i = 0; i < LevelCardsCount; i++)
+        {
+            Recorder.Instance.GoBack();
+        }
     }
 
     private void OnSolved()
@@ -75,6 +79,7 @@ public class GameManager : Singleton<GameManager>
             if (LevelCardsCount == 4) DataManager.GameData.Levels4Solved++;
             if (LevelCardsCount == 5) DataManager.GameData.Levels5Solved++;
         }
+
         Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
         Tween.Delay(this, 1, () =>
         {

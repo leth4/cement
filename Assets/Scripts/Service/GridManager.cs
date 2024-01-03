@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
@@ -12,7 +10,6 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private LayerMask _cellLayer;
     [SerializeField] private Vector3 _touchSelectOffset;
     [SerializeField] private int _size;
-    private int _abilitiesApplied => GameManager.LevelCardsCount;
     [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
@@ -21,9 +18,9 @@ public class GridManager : Singleton<GridManager>
     [HideInInspector] public int Size;
     [HideInInspector] public CellRender SelectedCell { get; private set; }
 
-    public Cell[,] PlayerGrid;
-    public Cell[,] PlayerPreviewGrid;
-    public Cell[,] AnswerGrid;
+    public bool[,] PlayerGrid;
+    public bool[,] PlayerPreviewGrid;
+    public bool[,] AnswerGrid;
 
     private List<CellRender> AnswerRenders = new();
     private List<CellRender> PlayerRenders = new();
@@ -39,7 +36,7 @@ public class GridManager : Singleton<GridManager>
         AbilityController.Instance.CallChange();
     }
 
-    public void ShowTutorial(Shape shape, List<Ability> abilities)
+    public void ShowTutorial(Shape tutorialShape, List<Ability> abilities)
     {
         InitializeGrids();
 
@@ -47,12 +44,11 @@ public class GridManager : Singleton<GridManager>
         {
             for (int j = 0; j < Size; j++)
             {
-                if (shape.Grid[i, j]) AnswerGrid[i, j].SetTaken(true, true);
+                if (tutorialShape.Grid[i, j]) AnswerGrid[i, j] = true;
             }
         }
 
         Recorder.Instance.Reset();
-
 
         HandController.Instance.SaveSortedOrder(abilities);
 
@@ -69,45 +65,41 @@ public class GridManager : Singleton<GridManager>
     {
         Size = _size;
 
-        AnswerGrid = new Cell[_size, _size];
-        PlayerGrid = new Cell[_size, _size];
-        PlayerPreviewGrid = new Cell[_size, _size];
+        AnswerGrid = new bool[_size, _size];
+        PlayerGrid = new bool[_size, _size];
+        PlayerPreviewGrid = new bool[_size, _size];
 
-        for (int i = 0; i < _size; i++)
+        for (int i = -1; i <= _size; i++)
         {
-            for (int j = 0; j < _size; j++)
+            for (int j = -1; j <= _size; j++)
             {
-                AnswerGrid[i, j] = new Cell();
-                PlayerGrid[i, j] = new Cell();
-                PlayerPreviewGrid[i, j] = new Cell();
+                bool isPhantomCell = i < 0 || i >= _size || j < 0 || j >= _size;
 
-                var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
-                answerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
-                answerCellRender.Initialize(false, new(i, j), i - j);
-                AnswerRenders.Add(answerCellRender);
+                if (!isPhantomCell)
+                {
+                    var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
+                    answerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
+                    answerCellRender.Initialize(false, new(i, j), i - j);
+                    AnswerRenders.Add(answerCellRender);
+                }
 
                 var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
                 playerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
                 playerCellRender.Initialize(true, new(i, j), i - j);
-                PlayerRenders.Add(playerCellRender);
+
+                if (isPhantomCell)
+                {
+                    playerCellRender.MakePhantom();
+                }
+                else
+                {
+                    PlayerRenders.Add(playerCellRender);
+                }
             }
         }
 
-        var phantomCells = new Vector2Int[] {new(-1,-1), new(-1, 0), new(-1, 1), new(-1, 2), new(-1, 3), new(-1, 4), new(-1, 5),
-                                             new(0,-1), new(1, -1), new(2, -1), new(3, -1), new(4, -1), new(5, -1), new(5,0),
-                                             new(5, 1), new(5, 2), new(5, 3), new(5, 4), new(5, 5), new(0,5), new(1, 5),
-                                             new(2, 5), new(3, 5), new(4, 5)};
-
-        foreach (var phantomCell in phantomCells)
-        {
-            var phantomPlayerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
-            phantomPlayerCellRender.transform.localPosition = new(phantomCell.x - (float)Size / 2 + 0.5f, phantomCell.y - (float)Size / 2 + 0.5f);
-            phantomPlayerCellRender.Initialize(true, phantomCell, 0);
-            phantomPlayerCellRender.MakePhantom();
-        }
-
-        if (!_isTutorialScene) AnswerGrid[_size / 2, _size / 2].SetTaken(true, false);
-        PlayerGrid[_size / 2, _size / 2].SetTaken(true, false);
+        if (!_isTutorialScene) AnswerGrid[_size / 2, _size / 2] = true;
+        PlayerGrid[_size / 2, _size / 2] = true;
     }
 
     public void MakeDisappear()
@@ -123,7 +115,7 @@ public class GridManager : Singleton<GridManager>
     {
         for (int i = 0; i < _size; i++)
             for (int j = 0; j < _size; j++)
-                if (AnswerGrid[i, j].IsTaken != PlayerGrid[i, j].IsTaken) return;
+                if (AnswerGrid[i, j] != PlayerGrid[i, j]) return;
 
         Solved?.Invoke();
     }
@@ -136,12 +128,12 @@ public class GridManager : Singleton<GridManager>
 
         while (true)
         {
-            var gridCopy = AnswerGrid.Clone() as Cell[,];
+            var gridCopy = AnswerGrid.Clone() as bool[,];
 
             abilities = new List<Ability>();
-            var types = new List<Ability.AbilityType>();
+            var types = new List<Type>();
             var shapes = new List<Shape>();
-            for (int i = 0; i < _abilitiesApplied; i++)
+            for (int i = 0; i < GameManager.LevelCardsCount; i++)
             {
                 var ability = GetRandomAbility(i == 0);
 
@@ -151,7 +143,7 @@ public class GridManager : Singleton<GridManager>
                     continue;
                 }
 
-                if (types.Contains(ability.Type) && UnityEngine.Random.Range(0, 4) != 0)
+                if (types.Contains(ability.GetType()) && UnityEngine.Random.Range(0, 4) != 0)
                 {
                     i--;
                     continue;
@@ -171,19 +163,19 @@ public class GridManager : Singleton<GridManager>
                 }
 
                 if (ability is ApplyShapeAbility) shapes.Add(((ApplyShapeAbility)ability).Shape);
-                types.Add(ability.Type);
+                types.Add(ability.GetType());
                 abilities.Add(ability);
             }
 
             var preTakenCells = new List<CellRender>();
             foreach (var cell in AnswerRenders)
             {
-                if (gridCopy[cell.Coordinates.x, cell.Coordinates.y].IsTaken) preTakenCells.Add(cell);
+                if (gridCopy[cell.Coordinates.x, cell.Coordinates.y]) preTakenCells.Add(cell);
             }
 
             if (preTakenCells.Count > 4)
             {
-                AnswerGrid = gridCopy.Clone() as Cell[,];
+                AnswerGrid = gridCopy.Clone() as bool[,];
                 break;
             }
         }
