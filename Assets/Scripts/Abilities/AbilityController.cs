@@ -7,7 +7,7 @@ public class AbilityController : Singleton<AbilityController>
 
     [SerializeField] private GameObject _border;
 
-    public bool IsPreviewing = false;
+    public bool IsPreviewing { get; private set; } = false;
 
     public void UpdatePreview()
     {

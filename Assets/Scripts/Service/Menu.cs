@@ -21,7 +21,6 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-        Tutorial.Reset();
         AudioReceiver.StartMusic();
 
         _musicSlider.value = DataManager.GameData.MusicVolume;

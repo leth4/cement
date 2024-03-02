@@ -167,8 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed4327e2b9dfe548acef4fdc50e3419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelGenerator: {fileID: 0}
   _menuButton: {fileID: 504765003}
-  hintButton: {fileID: 314902147}
+  _hintButton: {fileID: 314902147}
   _extraCardsText: {fileID: 0}
   _newCardPanel: {fileID: 2006435298}
   _newCardImage: {fileID: 911359500}
@@ -176,6 +177,7 @@ MonoBehaviour:
   _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
   _transition: {fileID: 1944295206}
   _isTutorial: 1
+  _tutorial: {fileID: 823886392}
   _doubleTapThreshold: 0.3
 --- !u!1 &307820404
 GameObject:
@@ -215,9 +217,7 @@ MonoBehaviour:
   _numbersToPreview: 3
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}
-  _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
   Size: 0
-  _isTutorialScene: 1
 --- !u!4 &307820406
 Transform:
   m_ObjectHideFlags: 0
@@ -1638,7 +1638,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _border: {fileID: 485049655}
-  IsPreviewing: 0
 --- !u!1 &1766624305
 GameObject:
   m_ObjectHideFlags: 0

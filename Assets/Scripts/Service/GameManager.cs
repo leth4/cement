@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,8 +8,9 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private LevelGenerator _levelGenerator;
     [SerializeField] private Button _menuButton;
-    [SerializeField] private Button hintButton;
+    [SerializeField] private Button _hintButton;
     [SerializeField] private GameObject _extraCardsText;
     [SerializeField] private ClickablePanel _newCardPanel;
     [SerializeField] private Image _newCardImage;
@@ -16,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Deck _deck;
     [SerializeField] private SceneTransition _transition;
     [SerializeField] private bool _isTutorial = false;
+    [SerializeField] private Tutorial _tutorial;
     [SerializeField] private float _doubleTapThreshold = 0.3f;
 
     public static int LevelCardsCount = 4;
@@ -27,6 +30,11 @@ public class GameManager : Singleton<GameManager>
     public bool IsSolved { get; private set; } = false;
 
     private float _timeSinceLastTap = 10;
+
+    private void Start()
+    {
+        GenerateNewLevel();
+    }
 
     private void Update()
     {
@@ -46,9 +54,34 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void RestartScene()
+    private void GenerateNewLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        IsSolved = false;
+        _usedHint = false;
+        _hintButton.interactable = true;
+        Recorder.Instance.Reset();
+
+        if (_isTutorial)
+        {
+            var level = _tutorial.NextStage();
+            GridManager.Instance.InitializeGrids(level.Grid);
+            SetAbilities(level.Abilities);
+        }
+        else
+        {
+            var level = _levelGenerator.GenerateRandomLevel(LevelCardsCount);
+            GridManager.Instance.InitializeGrids(level.Grid);
+            SetAbilities(level.Abilities);
+        }
+    }
+
+    private void SetAbilities(List<Ability> abilities)
+    {
+        HandController.Instance.SaveSortedOrder(abilities);
+        abilities.Shuffle();
+        AudioReceiver.CardAdded();
+        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
+        AbilityController.Instance.CallChange();
     }
 
     private void ResetState(bool playSound)
@@ -91,19 +124,18 @@ public class GameManager : Singleton<GameManager>
             {
                 DataManager.Save();
 
-                if (_isTutorial && Tutorial.IsLastStage)
+                if (_isTutorial && _tutorial.IsLastStage)
                 {
                     if (!DataManager.GameData.ShownTutorial)
                     {
                         DataManager.GameData.ShownTutorial = true;
                         DataManager.Save();
                     }
-                    Tutorial.Reset();
                     _transition.GoToMenuScene();
                 }
                 else
                 {
-                    RestartScene();
+                    GenerateNewLevel();
                 }
             }
         });
@@ -128,7 +160,7 @@ public class GameManager : Singleton<GameManager>
     private void HandleNewCardPanelClick()
     {
         _newCardPanel.gameObject.SetActive(false);
-        RestartScene();
+        GenerateNewLevel();
     }
 
     private void HandleMenuClick()
@@ -142,7 +174,7 @@ public class GameManager : Singleton<GameManager>
         AudioReceiver.ButtonPressed();
         SortCards?.Invoke();
         _usedHint = true;
-        hintButton.interactable = false;
+        _hintButton.interactable = false;
         ResetState(false);
     }
 
@@ -150,7 +182,7 @@ public class GameManager : Singleton<GameManager>
     {
         GridManager.Solved += OnSolved;
         _menuButton.onClick.AddListener(HandleMenuClick);
-        hintButton.onClick.AddListener(HandleHintClick);
+        _hintButton.onClick.AddListener(HandleHintClick);
         _newCardPanel.OnClick += HandleNewCardPanelClick;
     }
 
@@ -158,7 +190,7 @@ public class GameManager : Singleton<GameManager>
     {
         GridManager.Solved -= OnSolved;
         _menuButton.onClick.RemoveListener(HandleMenuClick);
-        hintButton.onClick.RemoveListener(HandleHintClick);
+        _hintButton.onClick.RemoveListener(HandleHintClick);
         _newCardPanel.OnClick -= HandleNewCardPanelClick;
     }
 }

@@ -9,30 +9,20 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private SceneTransition _transition;
     [SerializeField] private GameObject _hintButton;
 
-    private static int _stage = 0;
-    public static bool IsLastStage = false;
+    private int _stage = 0;
+    public bool IsLastStage => _stage >= _levels.Count;
 
-    public static void Reset()
-    {
-        _stage = 0;
-        IsLastStage = false;
-    }
-
-    public void Start()
+    public Level NextStage()
     {
         var level = _levels[_stage];
-        _stage++;
-
-        if (_stage >= _levels.Count) IsLastStage = true;
 
         _tutorialText.SetText(Application.isMobilePlatform ? level.TextMobile : level.TextComputer);
 
-        if (!level.ShowHint)
-        {
-            _hintButton.SetActive(false);
-        }
-        GameManager.LevelCardsCount = level.Abilities.Count;
-        GridManager.Instance.ShowTutorial(level.Shape, level.Abilities);
+        _hintButton.SetActive(level.ShowHint);
+
+        _stage++;
+
+        return new Level() { Abilities = level.Abilities, Grid = level.Shape.Grid };
     }
 
     [System.Serializable]

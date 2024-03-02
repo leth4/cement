@@ -324,8 +324,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed4327e2b9dfe548acef4fdc50e3419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelGenerator: {fileID: 1376987023}
   _menuButton: {fileID: 549428653}
-  hintButton: {fileID: 1343240217}
+  _hintButton: {fileID: 1343240217}
   _extraCardsText: {fileID: 10298645}
   _newCardPanel: {fileID: 1602349686}
   _newCardImage: {fileID: 821614285}
@@ -333,6 +334,7 @@ MonoBehaviour:
   _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
   _transition: {fileID: 1944295206}
   _isTutorial: 0
+  _tutorial: {fileID: 0}
   _doubleTapThreshold: 0.3
 --- !u!1 &186872724
 GameObject:
@@ -580,9 +582,6 @@ MonoBehaviour:
   _numbersToPreview: 3
   _answerGridContainer: {fileID: 1094931948}
   _playerGridContainer: {fileID: 394294068}
-  _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
-  Size: 0
-  _isTutorialScene: 0
 --- !u!4 &307820406
 Transform:
   m_ObjectHideFlags: 0
@@ -1468,6 +1467,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343240215}
   m_CullTransparentMesh: 1
+--- !u!1 &1376987021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1376987022}
+  - component: {fileID: 1376987023}
+  m_Layer: 0
+  m_Name: LevelGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1376987022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376987021}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1921605537}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1376987023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376987021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cfe113ce30b8b4f964c53fb58090e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deck: {fileID: 11400000, guid: bc8e43bf9be077f42b4a1b873130e111, type: 2}
+  _minTakenCells: 5
+  _repeatTypeChance: 0.25
+  _repeatShapeChance: 0.33
 --- !u!1 &1424200781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,7 +1851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _border: {fileID: 485049655}
-  IsPreviewing: 0
 --- !u!1 &1921605536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1884,7 @@ Transform:
   - {fileID: 1684478422}
   - {fileID: 1424200782}
   - {fileID: 1944295205}
+  - {fileID: 1376987022}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

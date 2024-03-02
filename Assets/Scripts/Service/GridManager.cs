@@ -6,6 +6,8 @@ public class GridManager : Singleton<GridManager>
 {
     public static event Action Solved;
 
+    public int Size => _size;
+
     [SerializeField] private CellRender _cellPrefab;
     [SerializeField] private LayerMask _cellLayer;
     [SerializeField] private Vector3 _touchSelectOffset;
@@ -13,9 +15,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private int _numbersToPreview;
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
-    [SerializeField] private Deck _deck;
 
-    [HideInInspector] public int Size;
     [HideInInspector] public CellRender SelectedCell { get; private set; }
 
     public bool[,] PlayerGrid;
@@ -25,47 +25,14 @@ public class GridManager : Singleton<GridManager>
     private List<CellRender> AnswerRenders = new();
     private List<CellRender> PlayerRenders = new();
 
-    [SerializeField] public bool _isTutorialScene = false;
-
-    private void Start()
+    public void InitializeGrids(bool[,] shape)
     {
-        if (_isTutorialScene) return;
+        AnswerRenders.ForEach(cell => Destroy(cell.gameObject));
+        PlayerRenders.ForEach(cell => Destroy(cell.gameObject));
+        AnswerRenders = new();
+        PlayerRenders = new();
 
-        InitializeGrids();
-        ActivateRandomAbilities();
-        AbilityController.Instance.CallChange();
-    }
-
-    public void ShowTutorial(Shape tutorialShape, List<Ability> abilities)
-    {
-        InitializeGrids();
-
-        for (int i = 0; i < Size; i++)
-        {
-            for (int j = 0; j < Size; j++)
-            {
-                if (tutorialShape.Grid[i, j]) AnswerGrid[i, j] = true;
-            }
-        }
-
-        Recorder.Instance.Reset();
-
-        HandController.Instance.SaveSortedOrder(abilities);
-
-        if (abilities.Count > 2) abilities.Reverse();
-
-        AudioReceiver.CardAdded();
-
-        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
-
-        AbilityController.Instance.CallChange();
-    }
-
-    private void InitializeGrids(bool showNumbers = true)
-    {
-        Size = _size;
-
-        AnswerGrid = new bool[_size, _size];
+        AnswerGrid = shape.Clone() as bool[,];
         PlayerGrid = new bool[_size, _size];
         PlayerPreviewGrid = new bool[_size, _size];
 
@@ -98,7 +65,6 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
-        if (!_isTutorialScene) AnswerGrid[_size / 2, _size / 2] = true;
         PlayerGrid[_size / 2, _size / 2] = true;
     }
 
@@ -118,77 +84,6 @@ public class GridManager : Singleton<GridManager>
                 if (AnswerGrid[i, j] != PlayerGrid[i, j]) return;
 
         Solved?.Invoke();
-    }
-
-    private void ActivateRandomAbilities()
-    {
-        Recorder.Instance.Reset();
-
-        var abilities = new List<Ability>();
-
-        while (true)
-        {
-            var gridCopy = AnswerGrid.Clone() as bool[,];
-
-            abilities = new List<Ability>();
-            var types = new List<Type>();
-            var shapes = new List<Shape>();
-            for (int i = 0; i < GameManager.LevelCardsCount; i++)
-            {
-                var ability = GetRandomAbility(i == 0);
-
-                if (abilities.Contains(ability))
-                {
-                    i--;
-                    continue;
-                }
-
-                if (types.Contains(ability.GetType()) && UnityEngine.Random.Range(0, 4) != 0)
-                {
-                    i--;
-                    continue;
-                }
-
-                if (ability is ApplyShapeAbility && shapes.Contains(((ApplyShapeAbility)ability).Shape) && UnityEngine.Random.Range(0, 3) != 0)
-                {
-                    i--;
-                    continue;
-                }
-
-                var applied = ability.ApplyRandom(gridCopy);
-                if (!applied)
-                {
-                    i--;
-                    continue;
-                }
-
-                if (ability is ApplyShapeAbility) shapes.Add(((ApplyShapeAbility)ability).Shape);
-                types.Add(ability.GetType());
-                abilities.Add(ability);
-            }
-
-            var preTakenCells = new List<CellRender>();
-            foreach (var cell in AnswerRenders)
-            {
-                if (gridCopy[cell.Coordinates.x, cell.Coordinates.y]) preTakenCells.Add(cell);
-            }
-
-            if (preTakenCells.Count > 4)
-            {
-                AnswerGrid = gridCopy.Clone() as bool[,];
-                break;
-            }
-        }
-
-        HandController.Instance.SaveSortedOrder(abilities);
-
-        abilities.Shuffle();
-
-        AudioReceiver.CardAdded();
-
-        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
-
-        AbilityController.Instance.CallChange();
     }
 
     public void Update()
@@ -228,27 +123,6 @@ public class GridManager : Singleton<GridManager>
 
     public void Activate(Ability ability) => ability.ApplyRandom(AnswerGrid);
 
-    private Ability GetRandomAbility(bool isFirst)
-    {
-        float weightSum = 0;
-        foreach (var ability in _deck.Abilities)
-            if (!isFirst || ability.CanBeFirst) weightSum += ability.Weight;
-
-        float randomWeight = UnityEngine.Random.Range(0, weightSum);
-
-        float currentWeight = 0;
-
-        foreach (var ability in _deck.Abilities)
-        {
-            if (isFirst && !ability.CanBeFirst) continue;
-            currentWeight += ability.Weight;
-            if (randomWeight <= currentWeight)
-                return ability;
-        }
-
-        return null;
-    }
-
     private void OnEnable()
     {
         AbilityController.MadeChanges += CheckWin;
@@ -257,13 +131,5 @@ public class GridManager : Singleton<GridManager>
     private void OnDisable()
     {
         AbilityController.MadeChanges -= CheckWin;
-    }
-
-    [System.Serializable]
-    private struct AbilityWeight
-    {
-        public Ability Ability;
-        public float Weight;
-        public float WeightFirst;
     }
 }
