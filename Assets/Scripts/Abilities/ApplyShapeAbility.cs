@@ -8,10 +8,9 @@ public class ApplyShapeAbility : Ability
     [SerializeField] private ApplyShapeType _applyShapeType;
     [SerializeField] public Shape Shape;
 
-    public override bool Apply(bool[,] grid, Vector2Int coordinates)
+    public override void Apply(bool[,] grid, Vector2Int coordinates)
     {
         ApplyShape(grid, coordinates, Shape.Offset);
-        return true;
     }
 
     public override bool ApplyRandom(bool[,] grid)

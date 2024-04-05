@@ -32,13 +32,11 @@ public class HandController : Singleton<HandController>
     private Vector3 _previousDraggedPosition;
 
     private float _cardAngleDelta;
-    private int _cardsCount;
 
     public Ability ActiveAbility => _draggedCard?.GetComponent<AbilityCard>().Ability;
     public bool HasCardsLeft => Hand.Count > 0;
     public int CardsLeft => Hand.Count;
 
-    private bool _isSorted = false;
     private List<Ability> _abilityOrder;
 
     public void SaveSortedOrder(List<Ability> order)
@@ -48,8 +46,6 @@ public class HandController : Singleton<HandController>
 
     public void SortCards()
     {
-        if (!_isSorted) return;
-
         var newHand = new List<Transform>();
         foreach (var ability in _abilityOrder)
         {
@@ -69,21 +65,14 @@ public class HandController : Singleton<HandController>
         Hand = newHand;
     }
 
-    private void SortCardsFirst()
+    public void AddCard(Ability ability, int delayIndex = 0)
     {
-        _isSorted = true;
-        SortCards();
+        StartCoroutine(CardAppearRoutine(ability, _appearDelaySeconds * delayIndex));
     }
 
-    public void AddCard(Ability ability, bool delay = true)
+    private IEnumerator CardAppearRoutine(Ability ability, float delay)
     {
-        StartCoroutine(CardAppearRoutine(ability, delay));
-        _cardsCount++;
-    }
-
-    private IEnumerator CardAppearRoutine(Ability ability, bool delay)
-    {
-        if (delay) yield return new WaitForSeconds(_appearDelaySeconds * _cardsCount);
+        yield return new WaitForSeconds(_appearDelaySeconds);
         var newCard = Instantiate(_cardPrefab, transform);
         newCard.transform.position -= Vector3.up * 3;
         newCard.Initialize(ability);
@@ -94,12 +83,11 @@ public class HandController : Singleton<HandController>
     {
         _cardAngleDelta = Mathf.Max(_minCardAngleDelta, _maxCardsAngle / Hand.Count);
 
-        var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 1000, _cardLayer);
+        var raycastHit = Physics2D.Raycast(Helper.MainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 1000, _cardLayer);
 
-        if (!_draggedCard && hit.collider != null)
+        if (_draggedCard == null && raycastHit.collider != null)
         {
-            var newSelectedCardIndex = Hand.IndexOf(hit.transform);
-            _selectedCardIndex = newSelectedCardIndex;
+            _selectedCardIndex = Hand.IndexOf(raycastHit.transform);
         }
         else
         {
@@ -108,27 +96,23 @@ public class HandController : Singleton<HandController>
 
         for (int i = 0; i < Hand.Count; i++)
         {
-            if (i == _selectedCardIndex) continue;
-            Hand[i].localScale = Vector3.Lerp(Hand[i].localScale, Vector3.one, Time.deltaTime * _scaleSpeed);
-            Hand[i].localPosition = Vector3.Lerp(Hand[i].localPosition, IdealPositionByIndex(i), Time.deltaTime * _translationSpeed);
-            Hand[i].localRotation = Quaternion.Lerp(Hand[i].localRotation, Quaternion.AngleAxis(IdealRotationByIndex(i), Vector3.forward), Time.deltaTime * _rotationSpeed);
-        }
-
-        if (_selectedCardIndex != -1)
-        {
-            Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, IdealPositionByIndex(_selectedCardIndex).SetZ(-0.6f) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
-            Hand[_selectedCardIndex].localRotation = Quaternion.Lerp(Hand[_selectedCardIndex].localRotation, Quaternion.identity, Time.deltaTime * _rotationSpeed);
-            Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, Vector3.one * _selectionScale, Time.deltaTime * _scaleSpeed);
-
-            if (Input.GetMouseButtonDown(0))
+            if (i == _selectedCardIndex)
             {
-                HandleDragStart();
+                Hand[_selectedCardIndex].localScale = Vector3.Lerp(Hand[_selectedCardIndex].localScale, Vector3.one * _selectionScale, Time.deltaTime * _scaleSpeed);
+                Hand[_selectedCardIndex].localPosition = Vector3.Lerp(Hand[_selectedCardIndex].localPosition, GetTargetPositionByIndex(_selectedCardIndex).SetZ(-0.6f) + Vector3.up * _selectionHeight, Time.deltaTime * _translationSpeed);
+                Hand[_selectedCardIndex].localRotation = Quaternion.Lerp(Hand[_selectedCardIndex].localRotation, Quaternion.identity, Time.deltaTime * _rotationSpeed);
+            }
+            else
+            {
+                Hand[i].localScale = Vector3.Lerp(Hand[i].localScale, Vector3.one, Time.deltaTime * _scaleSpeed);
+                Hand[i].localPosition = Vector3.Lerp(Hand[i].localPosition, GetTargetPositionByIndex(i), Time.deltaTime * _translationSpeed);
+                Hand[i].localRotation = Quaternion.Lerp(Hand[i].localRotation, Quaternion.AngleAxis(GetTargetRotationByIndex(i), Vector3.forward), Time.deltaTime * _rotationSpeed);
             }
         }
 
-        if (!_draggedCard && hit.collider == null && !GameManager.Instance.IsSolved)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack(true);
+            HandleDragStart();
         }
 
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(1))
@@ -136,18 +120,22 @@ public class HandController : Singleton<HandController>
             HandleDragEnd();
         }
 
+        if (_draggedCard == null && raycastHit.collider == null && !GameManager.Instance.IsLevelSolved)
+        {
+            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) Recorder.Instance.GoBack(true);
+        }
     }
 
     public void RemoveAllCards()
     {
-        foreach (var card in Hand) card.GetComponent<AbilityCard>().MoveAway();
+        Hand.ForEach(card => card.GetComponent<AbilityCard>().MoveAway());
         Hand = new();
-        _cardsCount = 0;
         _draggedCard = null;
     }
 
     private void HandleDragStart()
     {
+        if (_selectedCardIndex == -1) return;
         _draggedCard = Hand[_selectedCardIndex];
         Hand.RemoveAt(_selectedCardIndex);
         _draggedCardInitialIndex = _selectedCardIndex;
@@ -156,44 +144,35 @@ public class HandController : Singleton<HandController>
 
     public void DestroyDraggedCard()
     {
-        Hand.Remove(_draggedCard);
-        _cardsCount--;
         _draggedCard.GetComponent<AbilityCard>().MoveAway();
         _draggedCard = null;
     }
 
     private void HandleDragEnd()
     {
-        if (Input.GetMouseButtonUp(0)) AbilityController.Instance.TryApplyingAbility();
+        if (Input.GetMouseButtonUp(0)) AbilityController.Instance.ApplyAbility();
+
         if (_draggedCard != null)
         {
             Hand.Insert(_draggedCardInitialIndex, _draggedCard);
             _draggedCard = null;
         }
+
         AbilityController.Instance.StopPreview();
     }
 
-    private Vector3 IdealPositionByIndex(int index)
+    private Vector3 GetTargetPositionByIndex(int index)
     {
-        var angle = IdealRotationByIndex(index);
+        var angle = GetTargetRotationByIndex(index);
+
         float x = -_arcRadius * Mathf.Sin(Mathf.Deg2Rad * angle);
         float y = _arcRadius * Mathf.Cos(Mathf.Deg2Rad * angle) - _arcRadius;
 
         return new(x, y, index * -0.01f);
     }
 
-    private float IdealRotationByIndex(int index)
+    private float GetTargetRotationByIndex(int index)
     {
         return (index - (float)Hand.Count / 2 + 0.5f) * _cardAngleDelta;
-    }
-
-    private void OnEnable()
-    {
-        GameManager.SortCards += SortCardsFirst;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.SortCards -= SortCardsFirst;
     }
 }

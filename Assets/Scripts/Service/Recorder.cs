@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Recorder : Singleton<Recorder>
 {
@@ -21,8 +22,8 @@ public class Recorder : Singleton<Recorder>
         var lastRecord = _records[^1];
         _records.RemoveAt(_records.Count - 1);
 
-        HandController.Instance.AddCard(lastRecord.Ability, false);
-        HandController.Instance.SortCards();
+        HandController.Instance.AddCard(lastRecord.Ability);
+        if (GameManager.Instance.UsedHint) HandController.Instance.SortCards();
         GridManager.Instance.PlayerGrid = lastRecord.Grid.Clone() as bool[,];
 
         if (playSound) AudioReceiver.AbilityUndone();

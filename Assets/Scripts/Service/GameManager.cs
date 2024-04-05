@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
@@ -19,72 +16,39 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private SceneTransition _transition;
     [SerializeField] private bool _isTutorial = false;
     [SerializeField] private Tutorial _tutorial;
-    [SerializeField] private float _doubleTapThreshold = 0.3f;
 
     public static int LevelCardsCount = 4;
 
-    public static event Action SortCards;
-
-    private bool _usedHint;
-
-    public bool IsSolved { get; private set; } = false;
-
-    private float _timeSinceLastTap = 10;
+    public bool UsedHint { get; private set; }
+    public bool IsLevelSolved { get; private set; }
 
     private void Start()
     {
         GenerateNewLevel();
     }
 
-    private void Update()
-    {
-        HandleInput();
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape)) HandleMenuClick();
-        if (Input.GetKeyDown(KeyCode.R)) ResetState(true);
-
-        _timeSinceLastTap += Time.unscaledDeltaTime;
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            if (_timeSinceLastTap < _doubleTapThreshold) ResetState(LevelCardsCount != HandController.Instance.CardsLeft);
-            _timeSinceLastTap = 0;
-        }
-    }
-
     private void GenerateNewLevel()
     {
-        IsSolved = false;
-        _usedHint = false;
+        IsLevelSolved = false;
+        UsedHint = false;
         _hintButton.interactable = true;
         Recorder.Instance.Reset();
 
-        if (_isTutorial)
-        {
-            var level = _tutorial.NextStage();
-            GridManager.Instance.InitializeGrids(level.Grid);
-            SetAbilities(level.Abilities);
-        }
-        else
-        {
-            var level = _levelGenerator.GenerateRandomLevel(LevelCardsCount);
-            GridManager.Instance.InitializeGrids(level.Grid);
-            SetAbilities(level.Abilities);
-        }
-    }
+        var level = _isTutorial ? _tutorial.NextStage() : _levelGenerator.GenerateRandomLevel(LevelCardsCount);
 
-    private void SetAbilities(List<Ability> abilities)
-    {
-        HandController.Instance.SaveSortedOrder(abilities);
-        abilities.Shuffle();
+        GridManager.Instance.InitializeGrids(level.Grid);
+        HandController.Instance.SaveSortedOrder(level.Abilities);
+
+        level.Abilities.Shuffle();
         AudioReceiver.CardAdded();
-        foreach (var ability in abilities) HandController.Instance.AddCard(ability);
-        AbilityController.Instance.CallChange();
+
+        for (int i = 0; i < level.Abilities.Count; i++)
+        {
+            HandController.Instance.AddCard(level.Abilities[i], i);
+        }
     }
 
-    private void ResetState(bool playSound)
+    public void ResetLevel(bool playSound)
     {
         if (playSound) AudioReceiver.AbilityUndone();
 
@@ -94,10 +58,10 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void OnSolved()
+    private void HandleLevelSolved()
     {
-        if (IsSolved) return;
-        IsSolved = true;
+        if (IsLevelSolved) return;
+        IsLevelSolved = true;
 
         if (HandController.Instance.HasCardsLeft && !_isTutorial)
         {
@@ -106,17 +70,18 @@ public class GameManager : Singleton<GameManager>
         }
 
         AudioReceiver.LevelSolved();
-        if (!_usedHint && !_isTutorial)
+
+        if (!UsedHint && !_isTutorial)
         {
             if (LevelCardsCount == 3) DataManager.GameData.Levels3Solved++;
             if (LevelCardsCount == 4) DataManager.GameData.Levels4Solved++;
             if (LevelCardsCount == 5) DataManager.GameData.Levels5Solved++;
         }
 
-        Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeDisappear());
+        Tween.Delay(this, 0.3f, () => GridManager.Instance.MakeGridsDisappear());
         Tween.Delay(this, 1, () =>
         {
-            if (!_usedHint && !_isTutorial && DataManager.GameData.LevelsSolved % 2 == 1 && DataManager.GameData.UnlockedCards.Count != _deck.Abilities.Count)
+            if (!UsedHint && !_isTutorial && DataManager.GameData.LevelsSolved % 2 == 1 && DataManager.GameData.UnlockedCards.Count != _deck.Abilities.Count)
             {
                 UnlockNewCard();
             }
@@ -163,7 +128,7 @@ public class GameManager : Singleton<GameManager>
         GenerateNewLevel();
     }
 
-    private void HandleMenuClick()
+    public void HandleMenuClick()
     {
         AudioReceiver.ButtonPressed();
         _transition.GoToMenuScene();
@@ -172,15 +137,15 @@ public class GameManager : Singleton<GameManager>
     private void HandleHintClick()
     {
         AudioReceiver.ButtonPressed();
-        SortCards?.Invoke();
-        _usedHint = true;
+        UsedHint = true;
+        HandController.Instance.SortCards();
         _hintButton.interactable = false;
-        ResetState(false);
+        ResetLevel(false);
     }
 
     private void OnEnable()
     {
-        GridManager.Solved += OnSolved;
+        GridManager.OnSolved += HandleLevelSolved;
         _menuButton.onClick.AddListener(HandleMenuClick);
         _hintButton.onClick.AddListener(HandleHintClick);
         _newCardPanel.OnClick += HandleNewCardPanelClick;
@@ -188,7 +153,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnDisable()
     {
-        GridManager.Solved -= OnSolved;
+        GridManager.OnSolved -= HandleLevelSolved;
         _menuButton.onClick.RemoveListener(HandleMenuClick);
         _hintButton.onClick.RemoveListener(HandleHintClick);
         _newCardPanel.OnClick -= HandleNewCardPanelClick;

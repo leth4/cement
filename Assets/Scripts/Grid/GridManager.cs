@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    public static event Action Solved;
+    public static event Action OnSolved;
 
     public int Size => _size;
 
@@ -16,7 +16,7 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] private Transform _answerGridContainer;
     [SerializeField] private Transform _playerGridContainer;
 
-    [HideInInspector] public CellRender SelectedCell { get; private set; }
+    public CellRender LastSelectedCell { get; private set; }
 
     public bool[,] PlayerGrid;
     public bool[,] PlayerPreviewGrid;
@@ -46,29 +46,24 @@ public class GridManager : Singleton<GridManager>
                 {
                     var answerCellRender = Instantiate(_cellPrefab, _answerGridContainer);
                     answerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
-                    answerCellRender.Initialize(false, new(i, j), i - j);
+                    answerCellRender.Initialize(false, new(i, j), i - j, isPhantomCell);
                     AnswerRenders.Add(answerCellRender);
                 }
 
                 var playerCellRender = Instantiate(_cellPrefab, _playerGridContainer);
                 playerCellRender.transform.localPosition = new(i - (float)Size / 2 + 0.5f, j - (float)Size / 2 + 0.5f);
-                playerCellRender.Initialize(true, new(i, j), i - j);
-
-                if (isPhantomCell)
-                {
-                    playerCellRender.MakePhantom();
-                }
-                else
-                {
-                    PlayerRenders.Add(playerCellRender);
-                }
+                playerCellRender.Initialize(true, new(i, j), i - j, isPhantomCell);
+                if (!isPhantomCell) PlayerRenders.Add(playerCellRender);
             }
         }
 
         PlayerGrid[_size / 2, _size / 2] = true;
+
+        PlayerRenders.ForEach(cell => cell.Render());
+        AnswerRenders.ForEach(cell => cell.Render());
     }
 
-    public void MakeDisappear()
+    public void MakeGridsDisappear()
     {
         for (int i = 0; i < AnswerRenders.Count; i++)
         {
@@ -77,16 +72,21 @@ public class GridManager : Singleton<GridManager>
         }
     }
 
-    private void CheckWin()
+    private void CheckSolution()
     {
         for (int i = 0; i < _size; i++)
             for (int j = 0; j < _size; j++)
                 if (AnswerGrid[i, j] != PlayerGrid[i, j]) return;
 
-        Solved?.Invoke();
+        OnSolved?.Invoke();
     }
 
     public void Update()
+    {
+        HandleCellSelection();
+    }
+
+    private void HandleCellSelection()
     {
         var deviceOffset = Application.isMobilePlatform ? _touchSelectOffset : Vector3.zero;
 
@@ -94,8 +94,8 @@ public class GridManager : Singleton<GridManager>
 
         if (hit.collider == null)
         {
-            if (SelectedCell != null) AbilityController.Instance.StopPreview();
-            SelectedCell = null;
+            if (LastSelectedCell != null) AbilityController.Instance.StopPreview();
+            LastSelectedCell = null;
             return;
         }
 
@@ -103,33 +103,31 @@ public class GridManager : Singleton<GridManager>
 
         if (!cellRender.IsPlayerCell)
         {
-            if (SelectedCell != null) AbilityController.Instance.StopPreview();
-            SelectedCell = null;
+            if (LastSelectedCell != null) AbilityController.Instance.StopPreview();
+            LastSelectedCell = null;
             return;
         }
 
         if (cellRender.IsPhantom && HandController.Instance.ActiveAbility && HandController.Instance.ActiveAbility.IsFullCanvas)
         {
-            if (SelectedCell != null) AbilityController.Instance.StopPreview();
-            SelectedCell = null;
+            if (LastSelectedCell != null) AbilityController.Instance.StopPreview();
+            LastSelectedCell = null;
             return;
         }
 
-        bool isNewCell = SelectedCell != cellRender;
-        SelectedCell = cellRender;
+        bool isNewCell = LastSelectedCell != cellRender;
+        LastSelectedCell = cellRender;
 
         if (isNewCell) AbilityController.Instance.UpdatePreview();
     }
 
-    public void Activate(Ability ability) => ability.ApplyRandom(AnswerGrid);
-
     private void OnEnable()
     {
-        AbilityController.MadeChanges += CheckWin;
+        AbilityController.OnMadeChanges += CheckSolution;
     }
 
     private void OnDisable()
     {
-        AbilityController.MadeChanges -= CheckWin;
+        AbilityController.OnMadeChanges -= CheckSolution;
     }
 }

@@ -5,10 +5,9 @@ public class MoveAbility : Ability
 {
     [SerializeField] private Direction _direction;
 
-    public override bool Apply(bool[,] grid, Vector2Int coordinates)
+    public override void Apply(bool[,] grid, Vector2Int coordinates)
     {
         MoveGrid(grid);
-        return true;
     }
 
     public override bool ApplyRandom(bool[,] grid)
@@ -21,40 +20,40 @@ public class MoveAbility : Ability
     {
         if (_direction is Direction.Right)
         {
-            for (int i = Size - 1; i >= 1; i--)
-                for (int j = 0; j < Size; j++)
+            for (int i = GridSize - 1; i >= 1; i--)
+                for (int j = 0; j < GridSize; j++)
                     grid[i, j] = grid[i - 1, j];
 
-            for (int j = 0; j < Size; j++)
+            for (int j = 0; j < GridSize; j++)
                 grid[0, j] = false;
         }
         if (_direction is Direction.Left)
         {
-            for (int i = 0; i < Size - 1; i++)
-                for (int j = 0; j < Size; j++)
+            for (int i = 0; i < GridSize - 1; i++)
+                for (int j = 0; j < GridSize; j++)
                     grid[i, j] = grid[i + 1, j];
 
-            for (int j = 0; j < Size; j++)
-                grid[Size - 1, j] = false;
+            for (int j = 0; j < GridSize; j++)
+                grid[GridSize - 1, j] = false;
         }
         if (_direction is Direction.Up)
         {
-            for (int i = 0; i < Size; i++)
-                for (int j = Size - 1; j >= 1; j--)
+            for (int i = 0; i < GridSize; i++)
+                for (int j = GridSize - 1; j >= 1; j--)
                     grid[i, j] = grid[i, j - 1];
 
-            for (int i = 0; i < Size; i++)
+            for (int i = 0; i < GridSize; i++)
                 grid[i, 0] = false;
         }
 
         if (_direction is Direction.Down)
         {
-            for (int i = 0; i < Size; i++)
-                for (int j = 0; j < Size - 1; j++)
+            for (int i = 0; i < GridSize; i++)
+                for (int j = 0; j < GridSize - 1; j++)
                     grid[i, j] = grid[i, j + 1];
 
-            for (int i = 0; i < Size; i++)
-                grid[i, Size - 1] = false;
+            for (int i = 0; i < GridSize; i++)
+                grid[i, GridSize - 1] = false;
         }
     }
 

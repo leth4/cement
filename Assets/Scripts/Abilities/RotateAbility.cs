@@ -7,10 +7,9 @@ public class RotateAbility : Ability
 {
     [SerializeField] private RotateType _rotateType;
 
-    public override bool Apply(bool[,] grid, Vector2Int coordinates)
+    public override void Apply(bool[,] grid, Vector2Int coordinates)
     {
         RotateGrid(grid);
-        return true;
     }
 
     public override bool ApplyRandom(bool[,] grid)
@@ -21,25 +20,25 @@ public class RotateAbility : Ability
 
     private void RotateGrid(bool[,] grid)
     {
-        for (int i = 0; i < Size / 2; i++)
+        for (int i = 0; i < GridSize / 2; i++)
         {
-            for (int j = i; j < Size - i - 1; j++)
+            for (int j = i; j < GridSize - i - 1; j++)
             {
                 if (_rotateType is RotateType.Clockwise)
                 {
                     bool isTakenTemp = grid[i, j];
-                    grid[i, j] = grid[Size - 1 - j, i];
-                    grid[Size - 1 - j, i] = grid[Size - 1 - i, Size - 1 - j];
-                    grid[Size - 1 - i, Size - 1 - j] = grid[j, Size - 1 - i];
-                    grid[j, Size - 1 - i] = isTakenTemp;
+                    grid[i, j] = grid[GridSize - 1 - j, i];
+                    grid[GridSize - 1 - j, i] = grid[GridSize - 1 - i, GridSize - 1 - j];
+                    grid[GridSize - 1 - i, GridSize - 1 - j] = grid[j, GridSize - 1 - i];
+                    grid[j, GridSize - 1 - i] = isTakenTemp;
                 }
                 if (_rotateType is RotateType.Anticlockwise)
                 {
                     bool isTakenTemp = grid[i, j];
-                    grid[i, j] = grid[j, Size - 1 - i];
-                    grid[j, Size - 1 - i] = grid[Size - 1 - i, Size - 1 - j];
-                    grid[Size - 1 - i, Size - 1 - j] = grid[Size - 1 - j, i];
-                    grid[Size - 1 - j, i] = isTakenTemp;
+                    grid[i, j] = grid[j, GridSize - 1 - i];
+                    grid[j, GridSize - 1 - i] = grid[GridSize - 1 - i, GridSize - 1 - j];
+                    grid[GridSize - 1 - i, GridSize - 1 - j] = grid[GridSize - 1 - j, i];
+                    grid[GridSize - 1 - j, i] = isTakenTemp;
                 }
             }
         }

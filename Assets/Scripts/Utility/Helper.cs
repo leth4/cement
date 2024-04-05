@@ -4,7 +4,7 @@ using UnityEngine;
 public static class Helper
 {
     private static Camera _camera;
-    public static Camera Camera
+    public static Camera MainCamera
     {
         get
         {
@@ -18,5 +18,5 @@ public static class Helper
         return Random.Range(0, 2) == 0;
     }
 
-    public static Ray CameraRay => Camera.ScreenPointToRay(Input.mousePosition);
+    public static Ray CameraRay => MainCamera.ScreenPointToRay(Input.mousePosition);
 }

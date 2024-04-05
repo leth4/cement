@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbilityController : Singleton<AbilityController>
 {
-    public static event Action MadeChanges;
+    public static event Action OnMadeChanges;
 
     [SerializeField] private GameObject _border;
 
@@ -11,56 +11,41 @@ public class AbilityController : Singleton<AbilityController>
 
     public void UpdatePreview()
     {
-        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
-        IsPreviewing = true;
-        if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
-        {
-            _border.SetActive(HandController.Instance.ActiveAbility.IsFullCanvas);
-            HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.SelectedCell.Coordinates);
-        }
-        MadeChanges?.Invoke();
-    }
+        if (GridManager.Instance.LastSelectedCell == null) return;
+        if (HandController.Instance.ActiveAbility == null) return;
 
-    public void CallChange() => MadeChanges?.Invoke();
+        _border.SetActive(HandController.Instance.ActiveAbility.IsFullCanvas);
+        GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
+        HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerPreviewGrid, GridManager.Instance.LastSelectedCell.Coordinates);
+
+        IsPreviewing = true;
+        OnMadeChanges?.Invoke();
+    }
 
     public void StopPreview()
     {
         _border.SetActive(false);
-        IsPreviewing = false;
         GridManager.Instance.PlayerPreviewGrid = GridManager.Instance.PlayerGrid.Clone() as bool[,];
-        MadeChanges?.Invoke();
+
+        IsPreviewing = false;
+        OnMadeChanges?.Invoke();
     }
 
-    public void TryApplyingAbility()
+    public void ApplyAbility()
     {
-        if (GridManager.Instance.SelectedCell != null && HandController.Instance.ActiveAbility != null)
-        {
-            StopPreview();
+        if (GridManager.Instance.LastSelectedCell == null) return;
+        if (HandController.Instance.ActiveAbility == null) return;
 
-            AudioReceiver.AbilityApplied();
+        StopPreview();
 
-            Recorder.Instance.Record(HandController.Instance.ActiveAbility);
-            var applied = HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.SelectedCell.Coordinates);
-            if (applied)
-            {
-                HandController.Instance.DestroyDraggedCard();
-                MadeChanges?.Invoke();
-                Screenshake.Instance.Shake(0.03f, 0.05f);
-            }
-            else
-            {
-                Recorder.Instance.RemoveLastRecord();
-            }
-        }
-    }
+        Recorder.Instance.Record(HandController.Instance.ActiveAbility);
 
-    private void UndoLastMove()
-    {
-        Recorder.Instance.GoBack(true);
-    }
+        HandController.Instance.ActiveAbility.Apply(GridManager.Instance.PlayerGrid, GridManager.Instance.LastSelectedCell.Coordinates);
+        HandController.Instance.DestroyDraggedCard();
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1) && HandController.Instance.ActiveAbility == null && !GameManager.Instance.IsSolved) UndoLastMove();
+        OnMadeChanges?.Invoke();
+
+        Screenshake.Instance.Shake(0.03f, 0.05f);
+        AudioReceiver.AbilityApplied();
     }
 }

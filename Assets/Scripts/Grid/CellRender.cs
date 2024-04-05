@@ -17,17 +17,13 @@ public class CellRender : MonoBehaviour
 
     private float _appearDelay = 0;
 
-    public void Initialize(bool isPlayerCell, Vector2Int coords, float appearDelay)
+    public void Initialize(bool isPlayerCell, Vector2Int coords, float appearDelay, bool isPhantom)
     {
         IsPlayerCell = isPlayerCell;
         Coordinates = coords;
         _appearDelay = appearDelay;
-    }
-
-    public void MakePhantom()
-    {
-        IsPhantom = true;
-        _renderer.color = Color.clear;
+        IsPhantom = isPhantom;
+        if (isPhantom) _renderer.color = Color.clear;
     }
 
     public void Start()
@@ -36,7 +32,10 @@ public class CellRender : MonoBehaviour
         Tween.Delay(this, _appearDelay / 20, () => Tween.Scale(this, transform, Vector3.zero, Vector3.one, 0.4f, EaseType.SineOut));
     }
 
-    public void Hide(float delay) => Tween.Delay(this, delay / 70, () => Tween.Scale(this, transform, Vector3.one, Vector3.zero, 0.4f, EaseType.SineOut));
+    public void Hide(float delay)
+    {
+        Tween.Delay(this, delay / 70, () => Tween.Scale(this, transform, Vector3.one, Vector3.zero, 0.4f, EaseType.SineOut));
+    }
 
     public void Render()
     {
@@ -57,11 +56,11 @@ public class CellRender : MonoBehaviour
 
     private void OnEnable()
     {
-        AbilityController.MadeChanges += Render;
+        AbilityController.OnMadeChanges += Render;
     }
 
     private void OnDisable()
     {
-        AbilityController.MadeChanges -= Render;
+        AbilityController.OnMadeChanges -= Render;
     }
 }
